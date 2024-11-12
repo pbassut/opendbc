@@ -7,8 +7,9 @@ BO_ 171 NEW_MSG_AB: 8 XXX
  SG_ NEW_SIGNAL_4 : 55|4@0+ (1,0) [0|15] "" XXX
 
 BO_ 222 EPS_1: 6 EPS
- SG_ STEERING_ANGLE : 5|14@0+ (0.1,-716.8) [0|16383] "deg" XXX
- SG_ STEERING_RATE : 19|12@0+ (0.5,-1000) [0|4095] "deg/s" XXX
+ SG_ MAYBE_STEERING_ANGLE : 5|13@0+ (0.1,-718.7) [0|16383] "deg" XXX
+ SG_ NEW_SIGNAL_1 : 8|1@0+ (1,0) [0|1] "" XXX
+ SG_ MAYBE_STEERING_RATE : 19|12@0+ (0.5,-1000) [0|4095] "deg/s" XXX
  SG_ UNKNOWN_1 : 20|1@0+ (1,0) [0|1] "" XXX
  SG_ UNKNOWN_2 : 23|1@0+ (1,0) [0|1] "" XXX
  SG_ COUNTER : 35|4@0+ (1,0) [0|15] "" XXX
@@ -45,9 +46,9 @@ BO_ 252 ENGINE_1: 8 ENGINE
  SG_ ENGINE_RPM : 7|14@0+ (1,0) [0|255] "rev/min" XXX
  SG_ ACCEL_PEDAL : 20|8@0+ (0.4,0) [0|255] "percent" XXX
  SG_ REVERSE : 26|1@0+ (1,0) [0|1] "" XXX
- SG_ NEW_SIGNAL_3 : 39|1@0+ (1,0) [0|1] "" XXX
- SG_ NEW_SIGNAL_1 : 46|2@1+ (1,0) [0|3] "" XXX
+ SG_ NEW_SIGNAL_5 : 40|8@1+ (1,0) [0|255] "" XXX
  SG_ COUNTER : 51|4@0+ (1,0) [0|15] "" XXX
+ SG_ NEW_SIGNAL_4 : 52|4@1+ (1,0) [0|15] "" XXX
  SG_ CHECKSUM : 63|8@0+ (1,0) [0|255] "" XXX
 
 BO_ 254 ABS_2: 8 ABS
@@ -60,9 +61,9 @@ BO_ 254 ABS_2: 8 ABS
 
 BO_ 257 ABS_6: 8 ABS
  SG_ MAYBE_ACC_BRAKE : 5|1@0+ (1,0) [0|1] "" XXX
- SG_ VEHICLE_SPEED : 15|11@0+ (0.017,0) [0|2047] "" XXX
+ SG_ MAYBE_VEHICLE_SPEED : 15|11@0+ (0.0602,0) [0|2047] "km/h" XXX
  SG_ BRAKE_PRESSURE_1 : 20|11@0+ (1,0) [0|2047] "" XXX
- SG_ BRAKE_PRESSURE_2 : 43|12@0+ (1,0) [0|4095] "" XXX
+ SG_ COUNTER : 48|4@1+ (1,0) [0|15] "" XXX
  SG_ CHECKSUM : 63|8@0+ (1,0) [0|255] "" XXX
 
 BO_ 262 EPS_2: 7 EPS
@@ -140,15 +141,16 @@ BO_ 501 NEW_MSG_1F5: 5 XXX
 
 BO_ 502 LKA_COMMAND: 8 CAMERA
  SG_ LKA_TORQUE : 7|11@0+ (1,-1024) [0|2047] "" XXX
- SG_ HAPTIC_WARN_1 : 8|1@0+ (1,0) [0|1] "" XXX
- SG_ LKA_ACTIVE : 11|1@0+ (1,0) [0|1] "" XXX
- SG_ NEW_SIGNAL_1 : 12|1@0+ (1,0) [0|1] "" XXX
- SG_ HAPTIC_WARN_2 : 19|1@0+ (1,0) [0|1] "" XXX
- SG_ COUNTER : 51|4@0+ (1,0) [0|15] "" XXX
- SG_ CHECKSUM : 63|8@0+ (1,0) [0|255] "" XXX
+ SG_ LKA_STATUS : 12|1@0+ (1,0) [0|1] "" XXX
+ SG_ COUNTER : 19|4@0+ (1,0) [0|1] "" XXX
+ SG_ CHECKSUM : 31|8@0+ (1,0) [0|255] "" XXX
 
 BO_ 508 NEW_MSG_1FC: 8 XXX
  SG_ NEW_SIGNAL_1 : 6|1@0+ (1,0) [0|1] "" XXX
+
+BO_ 552 NEW_MSG_228: 8 XXX
+ SG_ COUNTER : 51|4@0+ (1,0) [0|15] "" XXX
+ SG_ MAYBE_CHECKSUM : 63|8@0+ (1,0) [0|255] "" XXX
 
 BO_ 601 NEW_MSG_259: 8 XXX
  SG_ NEW_SIGNAL_1 : 47|8@0+ (1,0) [0|255] "" XXX
@@ -159,7 +161,9 @@ BO_ 762 NEW_MSG_2FA: 3 XXX
 BO_ 766 CAM_UNKNOWN_1: 4 CAMERA
 
 BO_ 900 NEW_MSG_384: 8 XXX
+ SG_ NEW_SIGNAL_3 : 3|3@0+ (1,0) [0|1] "" XXX
  SG_ NEW_SIGNAL_1 : 19|3@0+ (1,0) [0|7] "" XXX
+ SG_ NEW_SIGNAL_2 : 30|2@1+ (1,0) [0|3] "" XXX
 
 BO_ 1040 NEW_MSG_410: 8 XXX
  SG_ NEW_SIGNAL_3 : 7|8@0+ (1,0) [0|255] "" XXX
@@ -192,6 +196,10 @@ BO_ 1046 NEW_MSG_416: 8 XXX
  SG_ UNKNOWN_M2_6 m2 : 55|8@0+ (1,0) [0|255] "" XXX
  SG_ UNKNOWN_M2_7 m2 : 63|8@0+ (1,0) [0|255] "" XXX
 
+BO_ 1048 NEW_MSG_418: 4 XXX
+ SG_ COUNTER : 19|4@0+ (1,0) [0|15] "" XXX
+ SG_ CHECKSUM : 31|8@0+ (1,0) [0|255] "" XXX
+
 BO_ 1194 CAM_UNKNOWN_2: 8 CAMERA
 
 BO_ 1198 LKA_HUD_1: 8 CAMERA
@@ -204,7 +212,8 @@ BO_ 1198 LKA_HUD_1: 8 CAMERA
  SG_ CHECKSUM : 63|8@0+ (1,0) [0|255] "" XXX
 
 BO_ 1351 LKA_HUD_2: 8 CAMERA
- SG_ NEW_SIGNAL_1 : 51|3@0+ (1,0) [0|7] "" XXX
+ SG_ MAYBE_LKAS_DISABLED : 30|1@0+ (1,0) [0|1] "" XXX
+ SG_ LANE_HUD_INDICATOR : 51|3@0+ (1,0) [0|7] "" XXX
  SG_ NEW_SIGNAL_2 : 55|4@0+ (1,0) [0|15] "" XXX
 
 BO_ 1442 ACC_1: 8 RADAR
@@ -225,6 +234,10 @@ BO_ 1854 BCM_1: 4 BCM
 BO_ 1865 NEW_MSG_749: 8 XXX
  SG_ NEW_SIGNAL_1 : 23|2@0+ (1,0) [0|3] "" XXX
 
+BO_ 506724352 NEW_MSG_1E340000: 8 XXX
+ SG_ NEW_SIGNAL_2 : 9|1@0+ (1,0) [0|1] "" XXX
+ SG_ NEW_SIGNAL_1 : 40|1@0+ (1,0) [0|1] "" XXX
+
 BO_ 506855454 CAM_UNKNOWN_6: 1 CAMERA
 
 CM_ SG_ 254 LONG_ACCEL "scale TBD";
@@ -237,7 +250,8 @@ CM_ SG_ 278 FORWARD_2 "probably per-axle";
 CM_ SG_ 278 REVERSE_2 "probably per-axle";
 CM_ SG_ 282 NEW_SIGNAL_1 "smoothed yaw rate with low speed cutoff, maybe active forward lighting target angle";
 CM_ SG_ 284 VEHICLE_SPEED "scale estimated";
-CM_ SG_ 502 HAPTIC_WARN_1 "correlates with steering wheel haptic";
-CM_ SG_ 502 HAPTIC_WARN_2 "correlates with steering wheel haptic";
+CM_ SG_ 502 COUNTER "correlates with steering wheel haptic";
 CM_ BO_ 1198 "Definite LKA activity, probably contains lane-line recognition and lane departure signals, indicator of LKA vs TJA, perhaps indicator of active assist in map-permitted areas";
 VAL_ 262 LKA_STATUS 0 "standby" 1 "lka_active";
+VAL_ 502 LKA_STATUS 0 "OFF" 1 "ON";
+VAL_ 1351 LANE_HUD_INDICATOR 0 "DISABLED" 1 "ENABLED" 2 "UNKNOW_1";

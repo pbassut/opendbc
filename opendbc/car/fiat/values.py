@@ -16,13 +16,13 @@ class FastbackFlags(IntFlag):
 
 @dataclass
 class FastbackCarDocs(CarDocs):
-  package: str = "Adaptive Cruise Control (ACC)"
+  package: str = "Adaptive Cruise Control(ACC)"
   car_parts: CarParts = field(default_factory=CarParts.common([CarHarness.fca]))
 
 
 @dataclass
 class FastbackPlatformConfig(PlatformConfig):
-  dbc_dict: DbcDict = field(default_factory=lambda: dbc_dict('chrysler_pacifica_2017_hybrid_generated', 'chrysler_pacifica_2017_hybrid_private_fusion'))
+  dbc_dict: DbcDict = field(default_factory=lambda: dbc_dict('fca_fastback_limited_edition_2024', None))
 
 
 @dataclass(frozen=True)
