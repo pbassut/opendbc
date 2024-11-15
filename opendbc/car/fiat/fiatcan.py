@@ -1,5 +1,5 @@
 from opendbc.car import structs
-from opendbc.car.chrysler.values import RAM_CARS
+from opendbc.car.fiat.values import RAM_CARS
 
 GearShifter = structs.CarState.GearShifter
 VisualAlert = structs.CarControl.HUDControl.VisualAlert
