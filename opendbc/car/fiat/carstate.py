@@ -1,7 +1,7 @@
 from opendbc.can.parser import CANParser
 from opendbc.can.can_define import CANDefine
 from opendbc.car import create_button_events, structs
-from opendbc.car.fiat.values import DBC, STEER_THRESHOLD, RAM_CARS
+from opendbc.car.fiat.values import DBC, STEER_THRESHOLD
 from opendbc.car.common.conversions import Conversions as CV
 from opendbc.car.interfaces import CarStateBase
 
@@ -45,12 +45,9 @@ class CarState(CarStateBase):
     ret.gasPressed = ret.gas > 1e-5
 
     # car speed
-    if self.CP.carFingerprint in RAM_CARS:
-      ret.vEgoRaw = cp.vl["ESP_8"]["Vehicle_Speed"] * CV.KPH_TO_MS
-      ret.gearShifter = self.parse_gear_shifter(self.shifter_values.get(cp.vl["Transmission_Status"]["Gear_State"], None))
-    else:
-      ret.vEgoRaw = (cp.vl["SPEED_1"]["SPEED_LEFT"] + cp.vl["SPEED_1"]["SPEED_RIGHT"]) / 2.
-      ret.gearShifter = self.parse_gear_shifter(self.shifter_values.get(cp.vl["GEAR"]["PRNDL"], None))
+    ret.vEgoRaw = (cp.vl["SPEED_1"]["SPEED_LEFT"] + cp.vl["SPEED_1"]["SPEED_RIGHT"]) / 2.
+    ret.gearShifter = self.parse_gear_shifter(self.shifter_values.get(cp.vl["GEAR"]["PRNDL"], None))
+
     ret.vEgo, ret.aEgo = self.update_speed_kf(ret.vEgoRaw)
     ret.standstill = not ret.vEgoRaw > 0.001
     ret.wheelSpeeds = self.get_wheel_speeds(
@@ -74,7 +71,7 @@ class CarState(CarStateBase):
     ret.steeringPressed = abs(ret.steeringTorque) > STEER_THRESHOLD
 
     # cruise state
-    cp_cruise = cp_cam if self.CP.carFingerprint in RAM_CARS else cp
+    cp_cruise = cp
 
     ret.cruiseState.available = cp_cruise.vl["DAS_3"]["ACC_AVAILABLE"] == 1
     ret.cruiseState.enabled = cp_cruise.vl["DAS_3"]["ACC_ACTIVE"] == 1
@@ -83,13 +80,8 @@ class CarState(CarStateBase):
     ret.cruiseState.standstill = cp_cruise.vl["DAS_3"]["ACC_STANDSTILL"] == 1
     ret.accFaulted = cp_cruise.vl["DAS_3"]["ACC_FAULTED"] != 0
 
-    if self.CP.carFingerprint in RAM_CARS:
-      # Auto High Beam isn't Located in this message on chrysler or jeep currently located in 729 message
-      self.auto_high_beam = cp_cam.vl["DAS_6"]['AUTO_HIGH_BEAM_ON']
-      ret.steerFaultTemporary = cp.vl["EPS_3"]["DASM_FAULT"] == 1
-    else:
-      ret.steerFaultTemporary = cp.vl["EPS_2"]["LKAS_TEMPORARY_FAULT"] == 1
-      ret.steerFaultPermanent = cp.vl["EPS_2"]["LKAS_STATE"] == 4
+    ret.steerFaultTemporary = cp.vl["EPS_2"]["LKAS_TEMPORARY_FAULT"] == 1
+    ret.steerFaultPermanent = cp.vl["EPS_2"]["LKAS_STATE"] == 4
 
     # blindspot sensors
     if self.CP.enableBsm:
@@ -129,18 +121,11 @@ class CarState(CarStateBase):
     if CP.enableBsm:
       messages.append(("BSM_1", 2))
 
-    if CP.carFingerprint in RAM_CARS:
-      messages += [
-        ("ESP_8", 50),
-        ("EPS_3", 50),
-        ("Transmission_Status", 50),
-      ]
-    else:
-      messages += [
-        ("GEAR", 50),
-        ("SPEED_1", 100),
-      ]
-      messages += CarState.get_cruise_messages()
+    messages += [
+      ("GEAR", 50),
+      ("SPEED_1", 100),
+    ]
+    messages += CarState.get_cruise_messages()
 
     return CANParser(DBC[CP.carFingerprint]["pt"], messages, 0)
 
@@ -149,8 +134,5 @@ class CarState(CarStateBase):
     messages = [
       ("DAS_6", 4),
     ]
-
-    if CP.carFingerprint in RAM_CARS:
-      messages += CarState.get_cruise_messages()
 
     return CANParser(DBC[CP.carFingerprint]["pt"], messages, 2)
