@@ -1,7 +1,7 @@
 from opendbc.can.parser import CANParser
 from opendbc.can.can_define import CANDefine
 from opendbc.car import create_button_events, structs
-from opendbc.car.chrysler.values import DBC, STEER_THRESHOLD, RAM_CARS
+from opendbc.car.fiat.values import DBC, STEER_THRESHOLD, RAM_CARS
 from opendbc.car.common.conversions import Conversions as CV
 from opendbc.car.interfaces import CarStateBase
 
@@ -18,10 +18,7 @@ class CarState(CarStateBase):
     self.button_counter = 0
     self.lkas_car_model = -1
 
-    if CP.carFingerprint in RAM_CARS:
-      self.shifter_values = can_define.dv["Transmission_Status"]["Gear_State"]
-    else:
-      self.shifter_values = can_define.dv["GEAR"]["PRNDL"]
+    self.shifter_values = can_define.dv["GEAR"]["PRNDL"]
 
     self.distance_button = 0
 
@@ -57,10 +54,10 @@ class CarState(CarStateBase):
     ret.vEgo, ret.aEgo = self.update_speed_kf(ret.vEgoRaw)
     ret.standstill = not ret.vEgoRaw > 0.001
     ret.wheelSpeeds = self.get_wheel_speeds(
-      cp.vl["ESP_6"]["WHEEL_SPEED_FL"],
-      cp.vl["ESP_6"]["WHEEL_SPEED_FR"],
-      cp.vl["ESP_6"]["WHEEL_SPEED_RL"],
-      cp.vl["ESP_6"]["WHEEL_SPEED_RR"],
+      cp.vl["ABS_1"]["WHEEL_SPEED_FL"],
+      cp.vl["ABS_1"]["WHEEL_SPEED_FR"],
+      cp.vl["ABS_1"]["WHEEL_SPEED_RL"],
+      cp.vl["ABS_1"]["WHEEL_SPEED_RR"],
       unit=1,
     )
 
