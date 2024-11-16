@@ -45,5 +45,6 @@ class CarControllerParams:
     self.STEER_DELTA_DOWN = 3
     self.STEER_MAX = 261  # higher than this faults the EPS
 
+STEER_THRESHOLD = 120
 
 DBC = CAR.create_dbc_map()
