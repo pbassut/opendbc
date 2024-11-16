@@ -11,6 +11,7 @@ from opendbc.car.nissan.values import CAR as NISSAN
 from opendbc.car.subaru.values import CAR as SUBARU
 from opendbc.car.toyota.values import CAR as TOYOTA
 from opendbc.car.volkswagen.values import CAR as VW
+from opendbc.car.fiat.values import CAR as FIAT
 
 FW_VERSIONS = get_interface_attr('FW_VERSIONS', combine_brands=True, ignore_none=True)
 _FINGERPRINTS = get_interface_attr('FINGERPRINTS', combine_brands=True, ignore_none=True)
@@ -129,6 +130,7 @@ MIGRATION = {
 
   # Removal of platform_str, see https://github.com/commaai/openpilot/pull/31868/
   "COMMA BODY": BODY.COMMA_BODY,
+  "FASTBACK LIMITED EDITION 2024": FIAT.FASTBACK_LIMITED_EDITION_2024,
   "CHRYSLER PACIFICA HYBRID 2017": CHRYSLER.CHRYSLER_PACIFICA_2018_HYBRID,
   "CHRYSLER_PACIFICA_2017_HYBRID": CHRYSLER.CHRYSLER_PACIFICA_2018_HYBRID,
   "CHRYSLER PACIFICA HYBRID 2018": CHRYSLER.CHRYSLER_PACIFICA_2018_HYBRID,
