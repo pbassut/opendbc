@@ -46,45 +46,4 @@ class CarControllerParams:
     self.STEER_MAX = 261  # higher than this faults the EPS
 
 
-STEER_THRESHOLD = 120
-
-CHRYSLER_VERSION_REQUEST = bytes([uds.SERVICE_TYPE.READ_DATA_BY_IDENTIFIER]) + \
-  p16(0xf132)
-CHRYSLER_VERSION_RESPONSE = bytes([uds.SERVICE_TYPE.READ_DATA_BY_IDENTIFIER + 0x40]) + \
-  p16(0xf132)
-
-CHRYSLER_SOFTWARE_VERSION_REQUEST = bytes([uds.SERVICE_TYPE.READ_DATA_BY_IDENTIFIER]) + \
-  p16(uds.DATA_IDENTIFIER_TYPE.SYSTEM_SUPPLIER_ECU_SOFTWARE_NUMBER)
-CHRYSLER_SOFTWARE_VERSION_RESPONSE = bytes([uds.SERVICE_TYPE.READ_DATA_BY_IDENTIFIER + 0x40]) + \
-  p16(uds.DATA_IDENTIFIER_TYPE.SYSTEM_SUPPLIER_ECU_SOFTWARE_NUMBER)
-
-CHRYSLER_RX_OFFSET = -0x280
-
-FW_QUERY_CONFIG = FwQueryConfig(
-  requests=[
-    Request(
-      [CHRYSLER_VERSION_REQUEST],
-      [CHRYSLER_VERSION_RESPONSE],
-      whitelist_ecus=[Ecu.abs, Ecu.eps, Ecu.srs, Ecu.fwdRadar, Ecu.fwdCamera, Ecu.combinationMeter],
-      rx_offset=CHRYSLER_RX_OFFSET,
-      bus=0,
-    ),
-    Request(
-      [CHRYSLER_VERSION_REQUEST],
-      [CHRYSLER_VERSION_RESPONSE],
-      whitelist_ecus=[Ecu.abs, Ecu.hybrid, Ecu.engine, Ecu.transmission],
-      bus=0,
-    ),
-    Request(
-      [CHRYSLER_SOFTWARE_VERSION_REQUEST],
-      [CHRYSLER_SOFTWARE_VERSION_RESPONSE],
-      whitelist_ecus=[Ecu.engine, Ecu.transmission],
-      bus=0,
-    ),
-  ],
-  extra_ecus=[
-    (Ecu.abs, 0x7e4, None),  # alt address for abs on hybrids, NOTE: not on all hybrid platforms
-  ],
-)
-
 DBC = CAR.create_dbc_map()
