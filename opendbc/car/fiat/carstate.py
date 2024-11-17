@@ -114,11 +114,11 @@ class CarState(CarStateBase):
       ("BCM_1", 2),
     ]
 
-    if CP.enableBsm:
-      messages.append(("BSM_1", 2))
+    #if CP.enableBsm:
+    #  messages.append(("BSM_1", 2))
 
     messages += [
-      ("GEAR", 50),
+      ("GEAR", 1),
       # ("SPEED_1", 100),
     ]
     messages += CarState.get_cruise_messages()
