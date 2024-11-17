@@ -97,8 +97,8 @@ class CarState(CarStateBase):
   @staticmethod
   def get_cruise_messages():
     messages = [
-      ("DAS_3", 50),
-      ("DAS_4", 50),
+      ("DAS_1", 50),
+      ("DAS_2", 50),
     ]
     return messages
 
