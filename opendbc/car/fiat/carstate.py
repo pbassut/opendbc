@@ -106,15 +106,12 @@ class CarState(CarStateBase):
   def get_can_parser(CP):
     messages = [
       # sig_address, frequency
-      ("ESP_1", 50),
-      ("EPS_2", 100),
-      ("ESP_6", 50),
       ("STEERING", 100),
-      ("ECM_5", 50),
-      ("CRUISE_BUTTONS", 50),
-      ("STEERING_LEVERS", 10),
-      ("ORC_1", 2),
-      ("BCM_1", 1),
+      # ("ECM_5", 50),
+      # ("CRUISE_BUTTONS", 50),
+      # ("STEERING_LEVERS", 10),
+      # ("ORC_1", 2),
+      ("BCM_1", 2),
     ]
 
     if CP.enableBsm:
