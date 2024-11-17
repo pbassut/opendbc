@@ -119,7 +119,7 @@ class CarState(CarStateBase):
 
     messages += [
       ("GEAR", 50),
-      ("SPEED_1", 100),
+      # ("SPEED_1", 100),
     ]
     messages += CarState.get_cruise_messages()
 
@@ -128,7 +128,7 @@ class CarState(CarStateBase):
   @staticmethod
   def get_cam_can_parser(CP):
     messages = [
-      ("DAS_6", 4),
+      ("ADAS_1", 10),
     ]
 
     return CANParser(DBC[CP.carFingerprint]["pt"], messages, 2)
