@@ -53,7 +53,7 @@ def create_lkas_command(packer, CP, apply_steer, lkas_control_bit):
   enabled_val = 2
   values = {
     "STEERING_TORQUE": apply_steer,
-    "LKAS_CONTROL_BIT": enabled_val if lkas_control_bit else 0,
+    #"LKAS_CONTROL_BIT": enabled_val if lkas_control_bit else 0,
   }
   return packer.make_can_msg("LKAS_COMMAND", 0, values)
 
