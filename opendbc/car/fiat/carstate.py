@@ -18,7 +18,7 @@ class CarState(CarStateBase):
     self.button_counter = 0
     self.lkas_car_model = -1
 
-    self.shifter_values = can_define.dv["GEAR"]["PRNDL"]
+    # self.shifter_values = can_define.dv["GEAR"]["PRNDL"]
 
     self.distance_button = 0
 
