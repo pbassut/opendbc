@@ -72,7 +72,7 @@ def create_lkas_hud(packer, CP, lkas_active, hud_alert, hud_count, car_model, au
 
 
 def create_lkas_command(packer, frame, apply_steer):
-  crc_bytes = crc8(apply_steer + 0x1 + (frame % 0x10).to_bytes(3))
+  crc_bytes = crc8((apply_steer + 0x1 + (frame % 0x10)).to_bytes(3))
   print(frame, crc_bytes)
   # LKAS_COMMAND Lane-keeping signal to turn the wheel
   values = {
