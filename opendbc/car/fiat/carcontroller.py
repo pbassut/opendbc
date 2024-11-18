@@ -4,6 +4,8 @@ from opendbc.car.fiat import fiatcan
 from opendbc.car.fiat.values import CarControllerParams, FastbackFlags
 from opendbc.car.interfaces import CarControllerBase
 
+CAM_BUS = 0
+DAS_BUS = 2
 
 class CarController(CarControllerBase):
   def __init__(self, dbc_name, CP):
@@ -24,29 +26,28 @@ class CarController(CarControllerBase):
     lkas_active = CC.latActive and self.lkas_control_bit_prev
 
     # cruise buttons
-    if (self.frame - self.last_button_frame)*DT_CTRL > 0.05:
+    if (self.frame - self.last_button_frame) * DT_CTRL > 0.05:
       das_bus = 1
 
       # ACC cancellation
       if CC.cruiseControl.cancel:
         self.last_button_frame = self.frame
-        can_sends.append(fiatcan.create_cruise_buttons(self.packer, CS.button_counter + 1, das_bus, cancel=True))
+        can_sends.append(fiatcan.create_cruise_buttons(self.packer, CS.button_counter + 1, CS.distance_button, das_bus, activate=False))
 
       # ACC resume from standstill
       elif CC.cruiseControl.resume:
         self.last_button_frame = self.frame
-        can_sends.append(fiatcan.create_cruise_buttons(self.packer, CS.button_counter + 1, das_bus, resume=True))
+        can_sends.append(fiatcan.create_cruise_buttons(self.packer, CS.button_counter + 1, CS.distance_button, das_bus, activate=True))
 
     # HUD alerts
-    if self.frame % 25 == 0:
-      if CS.lkas_car_model != -1:
-        can_sends.append(fiatcan.create_lkas_hud(self.packer, self.CP, lkas_active, CC.hudControl.visualAlert,
-                                                     self.hud_count, CS.lkas_car_model, CS.auto_high_beam))
-        self.hud_count += 1
+    #if self.frame % 25 == 0:
+    #  if CS.lkas_car_model != -1:
+    #    can_sends.append(fiatcan.create_lkas_hud(self.packer, self.CP, lkas_active, CC.hudControl.visualAlert,
+    #                                                 self.hud_count, CS.lkas_car_model, CS.auto_high_beam))
+    #    self.hud_count += 1
 
     # steering
     if self.frame % self.params.STEER_STEP == 0:
-
       # TODO: can we make this more sane? why is it different for all the cars?
       lkas_control_bit = self.lkas_control_bit_prev
       if CS.out.vEgo > self.CP.minSteerSpeed:
@@ -69,7 +70,7 @@ class CarController(CarControllerBase):
         apply_steer = 0
       self.apply_steer_last = apply_steer
 
-      can_sends.append(fiatcan.create_lkas_command(self.packer, self.CP, int(apply_steer), lkas_control_bit))
+      can_sends.append(fiatcan.create_lkas_command(self.packer, self.frame, int(apply_steer)))
 
     self.frame += 1
 

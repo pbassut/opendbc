@@ -3,6 +3,29 @@ from opendbc.car import structs
 GearShifter = structs.CarState.GearShifter
 VisualAlert = structs.CarControl.HUDControl.VisualAlert
 
+def crc8(data):
+  crc = 0xFF
+  poly = 0x1D
+
+  for byte in data:
+    crc ^= byte
+
+    for _ in range(8):
+      if crc & 0x80:
+        crc = ((crc << 1) ^ poly) & 0xFF
+      else:
+        crc = (crc << 1) & 0xFF
+  return crc ^ 0xFF
+
+def test_crc(msg, checksum_byte, length=3):
+  data_bytes = msg.to_bytes(length)
+  computed_checksum = crc8(data_bytes)
+  is_valid = computed_checksum == checksum_byte
+
+  print(f"Data Bytes: 0x{data_bytes.hex().upper()} | Provided Checksum: 0x{checksum_byte:02X}")
+  print(f"Computed Checksum: 0x{computed_checksum:02X} | Valid: {is_valid}")
+  print('-' * 50)
+
 def create_lkas_hud(packer, CP, lkas_active, hud_alert, hud_count, car_model, auto_high_beam):
   # LKAS_HUD - Controls what lane-keeping icon is displayed
 
@@ -48,20 +71,20 @@ def create_lkas_hud(packer, CP, lkas_active, hud_alert, hud_count, car_model, au
   return packer.make_can_msg("DAS_6", 0, values)
 
 
-def create_lkas_command(packer, CP, apply_steer, lkas_control_bit):
+def create_lkas_command(packer, frame, apply_steer):
   # LKAS_COMMAND Lane-keeping signal to turn the wheel
-  enabled_val = 2
   values = {
     "STEERING_TORQUE": apply_steer,
-    #"LKAS_CONTROL_BIT": enabled_val if lkas_control_bit else 0,
+    "COUNTER": frame % 0x10,
+    "CHECKSUM": crc([apply_steer.to_bytes(2), int(0x1).to_bytes(2), frame % 0x10])
   }
   return packer.make_can_msg("LKAS_COMMAND", 0, values)
 
 
-def create_cruise_buttons(packer, frame, bus, cancel=False, resume=False):
+def create_cruise_buttons(packer, frame, button, bus, activate=False):
   values = {
-    "ACC_Cancel": cancel,
-    "ACC_Resume": resume,
+    "CRUISE_BUTTON_PRESSED": 8 if activate else 128,
     "COUNTER": frame % 0x10,
+    "CHECKSUM": crc([button.to_bytes(2), frame % 0x10])
   }
-  return packer.make_can_msg("CRUISE_BUTTONS", bus, values)
+  return packer.make_can_msg("DAS_1", bus, values)
