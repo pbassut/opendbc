@@ -16,6 +16,7 @@ class CarState(CarStateBase):
 
     self.auto_high_beam = 0
     self.button_counter = 0
+    self.button_counter = 0
     self.lkas_car_model = -1
 
     # self.shifter_values = can_define.dv["GEAR"]["PRNDL"]
@@ -72,23 +73,18 @@ class CarState(CarStateBase):
     # cruise state
     cp_cruise = cp
 
-    # ret.cruiseState.available = cp_cruise.vl["DAS_3"]["ACC_AVAILABLE"] == 1
-    # ret.cruiseState.enabled = cp_cruise.vl["DAS_3"]["ACC_ACTIVE"] == 1
-    # ret.cruiseState.speed = cp_cruise.vl["DAS_4"]["ACC_SET_SPEED_KPH"] * CV.KPH_TO_MS
-    # ret.cruiseState.nonAdaptive = cp_cruise.vl["DAS_4"]["ACC_STATE"] in (1, 2)  # 1 NormalCCOn and 2 NormalCCSet
+    ret.cruiseState.available = cp_cruise.vl["DAS_2"]["ACC_STATE"] == 1
+    ret.cruiseState.enabled = cp_cruise.vl["DAS_2"]["ACC_ENGAGED"] == 1
+    ret.cruiseState.speed = cp_cruise.vl["DAS_2"]["ACC_SET_SPEED"] * CV.KPH_TO_MS
+    ret.cruiseState.nonAdaptive = True
     # ret.cruiseState.standstill = cp_cruise.vl["DAS_3"]["ACC_STANDSTILL"] == 1
     # ret.accFaulted = cp_cruise.vl["DAS_3"]["ACC_FAULTED"] != 0
 
     # ret.steerFaultTemporary = cp.vl["EPS_2"]["LKAS_TEMPORARY_FAULT"] == 1
     # ret.steerFaultPermanent = cp.vl["EPS_2"]["LKAS_STATE"] == 4
 
-    # blindspot sensors
-    # if self.CP.enableBsm:
-      # ret.leftBlindspot = cp.vl["BSM_1"]["LEFT_STATUS"] == 1
-      # ret.rightBlindspot = cp.vl["BSM_1"]["RIGHT_STATUS"] == 1
-
     # self.lkas_car_model = cp_cam.vl["DAS_6"]["CAR_MODEL"]
-    # self.button_counter = cp.vl["CRUISE_BUTTONS"]["COUNTER"]
+    self.button_counter = cp.vl["CRUISE_BUTTONS"]["COUNTER"]
 
     # ret.buttonEvents = create_button_events(self.distance_button, prev_distance_button, {1: ButtonType.gapAdjustCruise})
 
@@ -108,18 +104,11 @@ class CarState(CarStateBase):
       # sig_address, frequency
       ("STEERING", 100),
       ("ABS_1", 100),
-      # ("CRUISE_BUTTONS", 50),
-      # ("STEERING_LEVERS", 10),
-      # ("ORC_1", 2),
       ("BCM_1", 2),
     ]
 
-    #if CP.enableBsm:
-    #  messages.append(("BSM_1", 2))
-
     messages += [
       ("GEAR", 1),
-      # ("SPEED_1", 100),
     ]
     messages += CarState.get_cruise_messages()
 
