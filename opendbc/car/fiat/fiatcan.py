@@ -76,7 +76,7 @@ def create_lkas_command(packer, frame, apply_steer):
   values = {
     "STEERING_TORQUE": apply_steer,
     "COUNTER": frame % 0x10,
-    "CHECKSUM": crc([apply_steer.to_bytes(2), int(0x1).to_bytes(2), frame % 0x10])
+    "CHECKSUM": crc8([apply_steer.to_bytes(2), int(0x1).to_bytes(2), frame % 0x10])
   }
   return packer.make_can_msg("LKAS_COMMAND", 0, values)
 
@@ -85,6 +85,6 @@ def create_cruise_buttons(packer, frame, button, bus, activate=False):
   values = {
     "CRUISE_BUTTON_PRESSED": 8 if activate else 128,
     "COUNTER": frame % 0x10,
-    "CHECKSUM": crc([button.to_bytes(2), frame % 0x10])
+    "CHECKSUM": crc8([button.to_bytes(2), frame % 0x10])
   }
   return packer.make_can_msg("DAS_1", bus, values)
