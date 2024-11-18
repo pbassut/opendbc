@@ -78,7 +78,7 @@ def create_lkas_command(packer, frame, apply_steer):
   values = {
     "STEERING_TORQUE": apply_steer,
     "COUNTER": frame % 0x10,
-    "CHECKSUM": crc8(crc_bytes)
+    "CHECKSUM": crc_bytes,
   }
   return packer.make_can_msg("LKAS_COMMAND", 0, values)
 
