@@ -73,7 +73,7 @@ def create_lkas_hud(packer, CP, lkas_active, hud_alert, hud_count, car_model, au
 
 def create_lkas_command(packer, frame, apply_steer):
   crc_bytes = crc8((apply_steer + 0x1 + (frame % 0x10)).to_bytes(3))
-  print(frame, crc_bytes)
+  #print(frame, crc_bytes)
   # LKAS_COMMAND Lane-keeping signal to turn the wheel
   values = {
     "STEERING_TORQUE": apply_steer,
@@ -85,7 +85,7 @@ def create_lkas_command(packer, frame, apply_steer):
 
 def create_cruise_buttons(packer, frame, button, bus, activate=False):
   crc_bytes = crc8((button + (frame % 0x10)).to_bytes(2))
-  print(frame, button, crc_bytes)
+  #print(frame, button, crc_bytes)
   values = {
     "CRUISE_BUTTON_PRESSED": 8 if activate else 128,
     "COUNTER": frame % 0x10,
