@@ -44,13 +44,13 @@ class CarState(CarStateBase):
     # car speed
     ret.vEgoRaw = cp.vl["ABS_6"]["VEHICLE_SPEED"] * CV.KPH_TO_MS
     if cp_adas.vl['GEAR']['PARK'] == 1:
-      ret.gearShifter = GEAR_SHIFTER_MAP['PARK']
+      ret.gearShifter = self.parse_gear_shifter('PARK')
     elif cp_adas.vl['GEAR']['D'] == 1:
-      ret.gearShifter = GEAR_SHIFTER_MAP['D']
+      ret.gearShifter = self.parse_gear_shifter('D')
     elif cp_adas.vl['GEAR']['REVERSE'] == 1:
-      ret.gearShifter = GEAR_SHIFTER_MAP['REVERSE']
+      ret.gearShifter = self.parse_gear_shifter('REVERSE')
     elif cp_adas.vl['GEAR']['N'] == 1:
-      ret.gearShifter = GEAR_SHIFTER_MAP['N']
+      ret.gearShifter = self.parse_gear_shifter('N')
 
     ret.vEgo, ret.aEgo = self.update_speed_kf(ret.vEgoRaw)
     ret.standstill = not ret.vEgoRaw > 0.001
