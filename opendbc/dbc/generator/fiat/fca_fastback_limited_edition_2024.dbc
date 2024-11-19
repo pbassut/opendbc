@@ -58,6 +58,7 @@ BO_ 251 NEW_MSG_FB: 8 XXX
  SG_ NEW_SIGNAL_4 : 23|1@0+ (1,0) [0|1] "" XXX
  SG_ NEW_SIGNAL_5 : 28|4@1+ (1,0) [0|15] "" XXX
  SG_ NEW_SIGNAL_7 : 32|1@0+ (1,0) [0|1] "" XXX
+ SG_ NEW_SIGNAL_12 : 36|4@1+ (1,0) [0|15] "" XXX
  SG_ NEW_SIGNAL_8 : 40|3@1+ (1,0) [0|7] "" XXX
  SG_ NEW_SIGNAL_11 : 43|4@1+ (1,0) [0|15] "" XXX
  SG_ NEW_SIGNAL_1 : 48|4@1+ (1,0) [0|15] "" XXX
@@ -427,22 +428,29 @@ BO_ 1446 NEW_MSG_5A6: 8 XXX
  SG_ NEW_SIGNAL_2 : 46|1@0+ (1,0) [0|1] "" XXX
 
 BO_ 1448 GEAR: 8 XXX
- SG_ PARKING_BREAK : 4|1@0+ (1,0) [0|1] "" XXX
- SG_ MAYBE_P_OR_R : 7|1@0+ (1,0) [0|1] "" XXX
- SG_ MAYBE_D : 16|1@0+ (1,0) [0|1] "" XXX
- SG_ NEW_SIGNAL_5 : 19|1@0+ (1,0) [0|1] "" XXX
- SG_ NEW_SIGNAL_1 : 21|1@0+ (1,0) [0|7] "" XXX
- SG_ REVERSE : 22|1@0+ (1,0) [0|1] "" XXX
- SG_ NEW_SIGNAL_9 : 23|1@0+ (1,0) [0|1] "" XXX
- SG_ MAYBE_N : 25|2@1+ (1,0) [0|7] "" XXX
+ SG_ PARK : 4|1@0+ (1,0) [0|1] "" XXX
+ SG_ P_OR_N : 7|1@0+ (1,0) [0|1] "" XXX
+ SG_ MANUAL_SHIFT_MINUS : 8|1@0+ (1,0) [0|1] "" XXX
+ SG_ NEW_SIGNAL_1 : 9|1@0+ (1,0) [0|1] "" XXX
+ SG_ BEEP : 11|2@0+ (1,0) [0|3] "" XXX
+ SG_ NEW_SIGNAL_5 : 13|1@0+ (1,0) [0|1] "" XXX
+ SG_ D : 16|1@0+ (1,0) [0|1] "" XXX
+ SG_ BREAK_PRESSED_ON_N : 18|1@0+ (1,0) [0|1] "" XXX
+ SG_ MAYBE_GEAR_SHIFT : 19|1@0+ (1,0) [0|1] "" XXX
+ SG_ MANUAL_SHIFT_PLUS_OR_PARK : 21|1@0+ (1,0) [0|7] "" XXX
+ SG_ MANUAL_GEAR : 22|1@0+ (1,0) [0|1] "" XXX
+ SG_ D_2 : 23|1@0+ (1,0) [0|1] "" XXX
+ SG_ MAYBE_GEAR_NUMBER : 24|1@0+ (1,0) [0|1] "" XXX
+ SG_ REVERSE : 25|2@1+ (1,0) [0|7] "" XXX
+ SG_ MAYBE_AUTO_SHIFT : 28|1@0+ (1,0) [0|1] "" XXX
  SG_ NEW_SIGNAL_8 : 29|1@0+ (1,0) [0|1] "" XXX
- SG_ NEW_SIGNAL_3 : 30|1@0+ (1,0) [0|1] "" XXX
- SG_ NEW_SIGNAL_4 : 31|1@0+ (1,0) [0|1] "" XXX
- SG_ NEW_SIGNAL_6 : 32|3@1+ (1,0) [0|7] "" XXX
- SG_ NEW_SIGNAL_7 : 39|1@0+ (1,0) [0|1] "" XXX
+ SG_ P_OR_D : 30|1@0+ (1,0) [0|1] "" XXX
+ SG_ N : 31|1@0+ (1,0) [0|1] "" XXX
+ SG_ P_OR_R : 32|3@1+ (1,0) [0|7] "" XXX
+ SG_ MAYBE_D1_D_OR_PARK : 39|1@0+ (1,0) [0|1] "" XXX
  SG_ NEW_SIGNAL_2 : 47|2@0+ (1,0) [0|1] "" XXX
- SG_ MAYBE_COUNTER : 48|4@1+ (1,0) [0|15] "" XXX
- SG_ MAYBE_CHECKSUM : 56|8@1+ (1,0) [0|255] "" XXX
+ SG_ COUNTER : 48|4@1+ (1,0) [0|15] "" XXX
+ SG_ CHECKSUM : 56|8@1+ (1,0) [0|255] "" XXX
 
 BO_ 1449 NEW_MSG_5A9: 8 XXX
  SG_ NEW_SIGNAL_2 : 12|1@0+ (1,0) [0|1] "" XXX
@@ -521,6 +529,7 @@ CM_ SG_ 284 VEHICLE_SPEED "scale estimated";
 CM_ SG_ 502 COUNTER "correlates with steering wheel haptic";
 CM_ BO_ 1198 "Definite LKA activity, probably contains lane-line recognition and lane departure signals, indicator of LKA vs TJA, perhaps indicator of active assist in map-permitted areas";
 CM_ SG_ 1445 ACC_SET_SPEED "Offset is the minimum it can start ACC at";
+CM_ SG_ 1448 BREAK_PRESSED_ON_N "Shows when on N without break pressed";
 VAL_ 244 MAYBE_AC_COMMAND_SENT 1 "SENT" 0 "IDLE";
 VAL_ 244 AC_STATE 1 "OFF" 2 "ON";
 VAL_ 244 ACCEL_START 1 "NOT_TRIGGERED" 2 "TRIGGERED";
@@ -533,6 +542,9 @@ VAL_ 1050 MILHA_FAROL 0 "OFF" 3 "ON";
 VAL_ 1351 LANE_HUD_INDICATOR 0 "DISABLED" 1 "ENABLED" 2 "UNKNOW_1";
 VAL_ 1445 ACC_STATE 0 "OFF" 1 "READY";
 VAL_ 1445 ACC_ENGAGED 0 "NOT_ENGAGED" 1 "ENGAGED";
+VAL_ 1448 BEEP 0 "SILENT" 2 "BEEPING";
+VAL_ 1448 BREAK_PRESSED_ON_N 0 "PRESSED" 1 "NOT_PRESSED";
+VAL_ 1448 P_OR_R 0 "NONE" 6 "PARK";
 VAL_ 1504 PARKING_BUTTON 0 "NOT_PRESSED" 1 "PUSHED_DOWN" 2 "PULLED_UP";
 VAL_ 1538 POISON_STATE 0 "DEACTIVATED" 1 "ACTIVATED";
 VAL_ 1848 WARNING_KEY_NOT_PRESENT 0 "NOT_SHOWN" 1 "SHOWN";
