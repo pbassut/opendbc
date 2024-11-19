@@ -6,7 +6,6 @@ from opendbc.car.common.conversions import Conversions as CV
 from opendbc.car.interfaces import CarStateBase
 
 ButtonType = structs.CarState.ButtonEvent.Type
-NetworkLocation = structs.CarParams.NetworkLocation
 
 class CarState(CarStateBase):
   def __init__(self, CP):
@@ -25,8 +24,6 @@ class CarState(CarStateBase):
 
   def update(self, cp, cp_cam, b, c, *_) -> structs.CarState:
     ret = structs.CarState()
-
-    ret.networkLocation = NetworkLocation.gateway
 
     prev_distance_button = self.distance_button
     self.distance_button = cp.vl["DAS_1"]["CRUISE_BUTTON_PRESSED"]
