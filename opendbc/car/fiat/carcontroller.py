@@ -32,12 +32,12 @@ class CarController(CarControllerBase):
       # ACC cancellation
       if CC.cruiseControl.cancel:
         self.last_button_frame = self.frame
-        can_sends.append(fiatcan.create_cruise_buttons(self.packer, CS.button_counter + 1, CS.distance_button, das_bus, activate=False))
+        #can_sends.append(fiatcan.create_cruise_buttons(self.packer, CS.button_counter + 1, CS.distance_button, das_bus, activate=False))
 
       # ACC resume from standstill
       elif CC.cruiseControl.resume:
         self.last_button_frame = self.frame
-        can_sends.append(fiatcan.create_cruise_buttons(self.packer, CS.button_counter + 1, CS.distance_button, das_bus, activate=True))
+        #can_sends.append(fiatcan.create_cruise_buttons(self.packer, CS.button_counter + 1, CS.distance_button, das_bus, activate=True))
 
     # HUD alerts
     #if self.frame % 25 == 0:
