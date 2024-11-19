@@ -92,3 +92,9 @@ def create_cruise_buttons(packer, frame, bus, activate=False):
     "CHECKSUM": crc_bytes,
   }
   return packer.make_can_msg("DAS_1", bus, values)
+
+def create_cruise_buttons2(packer, bus, activate=False):
+  values = {
+    "ACC_ENGAGED": 1,
+  }
+  return packer.make_can_msg("DAS_2", bus, values)
