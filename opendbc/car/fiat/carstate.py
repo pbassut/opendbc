@@ -75,9 +75,9 @@ class CarState(CarStateBase):
     # cruise state
     cp_cruise = cp
 
-    ret.cruiseState.available = cp_cruise.vl["DAS_2"]["ACC_STATE"] == 1
-    ret.cruiseState.enabled = cp_cruise.vl["DAS_2"]["ACC_ENGAGED"] == 1
-    ret.cruiseState.speed = cp_cruise.vl["DAS_2"]["ACC_SET_SPEED"] * CV.KPH_TO_MS
+    ret.cruiseState.available = cp_adas.vl["DAS_2"]["ACC_STATE"] == 1
+    ret.cruiseState.enabled = cp_adas.vl["DAS_2"]["ACC_ENGAGED"] == 1
+    ret.cruiseState.speed = cp_adas.vl["DAS_2"]["ACC_SET_SPEED"] * CV.KPH_TO_MS
     ret.cruiseState.nonAdaptive = True
     # ret.cruiseState.standstill = cp_cruise.vl["DAS_3"]["ACC_STANDSTILL"] == 1
     # ret.accFaulted = cp_cruise.vl["DAS_3"]["ACC_FAULTED"] != 0
