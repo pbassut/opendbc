@@ -26,6 +26,8 @@ class CarState(CarStateBase):
   def update(self, cp, cp_cam, b, c, *_) -> structs.CarState:
     ret = structs.CarState()
 
+    ret.networkLocation = NetworkLocation.gateway
+
     prev_distance_button = self.distance_button
     self.distance_button = cp.vl["DAS_1"]["CRUISE_BUTTON_PRESSED"]
 
@@ -93,7 +95,7 @@ class CarState(CarStateBase):
   def get_cruise_messages():
     messages = [
       ("DAS_1", 50),
-      ("DAS_2", 50),
+      ("DAS_2", 1),
     ]
     return messages
 
