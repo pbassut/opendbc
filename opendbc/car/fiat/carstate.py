@@ -30,7 +30,7 @@ class CarState(CarStateBase):
     ret = structs.CarState()
 
     prev_distance_button = self.distance_button
-    self.distance_button = cp.cp_adas["DAS_1"]["CRUISE_BUTTON_PRESSED"]
+    self.distance_button = cp_adas.vl["DAS_1"]["CRUISE_BUTTON_PRESSED"]
 
     # lock info
     ret.doorOpen = any([cp.vl["BCM_1"]["DOOR_OPEN_FL"],
