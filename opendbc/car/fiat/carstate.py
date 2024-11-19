@@ -26,7 +26,7 @@ class CarState(CarStateBase):
     ret = structs.CarState()
 
     prev_distance_button = self.distance_button
-    self.distance_button = cp_adas.vl["DAS_1"]["CRUISE_BUTTON_PRESSED"]
+    self.distance_button = cp.vl["DAS_1"]["CRUISE_BUTTON_PRESSED"]
 
     # lock info
     ret.doorOpen = any([cp.vl["BCM_1"]["DOOR_OPEN_FL"],
@@ -82,7 +82,7 @@ class CarState(CarStateBase):
     # ret.steerFaultPermanent = cp.vl["EPS_2"]["LKAS_STATE"] == 4
 
     # self.lkas_car_model = cp_cam.vl["DAS_6"]["CAR_MODEL"]
-    self.button_counter = adas_cp.vl["DAS_1"]["COUNTER"]
+    self.button_counter = cp.vl["DAS_1"]["COUNTER"]
 
     # ret.buttonEvents = create_button_events(self.distance_button, prev_distance_button, {1: ButtonType.gapAdjustCruise})
 
