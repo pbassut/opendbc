@@ -16,7 +16,8 @@ class CarInterface(CarInterfaceBase):
     ret.steerLimitTimer = 0.4
 
     # safety config
-    ret.safetyConfigs = [get_safety_config(structs.CarParams.SafetyModel.chrysler)]
+    #ret.safetyConfigs = [get_safety_config(structs.CarParams.SafetyModel.chrysler)]
+    ret.safetyConfigs = [get_safety_config(car.CarParams.SafetyModel.allOutput)]
     ret.safetyConfigs[0].safetyParam |= Panda.FLAG_CHRYSLER_RAM_HD
 
     CarInterfaceBase.configure_torque_tune(candidate, ret.lateralTuning)
@@ -33,6 +34,6 @@ class CarInterface(CarInterfaceBase):
       ret.minSteerSpeed = 17.5  # m/s 17 on the way up, 13 on the way down once engaged.
 
     ret.centerToFront = ret.wheelbase * 0.44
-    ret.enableBsm = 720 in fingerprint[0]
+    ret.enableBsm = False
 
     return ret
