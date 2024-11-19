@@ -83,11 +83,11 @@ def create_lkas_command(packer, frame, apply_steer):
   return packer.make_can_msg("LKAS_COMMAND", 0, values)
 
 
-def create_cruise_buttons(packer, frame, button, bus, activate=False):
+def create_cruise_buttons(packer, frame, bus, activate=False):
+  button = 8 if activate else 128
   crc_bytes = crc8((button + (frame % 0x10)).to_bytes(2))
-  #print(frame, button, crc_bytes)
   values = {
-    "CRUISE_BUTTON_PRESSED": 8 if activate else 128,
+    "CRUISE_BUTTON_PRESSED": button,
     "COUNTER": frame % 0x10,
     "CHECKSUM": crc_bytes,
   }
