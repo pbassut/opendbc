@@ -108,7 +108,7 @@ class CarState(CarStateBase):
     messages += [
       ("GEAR", 1),
     ]
-    messages += CarState.get_cruise_messages()
+    #messages += CarState.get_cruise_messages()
 
     return CANParser(DBC[CP.carFingerprint]["pt"], messages, 0)
 
