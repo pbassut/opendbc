@@ -18,8 +18,6 @@ class CarState(CarStateBase):
     self.button_counter = 0
     self.lkas_car_model = -1
 
-    # self.shifter_values = can_define.dv["GEAR"]["PRNDL"]
-
     self.distance_button = 0
 
   def update(self, cp, cp_cam, cp_adas, *_) -> structs.CarState:
@@ -33,19 +31,26 @@ class CarState(CarStateBase):
                         cp.vl["BCM_1"]["DOOR_OPEN_FR"],
                         cp.vl["BCM_1"]["DOOR_OPEN_RL"],
                         cp.vl["BCM_1"]["DOOR_OPEN_RR"]])
-    # ret.seatbeltUnlatched = cp.vl["ORC_1"]["SEATBELT_DRIVER_UNLATCHED"] == 1
+    ret.seatbeltUnlatched = cp.vl["SEATBELTS"]["SEATBELT_FL"] == 1
 
     # brake pedal
-    ret.brake = 0
-    # ret.brakePressed = cp.vl["ESP_1"]['Brake_Pedal_State'] == 1  # Physical brake pedal switch
+    ret.brake = cp.vl["ABS_6"]['BRAKE_PRESSURE']
+    ret.brakePressed = cp.vl["ABS_3"]['BRAKE_PRESSED'] == 1  # Physical brake pedal switch
 
     # gas pedal
-    # ret.gas = cp.vl["ECM_5"]["Accelerator_Position"]
+    ret.gas = cp.vl["ENGINE_1"]["ACCEL_PEDAL_THRESHOLD"]
     ret.gasPressed = ret.gas > 1e-5
 
     # car speed
-    # ret.vEgoRaw = (cp.vl["SPEED_1"]["SPEED_LEFT"] + cp.vl["SPEED_1"]["SPEED_RIGHT"]) / 2.
-    # ret.gearShifter = self.parse_gear_shifter(self.shifter_values.get(cp.vl["GEAR"]["PRNDL"], None))
+    ret.vEgoRaw = cp.vl["ABS_6"]["VEHICLE_SPEED"] * CV.KPH_TO_MS
+    if cp_adas.vl['GEAR']['PARK'] == 1:
+      ret.gearShifter = GEAR_SHIFTER_MAP['PARK']
+    elif cp_adas.vl['GEAR']['D'] == 1:
+      ret.gearShifter = GEAR_SHIFTER_MAP['D']
+    elif cp_adas.vl['GEAR']['REVERSE'] == 1:
+      ret.gearShifter = GEAR_SHIFTER_MAP['REVERSE']
+    elif cp_adas.vl['GEAR']['N'] == 1:
+      ret.gearShifter = GEAR_SHIFTER_MAP['N']
 
     ret.vEgo, ret.aEgo = self.update_speed_kf(ret.vEgoRaw)
     ret.standstill = not ret.vEgoRaw > 0.001
@@ -69,8 +74,6 @@ class CarState(CarStateBase):
     # ret.steeringPressed = abs(ret.steeringTorque) > STEER_THRESHOLD
 
     # cruise state
-    cp_cruise = cp
-
     ret.cruiseState.available = cp_adas.vl["DAS_2"]["ACC_STATE"] == 1
     ret.cruiseState.enabled = cp_adas.vl["DAS_2"]["ACC_ENGAGED"] == 1
     ret.cruiseState.speed = cp_adas.vl["DAS_2"]["ACC_SET_SPEED"] * CV.KPH_TO_MS
@@ -84,7 +87,7 @@ class CarState(CarStateBase):
     # self.lkas_car_model = cp_cam.vl["DAS_6"]["CAR_MODEL"]
     self.button_counter = cp_adas.vl["DAS_1"]["COUNTER"]
 
-    # ret.buttonEvents = create_button_events(self.distance_button, prev_distance_button, {1: ButtonType.gapAdjustCruise})
+    #ret.buttonEvents = create_button_events(self.distance_button, prev_distance_button, {1: ButtonType.gapAdjustCruise})
 
     return ret
 
@@ -112,7 +115,11 @@ class CarState(CarStateBase):
       # sig_address, frequency
       ("STEERING", 100),
       ("ABS_1", 100),
+      ("ABS_3", 100),
+      ("ABS_6", 100),
       ("BCM_1", 2),
+      ('ENGINE_1', 100),
+      ('SEATBELTS', 10),
     ]
 
     return CANParser(DBC[CP.carFingerprint]["pt"], messages, 0)
