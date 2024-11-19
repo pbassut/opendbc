@@ -6,7 +6,7 @@ from opendbc.car.common.conversions import Conversions as CV
 from opendbc.car.interfaces import CarStateBase
 
 ButtonType = structs.CarState.ButtonEvent.Type
-
+NetworkLocation = structs.CarParams.NetworkLocation
 
 class CarState(CarStateBase):
   def __init__(self, CP):
