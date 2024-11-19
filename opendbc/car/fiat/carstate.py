@@ -24,9 +24,6 @@ class CarState(CarStateBase):
     self.distance_button = 0
 
   def update(self, cp, cp_cam, b, c, *_) -> structs.CarState:
-    print(cp.vl)
-    print(cp_cam.vl)
-
     ret = structs.CarState()
 
     prev_distance_button = self.distance_button
