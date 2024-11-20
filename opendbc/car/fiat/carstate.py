@@ -26,7 +26,7 @@ class CarState(CarStateBase):
     self.distance_button = cp_adas.vl["DAS_1"]["CRUISE_BUTTON_PRESSED"]
 
     prev_lkas_watch_status = self.lkas_watch_status
-    self.lkas_watch_status = cp_cam.vl["LKAS_COMMAND"]["LKAS_WATCH_STATUS"]
+    self.lkas_watch_status = cp.vl["LKAS_COMMAND"]["LKA_WATCH_STATUS"]
 
     # lock info
     ret.doorOpen = any([cp.vl["BCM_1"]["DOOR_OPEN_FL"],
@@ -123,6 +123,7 @@ class CarState(CarStateBase):
       ("BCM_1", 2),
       ('ENGINE_1', 100),
       ('SEATBELTS', 10),
+      ("LKAS_COMMAND", 100),
     ]
 
     return CANParser(DBC[CP.carFingerprint]["pt"], messages, 0)
@@ -130,7 +131,6 @@ class CarState(CarStateBase):
   @staticmethod
   def get_cam_can_parser(CP):
     messages = [
-      ("LKAS_COMMAND", 100),
       ("DAS_3", 10),
     ]
 
