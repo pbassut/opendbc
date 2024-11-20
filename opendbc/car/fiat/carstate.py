@@ -15,7 +15,7 @@ class CarState(CarStateBase):
 
     self.auto_high_beam = 0
     self.button_counter = 0
-    self.lka_watch_status = -1
+    self.lkas_watch_status = -1
 
     self.distance_button = 0
 
@@ -25,8 +25,8 @@ class CarState(CarStateBase):
     prev_distance_button = self.distance_button
     self.distance_button = cp_adas.vl["DAS_1"]["CRUISE_BUTTON_PRESSED"]
 
-    prev_lka_watch_status = self.lka_watch_status
-    self.lka_watch_status = cp_cam.vl["LKA_COMMAND"]["LKAS_WATCH_STATUS"]
+    prev_lkas_watch_status = self.lkas_watch_status
+    self.lkas_watch_status = cp_cam.vl["LKAS_COMMAND"]["LKAS_WATCH_STATUS"]
 
     # lock info
     ret.doorOpen = any([cp.vl["BCM_1"]["DOOR_OPEN_FL"],
@@ -130,7 +130,7 @@ class CarState(CarStateBase):
   @staticmethod
   def get_cam_can_parser(CP):
     messages = [
-      ("LKA_COMMAND", 100),
+      ("LKAS_COMMAND", 100),
       ("DAS_3", 10),
     ]
 
