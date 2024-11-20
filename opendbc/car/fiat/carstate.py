@@ -123,7 +123,6 @@ class CarState(CarStateBase):
       ("BCM_1", 2),
       ('ENGINE_1', 100),
       ('SEATBELTS', 10),
-      ("LKAS_COMMAND", 100),
     ]
 
     return CANParser(DBC[CP.carFingerprint]["pt"], messages, 0)
