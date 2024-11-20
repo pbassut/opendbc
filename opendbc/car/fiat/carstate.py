@@ -15,7 +15,6 @@ class CarState(CarStateBase):
 
     self.auto_high_beam = 0
     self.button_counter = 0
-    self.button_counter = 0
     self.lkas_car_model = -1
 
     self.distance_button = 0
@@ -31,7 +30,8 @@ class CarState(CarStateBase):
                         cp.vl["BCM_1"]["DOOR_OPEN_FR"],
                         cp.vl["BCM_1"]["DOOR_OPEN_RL"],
                         cp.vl["BCM_1"]["DOOR_OPEN_RR"]])
-    ret.seatbeltUnlatched = cp.vl["SEATBELTS"]["SEATBELT_FL"] == 1
+    #ret.seatbeltUnlatched = cp.vl["SEATBELTS"]["SEATBELT_FL"] == 1
+    ret.seatbeltUnlatched = False
 
     # brake pedal
     ret.brake = cp.vl["ABS_6"]['BRAKE_PRESSURE']
