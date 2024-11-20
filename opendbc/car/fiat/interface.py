@@ -17,7 +17,7 @@ class CarInterface(CarInterfaceBase):
 
     # safety config
     #ret.safetyConfigs = [get_safety_config(structs.CarParams.SafetyModel.chrysler)]
-    ret.safetyConfigs = [get_safety_config(structs.CarParams.SafetyModel.allOutput)]
+    #ret.safetyConfigs = [get_safety_config(structs.CarParams.SafetyModel.allOutput)]
     #ret.safetyConfigs = [get_safety_config(car.CarParams.SafetyModel.allOutput)]
     #ret.safetyConfigs[0].safetyParam |= Panda.FLAG_CHRYSLER_RAM_HD
 
