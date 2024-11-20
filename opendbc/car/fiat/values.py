@@ -47,4 +47,11 @@ class CarControllerParams:
 
 STEER_THRESHOLD = 120
 
+FW_QUERY_CONFIG = FwQueryConfig(
+  requests=[
+  ],
+  extra_ecus=[
+  ],
+)
+
 DBC = CAR.create_dbc_map()
