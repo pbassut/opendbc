@@ -132,7 +132,7 @@ class CarState(CarStateBase):
   def get_cam_can_parser(CP):
     messages = [
       ("DAS_3", 10),
-      ("LKAS_COMMAND", 100),
+      ("LKAS_COMMAND", 50),
     ]
 
     return CANParser(DBC[CP.carFingerprint]["pt"], messages, 2)
