@@ -27,7 +27,7 @@ class FastbackPlatformConfig(PlatformConfig):
 
 @dataclass(frozen=True)
 class FastbackCarSpecs(CarSpecs):
-  minSteerSpeed: float = 3.8  # m/s
+  minSteerSpeed: float = 8.3  # m/s
 
 
 class CAR(Platforms):
