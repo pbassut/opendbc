@@ -17,7 +17,8 @@ class CarInterface(CarInterfaceBase):
 
     # safety config
     #ret.safetyConfigs = [get_safety_config(structs.CarParams.SafetyModel.chrysler)]
-    ret.safetyConfigs = [get_safety_config(car.CarParams.SafetyModel.allOutput)]
+    ret.safetyConfigs = [get_safety_config(structs.CarParams.SafetyModel.body)]
+    #ret.safetyConfigs = [get_safety_config(car.CarParams.SafetyModel.allOutput)]
     ret.safetyConfigs[0].safetyParam |= Panda.FLAG_CHRYSLER_RAM_HD
 
     CarInterfaceBase.configure_torque_tune(candidate, ret.lateralTuning)
