@@ -26,7 +26,7 @@ class CarState(CarStateBase):
     self.distance_button = cp_adas.vl["DAS_1"]["CRUISE_BUTTON_PRESSED"]
 
     prev_lkas_watch_status = self.lkas_watch_status
-    self.lkas_watch_status = cp.vl["LKAS_COMMAND"]["LKAS_WATCH_STATUS"]
+    self.lkas_watch_status = cp_cam.vl["LKAS_COMMAND"]["LKAS_WATCH_STATUS"]
 
     # lock info
     ret.doorOpen = any([cp.vl["BCM_1"]["DOOR_OPEN_FL"],
