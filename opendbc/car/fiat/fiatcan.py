@@ -72,10 +72,11 @@ def create_lkas_hud(packer, CP, lkas_active, hud_alert, hud_count, car_model, au
 
 
 def create_lkas_command(packer, watch_status, frame, apply_steer):
-  crc_bytes = crc8((apply_steer + watch_status + (frame % 0x10)).to_bytes(3))
+  frame = int(frame) % 0x10
+  crc_bytes = crc8((apply_steer + watch_status + frame).to_bytes(3))
   values = {
     "STEERING_TORQUE": apply_steer,
-    "COUNTER": frame % 0x10,
+    "COUNTER": frame,
     "CHECKSUM": crc_bytes,
   }
   return packer.make_can_msg("LKAS_COMMAND", 2, values)
