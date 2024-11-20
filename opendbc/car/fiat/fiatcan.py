@@ -81,7 +81,7 @@ def create_lkas_command(packer, watch_status, frame, apply_steer):
     "COUNTER": frame,
     "CHECKSUM": crc_bytes,
   }
-  return packer.make_can_msg("LKAS_COMMAND", 2, values)
+  return packer.make_can_msg("LKAS_COMMAND", 0, values)
 
 
 def create_cruise_buttons(packer, f, bus, activate=False):
