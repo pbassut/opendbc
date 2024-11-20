@@ -74,12 +74,10 @@ def create_lkas_hud(packer, CP, lkas_active, hud_alert, hud_count, car_model, au
 def create_lkas_command(packer, watch_status, frame, apply_steer):
   print(apply_steer, watch_status, frame)
   frame = int(frame) % 0x10
-  crc_bytes = crc8((abs(apply_steer) + int(watch_status) + frame).to_bytes(3))
   values = {
     "STEERING_TORQUE": abs(apply_steer),
     "LKAS_WATCH_STATUS": watch_status,
     "COUNTER": frame,
-    "CHECKSUM": crc_bytes,
   }
   return packer.make_can_msg("LKAS_COMMAND", 0, values)
 
@@ -88,11 +86,9 @@ def create_cruise_buttons(packer, f, bus, activate=False):
   frame = int(f)
   button = 8 if activate else 128
   #print(button, frame, frame % 0x10, button + (frame % 0x10), f)
-  crc_bytes = crc8((button + (frame % 0x10)).to_bytes(2))
   values = {
     "CRUISE_BUTTON_PRESSED": button,
     "COUNTER": frame % 0x10,
-    "CHECKSUM": crc_bytes,
   }
   print(values)
   return packer.make_can_msg("DAS_1", bus, values)
