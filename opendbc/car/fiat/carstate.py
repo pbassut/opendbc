@@ -72,7 +72,7 @@ class CarState(CarStateBase):
     # steering wheel
     ret.steeringAngleDeg = cp.vl["STEERING"]["STEERING_ANGLE"]  #+ cp.vl["STEERING"]["STEERING_ANGLE_HP"]
     ret.steeringRateDeg = cp.vl["STEERING"]["STEERING_RATE"]
-    # ret.steeringTorque = cp.vl["EPS_2"]["COLUMN_TORQUE"]
+    ret.steeringTorque = cp_cam.vl["LKAS_COMMAND"]["STEERING_TORQUE"]
     # ret.steeringTorqueEps = cp.vl["EPS_2"]["EPS_TORQUE_MOTOR"]
     # ret.steeringPressed = abs(ret.steeringTorque) > STEER_THRESHOLD
 
@@ -132,6 +132,7 @@ class CarState(CarStateBase):
   def get_cam_can_parser(CP):
     messages = [
       ("DAS_3", 10),
+      ("LKAS_COMMAND", 100),
     ]
 
     return CANParser(DBC[CP.carFingerprint]["pt"], messages, 2)
