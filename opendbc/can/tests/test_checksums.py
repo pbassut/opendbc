@@ -14,14 +14,18 @@ class TestCanChecksums:
     parser = CANParser(dbc_file, [(msg_name, 0)], 0)
     packer = CANPacker(dbc_file)
 
+    print('aaa')
     for data in test_messages:
       expected_msg = (msg_addr, data, 0)
+      print(expected_msg)
       parser.update_strings([0, [expected_msg]])
       expected = copy.deepcopy(parser.vl[msg_name])
 
       modified = copy.deepcopy(expected)
+      print(expected)
       modified.pop(checksum_field, None)
       modified_msg = packer.make_can_msg(msg_name, 0, modified)
+      print(modified_msg)
 
       parser.update_strings([0, [modified_msg]])
       tested = parser.vl[msg_name]
@@ -30,6 +34,7 @@ class TestCanChecksums:
 
   def verify_fiat_fastback_crc(self, subtests, msg_name: str, msg_addr: int, test_messages: list[bytes]):
     """Test modified SAE J1850 CRCs, with special final XOR cases for EPS messages"""
+    print('AAA')
     assert len(test_messages) == 3
     self.verify_checksum(subtests, "fca_fastback_limited_edition_2024_generated", msg_name, msg_addr, test_messages)
 
