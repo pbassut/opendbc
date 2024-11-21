@@ -622,6 +622,7 @@ struct CarParams {
     chryslerCusw @30;
     psa @31;
     fcaGiorgio @32;
+    fcaFastback @33;
   }
 
   enum SteerControlType {
