@@ -71,7 +71,7 @@ class CarController(CarControllerBase):
       self.apply_steer_last = apply_steer
 
       #print('sending lkas command')
-      can_sends.append(fiatcan.create_lkas_command(self.packer, CS.lkas_watch_status, CS.lkas_counter + 1, int(apply_steer)))
+      can_sends.append(fiatcan.create_lkas_command(self.packer, CS.lkas_watch_status, CS.lkas_counter, int(apply_steer)))
 
     self.frame += 1
 
