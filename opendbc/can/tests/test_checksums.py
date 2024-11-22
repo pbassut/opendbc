@@ -14,18 +14,14 @@ class TestCanChecksums:
     parser = CANParser(dbc_file, [(msg_name, 0)], 0)
     packer = CANPacker(dbc_file)
 
-    print('aaa')
     for data in test_messages:
       expected_msg = (msg_addr, data, 0)
-      print(expected_msg)
       parser.update_strings([0, [expected_msg]])
       expected = copy.deepcopy(parser.vl[msg_name])
 
       modified = copy.deepcopy(expected)
-      print(expected)
       modified.pop(checksum_field, None)
       modified_msg = packer.make_can_msg(msg_name, 0, modified)
-      print(modified_msg)
 
       parser.update_strings([0, [modified_msg]])
       tested = parser.vl[msg_name]
@@ -34,22 +30,22 @@ class TestCanChecksums:
 
   def verify_fiat_fastback_crc(self, subtests, msg_name: str, msg_addr: int, test_messages: list[bytes]):
     """Test modified SAE J1850 CRCs, with special final XOR cases for EPS messages"""
-    print('AAA')
-    assert len(test_messages) == 3
+    assert len(test_messages) >= 3
     self.verify_checksum(subtests, "fca_fastback_limited_edition_2024_generated", msg_name, msg_addr, test_messages)
 
   def test_fiat_fastback_das_1(self, subtests):
     self.verify_fiat_fastback_crc(subtests, "DAS_1", 0x2FA, [
-      b'\x17\x51\x97\xcc\x00\xdf',
-      b'\x17\x51\x97\xc9\x01\xa3',
-      b'\x17\x51\x97\xcc\x02\xe5',
+      b'\x02\x0E\x80\x00',
+      b'\x20\x09\x3E\x00',
+      b'\x00\x01\xA3\x00',
+      b'\x00\x04\x52\x00',
     ])
 
   def test_fiat_fastback_lka_command(self, subtests):
     self.verify_fiat_fastback_crc(subtests, "LKAS_COMMAND", 0x1F6, [
-      b'\xaa\xaa\xaa\xaa\xaa\xaa\xaa',
-      b'\x7c\x63\x58\xe0\x00\x01\xd5',
-      b'\x7c\x63\x58\xe0\x00\x02\xf2',
+      b'\x80\x00\x03\x16',
+      b'\x80\x00\x00\x31',
+      b'\x80\x00\x08\xD9',
     ])
 
   def verify_fca_giorgio_crc(self, subtests, msg_name: str, msg_addr: int, test_messages: list[bytes]):
