@@ -42,7 +42,7 @@ class CarState(CarStateBase):
 
     # gas pedal
     ret.gas = cp.vl["ENGINE_1"]["ACCEL_PEDAL_THRESHOLD"]
-    ret.gasPressed = ret.gas > 1e-5
+    ret.gasPressed = cp_adas.vl['ENGINE_2']['ACCEL_START'] == 2
 
     # car speed
     ret.vEgoRaw = cp.vl["ABS_6"]["VEHICLE_SPEED"] * CV.KPH_TO_MS
@@ -106,6 +106,7 @@ class CarState(CarStateBase):
   def get_adas_can_parser(CP):
     messages = [
       ("GEAR", 1),
+      ("ENGINE_2", 99),
     ]
 
     messages += CarState.get_cruise_messages()
