@@ -15,6 +15,7 @@ class CarState(CarStateBase):
 
     self.auto_high_beam = 0
     self.button_counter = 0
+    self.lkas_counter = 0
     self.lkas_watch_status = -1
 
     self.distance_button = 0
@@ -89,6 +90,7 @@ class CarState(CarStateBase):
 
     # self.lkas_car_model = cp_cam.vl["DAS_6"]["CAR_MODEL"]
     self.button_counter = cp_adas.vl["DAS_1"]["COUNTER"]
+    self.lkas_counter = cp.vl["LKAS_COMMAND"]["COUNTER"]
 
     #ret.buttonEvents = create_button_events(self.distance_button, prev_distance_button, {1: ButtonType.gapAdjustCruise})
 
