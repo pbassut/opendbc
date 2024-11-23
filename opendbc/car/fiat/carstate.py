@@ -1,6 +1,5 @@
 from opendbc.can.parser import CANParser
-from opendbc.can.can_define import CANDefine
-from opendbc.car import create_button_events, structs
+from opendbc.car import Bus, structs
 from opendbc.car.fiat.values import DBC, STEER_THRESHOLD
 from opendbc.car.common.conversions import Conversions as CV
 from opendbc.car.interfaces import CarStateBase
@@ -11,7 +10,7 @@ class CarState(CarStateBase):
   def __init__(self, CP):
     super().__init__(CP)
     self.CP = CP
-    can_define = CANDefine(DBC[CP.carFingerprint]["pt"])
+    # can_define = CANDefine(DBC[CP.carFingerprint][Bus.pt])
 
     self.auto_high_beam = 0
     self.button_counter = 0
@@ -20,13 +19,17 @@ class CarState(CarStateBase):
 
     self.distance_button = 0
 
-  def update(self, cp, cp_cam, cp_adas, *_) -> structs.CarState:
+  def update(self, can_parsers, *_) -> structs.CarState:
+    cp = can_parsers[Bus.pt]
+    #cp_cam = can_parsers[Bus.cam]
+    cp_adas= can_parsers[Bus.adas]
+
     ret = structs.CarState()
 
-    prev_distance_button = self.distance_button
+    # prev_distance_button = self.distance_button
     self.distance_button = cp_adas.vl["DAS_1"]["CRUISE_BUTTON_PRESSED"]
 
-    prev_lkas_watch_status = self.lkas_watch_status
+    # prev_lkas_watch_status = self.lkas_watch_status
     #self.lkas_watch_status = cp_cam.vl["LKAS_COMMAND"]["LKAS_WATCH_STATUS"]
 
     # lock info
@@ -67,7 +70,8 @@ class CarState(CarStateBase):
     )
 
     # button presses
-    # ret.leftBlinker, ret.rightBlinker = self.update_blinker_from_stalk(200, cp.vl["STEERING_LEVERS"]["TURN_SIGNALS"] == 1, cp.vl["STEERING_LEVERS"]["TURN_SIGNALS"] == 2)
+    # ret.leftBlinker, ret.rightBlinker = self.update_blinker_from_stalk(
+    # 200, cp.vl["STEERING_LEVERS"]["TURN_SIGNALS"] == 1, cp.vl["STEERING_LEVERS"]["TURN_SIGNALS"] == 2)
     # ret.genericToggle = cp.vl["STEERING_LEVERS"]["HIGH_BEAM_PRESSED"] == 1
 
     # steering wheel
@@ -99,26 +103,15 @@ class CarState(CarStateBase):
 
   @staticmethod
   def get_cruise_messages():
-    messages = [
+    cruise_messages = [
       ("DAS_1", 50),
       ("DAS_2", 1),
     ]
-    return messages
+    return cruise_messages
 
   @staticmethod
-  def get_adas_can_parser(CP):
-    messages = [
-      ("GEAR", 1),
-      ("ENGINE_2", 99),
-    ]
-
-    messages += CarState.get_cruise_messages()
-
-    return CANParser(DBC[CP.carFingerprint]["pt"], messages, 1)
-
-  @staticmethod
-  def get_can_parser(CP):
-    messages = [
+  def get_can_parsers(CP):
+    pt_messages = [
       # sig_address, frequency
       ("STEERING", 100),
       ("ABS_1", 100),
@@ -130,12 +123,17 @@ class CarState(CarStateBase):
       ('EPS_2', 100),
     ]
 
-    return CANParser(DBC[CP.carFingerprint]["pt"], messages, 0)
+    adas_messages = [
+      ("GEAR", 1),
+      ("ENGINE_2", 99),
+    ]
 
-  @staticmethod
-  def get_cam_can_parser(CP):
-    messages = [
+    cam_messages = [
       #("DAS_3", 10),
     ]
 
-    return CANParser(DBC[CP.carFingerprint]["pt"], messages, 2)
+    return {
+      Bus.pt: CANParser(DBC[CP.carFingerprint][Bus.pt], pt_messages, 0),
+      Bus.adas: CANParser(DBC[CP.carFingerprint][Bus.adas], adas_messages, 1),
+      Bus.cam: CANParser(DBC[CP.carFingerprint][Bus.cam], cam_messages, 2),
+    }

@@ -1,5 +1,5 @@
 from opendbc.can.packer import CANPacker
-from opendbc.car import DT_CTRL, apply_meas_steer_torque_limits
+from opendbc.car import Bus, DT_CTRL, apply_meas_steer_torque_limits
 from opendbc.car.fiat import fiatcan
 from opendbc.car.fiat.values import CarControllerParams, FastbackFlags
 from opendbc.car.interfaces import CarControllerBase
@@ -8,8 +8,8 @@ CAM_BUS = 0
 DAS_BUS = 2
 
 class CarController(CarControllerBase):
-  def __init__(self, dbc_name, CP):
-    super().__init__(dbc_name, CP)
+  def __init__(self, dbc_names, CP):
+    super().__init__(dbc_names, CP)
     self.apply_steer_last = 0
 
     self.hud_count = 0
@@ -17,7 +17,7 @@ class CarController(CarControllerBase):
     self.lkas_control_bit_prev = False
     self.last_button_frame = 0
 
-    self.packer = CANPacker(dbc_name)
+    self.packer = CANPacker(dbc_names[Bus.pt])
     self.params = CarControllerParams(CP)
 
   def update(self, CC, CS, now_nanos):
