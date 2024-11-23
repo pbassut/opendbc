@@ -248,7 +248,7 @@ unsigned int fiat_fastback_checksum(uint32_t address, const Signal &sig, const s
   uint8_t crc = 0xFF;
 
   int skip = 1;
-  if(address == 0x2FA) {
+  if (address == 0x2FA) {
     // DAS_1 has the checksum on the byte before the last
     skip = 2;
   }
