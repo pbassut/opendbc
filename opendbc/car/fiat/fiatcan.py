@@ -71,11 +71,10 @@ def create_lkas_hud(packer, CP, lkas_active, hud_alert, hud_count, car_model, au
   return packer.make_can_msg("DAS_6", 0, values)
 
 
-def create_lkas_command(packer, watch_status, frame, apply_steer):
+def create_lkas_command(packer, frame, apply_steer):
   #print(apply_steer, watch_status, frame)
   values = {
     "STEERING_TORQUE": apply_steer,
-    "LKAS_WATCH_STATUS": watch_status,
     "COUNTER": frame % 0x10,
   }
   return packer.make_can_msg("LKAS_COMMAND", 0, values)

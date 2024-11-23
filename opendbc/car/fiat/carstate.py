@@ -82,11 +82,12 @@ class CarState(CarStateBase):
     ret.cruiseState.enabled = cp_adas.vl["DAS_2"]["ACC_ENGAGED"] == 1
     ret.cruiseState.speed = cp_adas.vl["DAS_2"]["ACC_SET_SPEED"] * CV.KPH_TO_MS
     ret.cruiseState.nonAdaptive = False
+    ret.cruiseState.standstill = True
     # ret.cruiseState.standstill = cp_cruise.vl["DAS_3"]["ACC_STANDSTILL"] == 1
-    # ret.accFaulted = cp_cruise.vl["DAS_3"]["ACC_FAULTED"] != 0
+    ret.accFaulted = False
 
-    # ret.steerFaultTemporary = cp.vl["EPS_2"]["LKAS_TEMPORARY_FAULT"] == 1
-    # ret.steerFaultPermanent = cp.vl["EPS_2"]["LKAS_STATE"] == 4
+    ret.steerFaultTemporary = False
+    ret.steerFaultPermanent = False
 
     # self.lkas_car_model = cp_cam.vl["DAS_6"]["CAR_MODEL"]
     self.button_counter = cp_adas.vl["DAS_1"]["COUNTER"]
