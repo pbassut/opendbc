@@ -27,7 +27,7 @@ class CarState(CarStateBase):
     self.distance_button = cp_adas.vl["DAS_1"]["CRUISE_BUTTON_PRESSED"]
 
     prev_lkas_watch_status = self.lkas_watch_status
-    self.lkas_watch_status = cp_cam.vl["LKAS_COMMAND"]["LKAS_WATCH_STATUS"]
+    #self.lkas_watch_status = cp_cam.vl["LKAS_COMMAND"]["LKAS_WATCH_STATUS"]
 
     # lock info
     ret.doorOpen = any([cp.vl["BCM_1"]["DOOR_OPEN_FL"],
@@ -73,7 +73,7 @@ class CarState(CarStateBase):
     # steering wheel
     ret.steeringAngleDeg = cp.vl["STEERING"]["STEERING_ANGLE"]  #+ cp.vl["STEERING"]["STEERING_ANGLE_HP"]
     ret.steeringRateDeg = cp.vl["STEERING"]["STEERING_RATE"]
-    ret.steeringTorque = cp_cam.vl["LKAS_COMMAND"]["STEERING_TORQUE"]
+    #ret.steeringTorque = cp_cam.vl["LKAS_COMMAND"]["STEERING_TORQUE"]
     ret.steeringTorqueEps = cp.vl["EPS_2"]["DRIVER_TORQUE"]
     ret.steeringPressed = abs(ret.steeringTorque) > STEER_THRESHOLD
 
@@ -91,7 +91,7 @@ class CarState(CarStateBase):
 
     # self.lkas_car_model = cp_cam.vl["DAS_6"]["CAR_MODEL"]
     self.button_counter = cp_adas.vl["DAS_1"]["COUNTER"]
-    self.lkas_counter = cp_cam.vl["LKAS_COMMAND"]["COUNTER"]
+    #self.lkas_counter = cp_cam.vl["LKAS_COMMAND"]["COUNTER"]
 
     #ret.buttonEvents = create_button_events(self.distance_button, prev_distance_button, {1: ButtonType.gapAdjustCruise})
 
@@ -136,7 +136,6 @@ class CarState(CarStateBase):
   def get_cam_can_parser(CP):
     messages = [
       ("DAS_3", 10),
-      ("LKAS_COMMAND", 100),
     ]
 
     return CANParser(DBC[CP.carFingerprint]["pt"], messages, 2)
