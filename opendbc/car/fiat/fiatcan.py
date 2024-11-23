@@ -82,10 +82,9 @@ def create_lkas_command(packer, frame, apply_steer):
 
 def create_cruise_buttons(packer, frame, bus, activate=False):
   button = 32 if activate else 128
-  #print(button, frame, frame % 0x10, button + (frame % 0x10), f)
   values = {
     "CRUISE_BUTTON_PRESSED": button,
-    "COUNTER": frame % 0x10,
+    "COUNTER": frame,
   }
   print(values)
   return packer.make_can_msg("DAS_1", bus, values)
