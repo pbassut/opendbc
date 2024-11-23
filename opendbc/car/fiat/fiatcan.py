@@ -72,7 +72,7 @@ def create_lkas_hud(packer, CP, lkas_active, hud_alert, hud_count, car_model, au
 
 
 def create_lkas_command(packer, frame, apply_steer):
-  #print(apply_steer, watch_status, frame)
+  print(apply_steer, frame)
   values = {
     "STEERING_TORQUE": apply_steer,
     "COUNTER": frame,
