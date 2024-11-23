@@ -2,7 +2,7 @@ from enum import IntFlag
 from dataclasses import dataclass, field
 
 from panda import uds
-from opendbc.car import CarSpecs, DbcDict, PlatformConfig, Platforms, dbc_dict
+from opendbc.car import Bus, CarSpecs, DbcDict, PlatformConfig, Platforms
 from opendbc.car.structs import CarParams
 from opendbc.car.docs_definitions import CarHarness, CarDocs, CarParts
 from opendbc.car.fw_query_definitions import FwQueryConfig, Request, p16
@@ -22,7 +22,7 @@ class FastbackCarDocs(CarDocs):
 
 @dataclass
 class FastbackPlatformConfig(PlatformConfig):
-  dbc_dict: DbcDict = field(default_factory=lambda: dbc_dict('fca_fastback_limited_edition_2024_generated', None))
+  dbc_dict: DbcDict = field(default_factory=lambda: {Bus.pt: "hyundai_kia_generic"})
 
 
 @dataclass(frozen=True)
