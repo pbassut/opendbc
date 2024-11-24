@@ -49,7 +49,7 @@ class CarState(CarStateBase):
     ret.gasPressed = ret.gas > 0
 
     # car speed
-    ret.vEgoRaw = cp.vl["ABS_6"]["VEHICLE_SPEED"] * CV.KPH_TO_MS
+    ret.vEgoRaw = cp_adas.vl["ABS_6"]["VEHICLE_SPEED"] * CV.KPH_TO_MS
     if cp_adas.vl['GEAR']['PARK'] == 1:
       ret.gearShifter = self.parse_gear_shifter('PARK')
     elif cp_adas.vl['GEAR']['D'] == 1:
@@ -104,7 +104,7 @@ class CarState(CarStateBase):
   @staticmethod
   def get_cruise_messages():
     cruise_messages = [
-      ("DAS_1", 50),
+      ("DAS_1", 40),
       ("DAS_2", 1),
     ]
     return cruise_messages
@@ -114,19 +114,18 @@ class CarState(CarStateBase):
     pt_messages = [
       # sig_address, frequency
       ("STEERING", 100),
-      ("ABS_1", 100),
+      ("ABS_1", 80),
       ("ABS_3", 100),
+      ("ABS_6", 100),
       ("BCM_1", 2),
       ('ENGINE_1', 99),
       ('SEATBELTS', 10),
-      ('EPS_2', 10),
-      ("ABS_6", 100),
+      ('EPS_2', 50),
     ]
 
     adas_messages = [
       ("GEAR", 1),
       ("ENGINE_2", 99),
-      ("ABS_6", 100),
     ]
 
     adas_messages += CarState.get_cruise_messages()
