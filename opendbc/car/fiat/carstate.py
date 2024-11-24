@@ -41,7 +41,7 @@ class CarState(CarStateBase):
     ret.seatbeltUnlatched = False
 
     # brake pedal
-    ret.brake = cp.vl["ABS_6"]['BRAKE_PRESSURE']
+    ret.brake = cp_adas.vl["ABS_6"]['BRAKE_PRESSURE']
     ret.brakePressed = ret.brake > 0
 
     # gas pedal
@@ -120,6 +120,7 @@ class CarState(CarStateBase):
       ('ENGINE_1', 99),
       ('SEATBELTS', 10),
       ('EPS_2', 10),
+      ("ABS_6", 100),
     ]
 
     adas_messages = [
