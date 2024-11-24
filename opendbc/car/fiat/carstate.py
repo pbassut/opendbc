@@ -116,7 +116,6 @@ class CarState(CarStateBase):
       ("STEERING", 100),
       ("ABS_1", 100),
       ("ABS_3", 100),
-      ("ABS_6", 100),
       ("BCM_1", 2),
       ('ENGINE_1', 99),
       ('SEATBELTS', 10),
@@ -126,6 +125,7 @@ class CarState(CarStateBase):
     adas_messages = [
       ("GEAR", 1),
       ("ENGINE_2", 99),
+      ("ABS_6", 100),
     ]
 
     adas_messages += CarState.get_cruise_messages()
