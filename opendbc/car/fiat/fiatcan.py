@@ -63,7 +63,6 @@ def create_cruise_buttons(packer, frame, bus, activate=False):
     "CRUISE_BUTTON_PRESSED": button,
     "COUNTER": frame,
   }
-  print(values)
   return packer.make_can_msg("DAS_1", bus, values)
 
 def create_cruise_buttons2(packer, bus, activate=False):

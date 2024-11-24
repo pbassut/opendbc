@@ -40,7 +40,7 @@ bool MessageState::parse(uint64_t nanos, const std::vector<uint8_t> &dat) {
       tmp -= ((tmp >> (sig.size-1)) & 0x1) ? (1ULL << sig.size) : 0;
     }
 
-    //DEBUG("parse 0x%X %s -> %ld\n", address, sig.name, tmp);
+    DEBUG("parse 0x%X %s -> %ld\n", address, sig.name, tmp);
 
     if (!ignore_checksum) {
       if (sig.calc_checksum != nullptr && sig.calc_checksum(address, sig, dat) != tmp) {

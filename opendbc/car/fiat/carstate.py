@@ -118,9 +118,9 @@ class CarState(CarStateBase):
       ("ABS_3", 100),
       ("ABS_6", 100),
       ("BCM_1", 2),
-      ('ENGINE_1', 100),
+      ('ENGINE_1', 99),
       ('SEATBELTS', 10),
-      ('EPS_2', 100),
+      ('EPS_2', 10),
     ]
 
     adas_messages = [
