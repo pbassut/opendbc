@@ -22,7 +22,7 @@ class CarState(CarStateBase):
   def update(self, can_parsers, *_) -> structs.CarState:
     cp = can_parsers[Bus.pt]
     #cp_cam = can_parsers[Bus.cam]
-    cp_adas= can_parsers[Bus.adas]
+    cp_adas = can_parsers[Bus.adas]
 
     ret = structs.CarState()
 
@@ -42,7 +42,7 @@ class CarState(CarStateBase):
 
     # brake pedal
     ret.brake = cp.vl["ABS_6"]['BRAKE_PRESSURE']
-    ret.brakePressed = cp.vl["ABS_3"]['BRAKE_PRESSED'] == 1  # Physical brake pedal switch
+    ret.brakePressed = ret.brake > 0
 
     # gas pedal
     ret.gas = cp.vl["ENGINE_1"]["ACCEL_PEDAL_THRESHOLD"]
