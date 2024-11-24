@@ -21,7 +21,7 @@ class FastbackCarDocs(CarDocs):
 
 @dataclass
 class FastbackPlatformConfig(PlatformConfig):
-  dbc_dict: DbcDict = field(default_factory=lambda: {Bus.pt: "hyundai_kia_generic"})
+  dbc_dict: DbcDict = field(default_factory=lambda: {Bus.pt: "fca_fastback_limited_edition_2024_generated"})
 
 
 @dataclass(frozen=True)
