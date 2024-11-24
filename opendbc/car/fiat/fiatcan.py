@@ -3,29 +3,6 @@ from opendbc.car import structs
 GearShifter = structs.CarState.GearShifter
 VisualAlert = structs.CarControl.HUDControl.VisualAlert
 
-def crc8(data):
-  crc = 0xFF
-  poly = 0x1D
-
-  for byte in data:
-    crc ^= byte
-
-    for _ in range(8):
-      if crc & 0x80:
-        crc = ((crc << 1) ^ poly) & 0xFF
-      else:
-        crc = (crc << 1) & 0xFF
-  return crc ^ 0xFF
-
-def test_crc(msg, checksum_byte, length=3):
-  data_bytes = msg.to_bytes(length)
-  computed_checksum = crc8(data_bytes)
-  is_valid = computed_checksum == checksum_byte
-
-  print(f"Data Bytes: 0x{data_bytes.hex().upper()} | Provided Checksum: 0x{checksum_byte:02X}")
-  print(f"Computed Checksum: 0x{computed_checksum:02X} | Valid: {is_valid}")
-  print('-' * 50)
-
 def create_lkas_hud(packer, CP, lkas_active, hud_alert, hud_count, car_model, auto_high_beam):
   # LKAS_HUD - Controls what lane-keeping icon is displayed
 
@@ -72,9 +49,9 @@ def create_lkas_hud(packer, CP, lkas_active, hud_alert, hud_count, car_model, au
 
 
 def create_lkas_command(packer, frame, apply_steer):
-  print(apply_steer, frame)
   values = {
     "STEERING_TORQUE": apply_steer,
+    "LKAS_WATCH_STATUS": apply_steer != 0,
     "COUNTER": frame,
   }
   return packer.make_can_msg("LKAS_COMMAND", 0, values)
