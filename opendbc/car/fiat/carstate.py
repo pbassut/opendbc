@@ -14,7 +14,7 @@ class CarState(CarStateBase):
 
     self.auto_high_beam = 0
     self.button_counter = 0
-    self.lkas_counter = 0
+    #self.lkas_counter = 0
     self.lkas_watch_status = -1
 
     self.distance_button = 0
