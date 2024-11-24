@@ -128,6 +128,8 @@ class CarState(CarStateBase):
       ("ENGINE_2", 99),
     ]
 
+    adas_messages += CarState.get_cruise_messages()
+
     cam_messages = [
       #("DAS_3", 10),
     ]
