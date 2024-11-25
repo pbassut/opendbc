@@ -10,7 +10,7 @@ class CarInterface(CarInterfaceBase):
     ret.carName = "fiat"
 
     # radar parsing needs some work, see https://github.com/commaai/openpilot/issues/26842
-    ret.radarUnavailable = True # DBC[candidate]['radar'] is None
+    ret.radarUnavailable = True
     ret.steerActuatorDelay = 0.1
     ret.steerLimitTimer = 0.4
 
