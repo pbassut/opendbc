@@ -42,11 +42,16 @@ class CAR(Platforms):
 class CarControllerParams:
   def __init__(self, CP):
     self.STEER_STEP = 1  # 100 Hz
-    self.STEER_ERROR_MAX = 80
 
+    self.STEER_MAX = 261  # higher than this faults the EPS
     self.STEER_DELTA_UP = 3
     self.STEER_DELTA_DOWN = 3
-    self.STEER_MAX = 261  # higher than this faults the EPS
+    self.STEER_ERROR_MAX = 80
+
+    self.STEER_DRIVER_ALLOWANCE = 80
+    self.STEER_DRIVER_MULTIPLIER = 3  # weight driver torque heavily
+    self.STEER_DRIVER_FACTOR = 1  # from dbc
+
 
 STEER_THRESHOLD = 120
 
