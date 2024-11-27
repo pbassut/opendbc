@@ -26,11 +26,7 @@ class CarState(CarStateBase):
 
     ret = structs.CarState()
 
-    # prev_distance_button = self.distance_button
     self.distance_button = cp_adas.vl["DAS_1"]["CRUISE_BUTTON_PRESSED"]
-
-    # prev_lkas_watch_status = self.lkas_watch_status
-    #self.lkas_watch_status = cp_cam.vl["LKAS_COMMAND"]["LKAS_WATCH_STATUS"]
 
     # lock info
     ret.doorOpen = any([cp.vl["BCM_1"]["DOOR_OPEN_FL"],
@@ -85,19 +81,8 @@ class CarState(CarStateBase):
     ret.cruiseState.available = cp_adas.vl["DAS_2"]["ACC_STATE"] == 1
     ret.cruiseState.enabled = cp_adas.vl["DAS_2"]["ACC_ENGAGED"] == 1
     ret.cruiseState.speed = cp_adas.vl["DAS_2"]["ACC_SET_SPEED"] * CV.KPH_TO_MS
-    ret.cruiseState.nonAdaptive = False
-    ret.cruiseState.standstill = True
-    # ret.cruiseState.standstill = cp_cruise.vl["DAS_3"]["ACC_STANDSTILL"] == 1
-    ret.accFaulted = False
 
-    ret.steerFaultTemporary = False
-    ret.steerFaultPermanent = False
-
-    # self.lkas_car_model = cp_cam.vl["DAS_6"]["CAR_MODEL"]
     self.button_counter = cp_adas.vl["DAS_1"]["COUNTER"]
-    #self.lkas_counter = cp_cam.vl["LKAS_COMMAND"]["COUNTER"]
-
-    #ret.buttonEvents = create_button_events(self.distance_button, prev_distance_button, {1: ButtonType.gapAdjustCruise})
 
     return ret
 
@@ -131,7 +116,6 @@ class CarState(CarStateBase):
     adas_messages += CarState.get_cruise_messages()
 
     cam_messages = [
-      #("DAS_3", 10),
     ]
 
     return {
