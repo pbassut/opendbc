@@ -15,8 +15,7 @@ class CarInterface(CarInterfaceBase):
     ret.steerLimitTimer = 0.4
 
     # safety config
-    ret.safetyConfigs = [get_safety_config(structs.CarParams.SafetyModel.chrysler)]
-    # ret.safetyConfigs = [get_safety_config(structs.CarParams.SafetyModel.fcaFastback)]
+    ret.safetyConfigs = [get_safety_config(structs.CarParams.SafetyModel.fcaFastback)]
 
     CarInterfaceBase.configure_torque_tune(candidate, ret.lateralTuning)
 
