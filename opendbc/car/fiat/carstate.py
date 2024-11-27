@@ -89,7 +89,7 @@ class CarState(CarStateBase):
   @staticmethod
   def get_cruise_messages():
     cruise_messages = [
-      ("DAS_1", 40),
+      ("DAS_1", 50),
       ("DAS_2", 1),
     ]
     return cruise_messages
