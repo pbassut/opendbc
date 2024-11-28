@@ -39,7 +39,7 @@ class CarController(CarControllerBase):
       can_sends.append(fiatcan.create_cruise_buttons(self.packer, CS.button_counter + 1, das_bus, activate=True))
 
     # steering
-    if self.frame % self.CCP.STEER_STEP == 0:
+    if self.frame % self.params.STEER_STEP == 0:
       # steer torque
       new_steer = int(round(CC.actuators.steer * self.params.STEER_MAX))
       apply_steer = apply_meas_steer_torque_limits(new_steer, self.apply_steer_last, CS.out.steeringTorqueEps, self.params)
