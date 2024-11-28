@@ -1,7 +1,7 @@
 from opendbc.can.packer import CANPacker
 from opendbc.car import Bus, DT_CTRL, apply_meas_steer_torque_limits
 from opendbc.car.fiat import fiatcan
-from opendbc.car.fiat.values import CarControllerParams, FastbackFlags
+from opendbc.car.fiat.values import CarControllerParams
 from opendbc.car.interfaces import CarControllerBase
 
 CAM_BUS = 0
