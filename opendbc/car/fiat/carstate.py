@@ -14,14 +14,12 @@ class CarState(CarStateBase):
 
     self.auto_high_beam = 0
     self.button_counter = 0
-    #self.lkas_counter = 0
     self.lkas_watch_status = -1
 
     self.distance_button = 0
 
   def update(self, can_parsers, *_) -> structs.CarState:
     cp = can_parsers[Bus.pt]
-    #cp_cam = can_parsers[Bus.cam]
     cp_adas = can_parsers[Bus.adas]
 
     ret = structs.CarState()
@@ -46,14 +44,15 @@ class CarState(CarStateBase):
 
     # car speed
     ret.vEgoRaw = cp_adas.vl["ABS_6"]["VEHICLE_SPEED"] * CV.KPH_TO_MS
+
     if cp_adas.vl['GEAR']['PARK'] == 1:
       ret.gearShifter = self.parse_gear_shifter('PARK')
-    elif cp_adas.vl['GEAR']['D'] == 1:
-      ret.gearShifter = self.parse_gear_shifter('D')
+    elif cp_adas.vl['GEAR']['DRIVE'] == 1:
+      ret.gearShifter = self.parse_gear_shifter('DRIVE')
     elif cp_adas.vl['GEAR']['REVERSE'] == 1:
       ret.gearShifter = self.parse_gear_shifter('REVERSE')
-    elif cp_adas.vl['GEAR']['N'] == 1:
-      ret.gearShifter = self.parse_gear_shifter('N')
+    elif cp_adas.vl['GEAR']['NEUTRAL'] == 1:
+      ret.gearShifter = self.parse_gear_shifter('NEUTRAL')
 
     ret.vEgo, ret.aEgo = self.update_speed_kf(ret.vEgoRaw)
     ret.standstill = not ret.vEgoRaw > 0.001
@@ -73,9 +72,10 @@ class CarState(CarStateBase):
     # steering wheel
     ret.steeringAngleDeg = cp.vl["STEERING"]["STEERING_ANGLE"]  #+ cp.vl["STEERING"]["STEERING_ANGLE_HP"]
     ret.steeringRateDeg = cp.vl["STEERING"]["STEERING_RATE"]
-    #ret.steeringTorque = cp_cam.vl["LKAS_COMMAND"]["STEERING_TORQUE"]
-    ret.steeringTorqueEps = cp.vl["EPS_2"]["DRIVER_TORQUE"]
+    ret.steeringTorque = cp.vl["EPS_2"]["DRIVER_TORQUE"]
+    ret.steeringTorqueEps = cp.vl["EPS_2"]["EPS_TORQUE"]
     ret.steeringPressed = abs(ret.steeringTorque) > STEER_THRESHOLD
+    ret.yawRate = cp.vl["ABS_2"]["YAW_RATE"]
 
     # cruise state
     ret.cruiseState.available = cp_adas.vl["DAS_2"]["ACC_STATE"] == 1
@@ -100,6 +100,7 @@ class CarState(CarStateBase):
       # sig_address, frequency
       ("STEERING", 100),
       ("ABS_1", 80),
+      ("ABS_2", 100),
       ("ABS_3", 100),
       ("BCM_1", 1),
       ('ENGINE_1', 99),

@@ -8,11 +8,6 @@ from opendbc.car.fw_query_definitions import FwQueryConfig
 
 Ecu = CarParams.Ecu
 
-
-class FastbackFlags(IntFlag):
-  # Detected flags
-  HIGHER_MIN_STEERING_SPEED = 1
-
 @dataclass
 class FastbackCarDocs(CarDocs):
   package: str = "Adaptive Cruise Control(ACC)"
@@ -30,13 +25,13 @@ class FastbackPlatformConfig(PlatformConfig):
 
 @dataclass(frozen=True)
 class FastbackCarSpecs(CarSpecs):
-  minSteerSpeed: float = 8.3  # m/s
+  minSteerSpeed: float = 8.3333  # m/s
 
 
 class CAR(Platforms):
   FASTBACK_LIMITED_EDITION_2024 = FastbackPlatformConfig(
     [FastbackCarDocs("Fastback Limited Edition 2024")],
-    FastbackCarSpecs(mass=2242., wheelbase=3.089, steerRatio=16.2),
+    FastbackCarSpecs(mass=1253., wheelbase=2.695, steerRatio=16.2),
   )
 
 class CarControllerParams:
