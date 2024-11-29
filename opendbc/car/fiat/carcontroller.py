@@ -22,8 +22,6 @@ class CarController(CarControllerBase):
   def update(self, CC, CS, now_nanos):
     can_sends = []
 
-    lkas_active = CC.latActive
-
     # cruise buttons
     das_bus = 1
 

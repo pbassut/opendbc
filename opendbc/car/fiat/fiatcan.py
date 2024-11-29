@@ -3,10 +3,10 @@ from opendbc.car import structs
 GearShifter = structs.CarState.GearShifter
 VisualAlert = structs.CarControl.HUDControl.VisualAlert
 
-def create_lkas_command(packer, frame, apply_steer):
+def create_lkas_command(packer, frame, apply_steer, control_enabled):
   values = {
     "STEERING_TORQUE": apply_steer,
-    "LKAS_WATCH_STATUS": apply_steer != 0,
+    "LKAS_WATCH_STATUS": control_enabled,
     "COUNTER": frame,
   }
   return packer.make_can_msg("LKAS_COMMAND", 0, values)
