@@ -36,7 +36,7 @@ class CAR(Platforms):
 
 class CarControllerParams:
   def __init__(self, CP):
-    self.STEER_STEP = 2  # 50 Hz
+    self.STEER_STEP = 1  # 100 Hz
 
     self.STEER_MAX = 261  # higher than this faults the EPS
     self.STEER_DELTA_UP = 3
