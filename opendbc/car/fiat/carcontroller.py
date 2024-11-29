@@ -25,7 +25,6 @@ class CarController(CarControllerBase):
     lkas_active = CC.latActive
 
     # cruise buttons
-    # if (self.frame - self.last_button_frame) * DT_CTRL > 0.05:
     das_bus = 1
 
     # ACC cancellation
