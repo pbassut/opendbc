@@ -26,17 +26,17 @@ class FastbackPlatformConfig(PlatformConfig):
 @dataclass(frozen=True)
 class FastbackCarSpecs(CarSpecs):
   minSteerSpeed: float = 8.3333  # m/s
-
+  tireStiffnessFactor: float = 1.0732  # not optimized yet
 
 class CAR(Platforms):
   FASTBACK_LIMITED_EDITION_2024 = FastbackPlatformConfig(
     [FastbackCarDocs("Fastback Limited Edition 2024")],
-    FastbackCarSpecs(mass=1253., wheelbase=2.695, steerRatio=17.15),
+    FastbackCarSpecs(mass=1253., wheelbase=2.695, steerRatio=16.89),
   )
 
 class CarControllerParams:
   def __init__(self, CP):
-    self.STEER_STEP = 1  # 100 Hz
+    self.STEER_STEP = 2  # 50 Hz
 
     self.STEER_MAX = 261  # higher than this faults the EPS
     self.STEER_DELTA_UP = 3
