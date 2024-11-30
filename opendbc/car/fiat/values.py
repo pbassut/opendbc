@@ -26,7 +26,7 @@ class FastbackPlatformConfig(PlatformConfig):
 @dataclass(frozen=True)
 class FastbackCarSpecs(CarSpecs):
   minSteerSpeed: float = 8.3333  # m/s
-  tireStiffnessFactor: float = 1.03  # not optimized yet
+  tireStiffnessFactor: float = .97  # not optimized yet
 
 class CAR(Platforms):
   FASTBACK_LIMITED_EDITION_2024 = FastbackPlatformConfig(
