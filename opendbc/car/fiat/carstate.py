@@ -43,7 +43,7 @@ class CarState(CarStateBase):
     ret.gasPressed = ret.gas > 0
 
     # car speed
-    ret.vEgoRaw = cp_adas.vl["ABS_6"]["VEHICLE_SPEED"] * CV.KPH_TO_MS
+    ret.vEgoRaw = cp.vl["ABS_6"]["VEHICLE_SPEED"] * CV.KPH_TO_MS
 
     if cp_adas.vl['GEAR']['PARK'] == 1:
       ret.gearShifter = self.parse_gear_shifter('PARK')
@@ -55,7 +55,7 @@ class CarState(CarStateBase):
       ret.gearShifter = self.parse_gear_shifter('NEUTRAL')
 
     ret.vEgo, ret.aEgo = self.update_speed_kf(ret.vEgoRaw)
-    ret.standstill = not ret.vEgoRaw > 0.001
+    ret.standstill = not ret.vEgoRaw > 0
     ret.wheelSpeeds = self.get_wheel_speeds(
       cp.vl["ABS_1"]["WHEEL_SPEED_FL"],
       cp.vl["ABS_1"]["WHEEL_SPEED_FR"],
@@ -70,7 +70,7 @@ class CarState(CarStateBase):
     # ret.genericToggle = cp.vl["STEERING_LEVERS"]["HIGH_BEAM_PRESSED"] == 1
 
     # steering wheel
-    ret.steeringAngleDeg = cp.vl["STEERING"]["STEERING_ANGLE"]  #+ cp.vl["STEERING"]["STEERING_ANGLE_HP"]
+    ret.steeringAngleDeg = cp.vl["STEERING"]["STEERING_ANGLE"]
     ret.steeringRateDeg = cp.vl["STEERING"]["STEERING_RATE"]
     ret.steeringTorque = cp.vl["EPS_2"]["DRIVER_TORQUE"]
     ret.steeringTorqueEps = cp.vl["EPS_2"]["EPS_TORQUE"]
@@ -106,6 +106,7 @@ class CarState(CarStateBase):
       ('ENGINE_1', 99),
       ('SEATBELTS', 10),
       ('EPS_2', 50),
+      ("ABS_6", 100),
     ]
 
     adas_messages = [

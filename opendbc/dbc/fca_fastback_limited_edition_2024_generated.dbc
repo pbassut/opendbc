@@ -161,15 +161,6 @@ BO_ 282 NEW_MSG_11A: 8 XXX
  SG_ COUNTER : 51|4@0+ (1,0) [0|15] "" XXX
  SG_ CHECKSUM : 63|8@0+ (1,0) [0|255] "" XXX
 
-BO_ 284 NEW_MSG_11C: 8 XXX
- SG_ NEW_SIGNAL_1 : 7|12@0+ (1,0) [0|4095] "" XXX
- SG_ NEW_SIGNAL_2 : 11|12@0+ (1,0) [0|4095] "" XXX
- SG_ NEW_SIGNAL_3 : 28|13@0+ (1,0) [0|8191] "" XXX
- SG_ NEW_SIGNAL_4 : 31|2@0+ (1,0) [0|3] "" XXX
- SG_ VEHICLE_SPEED : 47|12@0+ (0.017,0) [0|4095] "m/s" XXX
- SG_ COUNTER : 51|4@0+ (1,0) [0|15] "" XXX
- SG_ CHECKSUM : 63|8@0+ (1,0) [0|255] "" XXX
-
 BO_ 288 NEW_MSG_120: 6 XXX
  SG_ COUNTER : 19|4@0+ (1,0) [0|15] "" XXX
  SG_ CHECKSUM : 31|8@0+ (1,0) [0|255] "" XXX
@@ -210,7 +201,7 @@ BO_ 501 MOVEMENT: 5 XXX
  SG_ NEW_SIGNAL_3 : 31|1@0+ (1,0) [0|1] "" XXX
 
 BO_ 502 LKAS_COMMAND: 4 CAMERA
- SG_ STEERING_TORQUE : 7|11@0+ (1,-1024) [0|2047] "" XXX
+ SG_ STEERING_TORQUE : 7|11@0+ (1,0) [0|2047] "" XXX
  SG_ NEW_SIGNAL_1 : 8|1@0+ (1,0) [0|1] "" XXX
  SG_ NEW_SIGNAL_2 : 11|1@0+ (1,0) [0|1] "" XXX
  SG_ LKAS_WATCH_STATUS : 12|1@0+ (1,0) [0|1] "" XXX
@@ -530,7 +521,6 @@ CM_ SG_ 278 REVERSE_1 "probably per-axle";
 CM_ SG_ 278 FORWARD_2 "probably per-axle";
 CM_ SG_ 278 REVERSE_2 "probably per-axle";
 CM_ SG_ 282 NEW_SIGNAL_1 "smoothed yaw rate with low speed cutoff, maybe active forward lighting target angle";
-CM_ SG_ 284 VEHICLE_SPEED "scale estimated";
 CM_ SG_ 502 COUNTER "correlates with steering wheel haptic";
 CM_ BO_ 1198 "Definite LKA activity, probably contains lane-line recognition and lane departure signals, indicator of LKA vs TJA, perhaps indicator of active assist in map-permitted areas";
 CM_ SG_ 1445 ACC_SET_SPEED "Offset is the minimum it can start ACC at";
