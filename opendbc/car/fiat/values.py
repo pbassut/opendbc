@@ -1,4 +1,3 @@
-from enum import IntFlag
 from dataclasses import dataclass, field
 
 from opendbc.car import Bus, CarSpecs, DbcDict, PlatformConfig, Platforms
@@ -43,12 +42,12 @@ class CarControllerParams:
     self.STEER_DELTA_DOWN = 3
     self.STEER_ERROR_MAX = 80
 
-    self.STEER_DRIVER_ALLOWANCE = 50
+    self.STEER_DRIVER_ALLOWANCE = 30
     self.STEER_DRIVER_MULTIPLIER = 3  # weight driver torque heavily
     self.STEER_DRIVER_FACTOR = 1  # from dbc
 
 
-STEER_THRESHOLD = 120
+STEER_THRESHOLD = 80
 
 FW_QUERY_CONFIG = FwQueryConfig(
   requests=[
