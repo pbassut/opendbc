@@ -10,7 +10,6 @@ class CarState(CarStateBase):
   def __init__(self, CP):
     super().__init__(CP)
     self.CP = CP
-    # can_define = CANDefine(DBC[CP.carFingerprint][Bus.pt])
 
     self.auto_high_beam = 0
     self.button_counter = 0
@@ -35,7 +34,7 @@ class CarState(CarStateBase):
     ret.seatbeltUnlatched = False
 
     # brake pedal
-    ret.brake = cp_adas.vl["ABS_6"]['BRAKE_PRESSURE']
+    ret.brake = cp.vl["ABS_6"]['BRAKE_PRESSURE']
     ret.brakePressed = ret.brake > 0
 
     # gas pedal
