@@ -43,7 +43,7 @@ class CarState(CarStateBase):
     ret.gasPressed = ret.gas > 0
 
     # car speed
-    ret.vEgoRaw = cp.vl["ABS_6"]["VEHICLE_SPEED"] * CV.KPH_TO_MS
+    ret.vEgoRaw = cp_adas.vl["ABS_6"]["VEHICLE_SPEED"] * CV.KPH_TO_MS
 
     if cp_adas.vl['GEAR']['PARK'] == 1:
       ret.gearShifter = self.parse_gear_shifter('PARK')
