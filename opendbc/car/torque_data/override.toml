@@ -1,4 +1,5 @@
 legend = ["LAT_ACCEL_FACTOR", "MAX_LAT_ACCEL_MEASURED", "FRICTION"]
+"FASTBACK_LIMITED_EDITION_2024" = [3.2, 3.2, 0.1]
 ### angle control
 # Nissan appears to have torque
 "NISSAN_XTRAIL" = [nan, 1.5, nan]
