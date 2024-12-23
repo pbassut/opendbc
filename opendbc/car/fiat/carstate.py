@@ -25,6 +25,7 @@ class CarState(CarStateBase):
 
     self.distance_button = cp_adas.vl["DAS_1"]["CRUISE_BUTTON_PRESSED"]
 
+
     # lock info
     ret.doorOpen = any([cp.vl["BCM_1"]["DOOR_OPEN_FL"],
                         cp.vl["BCM_1"]["DOOR_OPEN_FR"],
@@ -74,11 +75,13 @@ class CarState(CarStateBase):
     ret.steeringTorque = cp.vl["EPS_2"]["DRIVER_TORQUE"]
     ret.steeringTorqueEps = cp.vl["EPS_2"]["EPS_TORQUE"]
     ret.steeringPressed = abs(ret.steeringTorque) > STEER_THRESHOLD
+    # ret.steerFaultTemporary = cp.vl["EPS_3"]["DASM_FAULT"] == 1
     ret.yawRate = cp.vl["ABS_2"]["YAW_RATE"]
 
     # cruise state
     ret.cruiseState.available = cp_adas.vl["DAS_2"]["ACC_STATE"] == 1
     ret.cruiseState.enabled = cp_adas.vl["DAS_2"]["ACC_ENGAGED"] == 1
+    # this is wrong
     ret.cruiseState.speed = cp_adas.vl["DAS_2"]["ACC_SET_SPEED"] * CV.KPH_TO_MS
 
     self.button_counter = cp_adas.vl["DAS_1"]["COUNTER"]
