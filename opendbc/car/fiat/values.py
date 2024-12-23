@@ -24,7 +24,7 @@ class FastbackPlatformConfig(PlatformConfig):
 
 @dataclass(frozen=True)
 class FastbackCarSpecs(CarSpecs):
-  minSteerSpeed: float = 8.3333  # m/s
+  minSteerSpeed: float = 0  # m/s
   tireStiffnessFactor: float = .97  # not optimized yet
 
 class CAR(Platforms):
@@ -45,6 +45,8 @@ class CarControllerParams:
     self.STEER_DRIVER_ALLOWANCE = 80
     self.STEER_DRIVER_MULTIPLIER = 3  # weight driver torque heavily
     self.STEER_DRIVER_FACTOR = 1  # from dbc
+
+    self.NEAR_STOP_BRAKE_PHASE = 0.5  # m/s
 
 
 STEER_THRESHOLD = 80
