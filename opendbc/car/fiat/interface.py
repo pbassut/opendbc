@@ -22,7 +22,7 @@ class CarInterface(CarInterfaceBase):
     ret.experimentalLongitudinalAvailable = True
     # ret.networkLocation = NetworkLocation.fwdCamera
     ret.pcmCruise = True
-    ret.minEnableSpeed = 30 * CV.KPH_TO_MS
+    # ret.minEnableSpeed = 30 * CV.KPH_TO_MS
 
     # Tuning for experimental long
     ret.longitudinalTuning.kiV = [2.0, 1.5]
