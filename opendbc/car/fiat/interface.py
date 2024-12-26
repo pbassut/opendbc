@@ -20,7 +20,7 @@ class CarInterface(CarInterfaceBase):
     ret.enableBsm = False
 
     ret.experimentalLongitudinalAvailable = True
-    ret.networkLocation = NetworkLocation.fwdCamera
+    # ret.networkLocation = NetworkLocation.fwdCamera
     ret.pcmCruise = True
     ret.minEnableSpeed = 30 * CV.KPH_TO_MS
 
