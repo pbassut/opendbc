@@ -65,8 +65,11 @@ class CarState(CarStateBase):
     )
 
     # button presses
-    # ret.leftBlinker, ret.rightBlinker = self.update_blinker_from_stalk(
-    # 200, cp.vl["STEERING_LEVERS"]["TURN_SIGNALS"] == 1, cp.vl["STEERING_LEVERS"]["TURN_SIGNALS"] == 2)
+    ret.leftBlinker, ret.rightBlinker = self.update_blinker_from_stalk(
+      200,
+      cp.vl["BCM_2"]["LEFT_TURN_STALK"] == 1,
+      cp.vl["BCM_2"]["RIGHT_TURN_STALK"] == 1
+    )
     # ret.genericToggle = cp.vl["STEERING_LEVERS"]["HIGH_BEAM_PRESSED"] == 1
 
     # steering wheel
@@ -100,6 +103,7 @@ class CarState(CarStateBase):
   def get_can_parsers(CP):
     pt_messages = [
       # sig_address, frequency
+      ("BCM_2", 4),
       ("STEERING", 100),
       ("ABS_1", 80),
       ("ABS_2", 100),
