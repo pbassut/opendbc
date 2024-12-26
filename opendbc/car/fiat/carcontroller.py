@@ -10,6 +10,8 @@ class CarController(CarControllerBase):
   def __init__(self, dbc_names, CP):
     super().__init__(dbc_names, CP)
     self.apply_steer_last = 0
+    self.apply_brake = 0
+    self.apply_gas = 0
 
     self.hud_count = 0
     self.last_lkas_falling_edge = 0
