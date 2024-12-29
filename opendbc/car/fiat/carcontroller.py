@@ -15,7 +15,6 @@ class CarController(CarControllerBase):
 
     self.hud_count = 0
     self.last_lkas_falling_edge = 0
-    self.last_button_frame = 0
 
     self.packer = CANPacker(dbc_names[Bus.pt])
     self.params = CarControllerParams(CP)
@@ -47,19 +46,17 @@ class CarController(CarControllerBase):
     # cruise buttons
     # ACC cancellation
     if CC.cruiseControl.cancel:
-      self.last_button_frame = self.frame
       can_sends.append(fiatcan.create_cruise_buttons(self.packer, CS.button_counter + 1, DAS_BUS, activate=False))
 
     # ACC resume from standstill
     elif CC.cruiseControl.resume:
-      self.last_button_frame = self.frame
       can_sends.append(fiatcan.create_cruise_buttons(self.packer, CS.button_counter + 1, DAS_BUS, activate=True))
 
     # steering
     if self.frame % self.params.STEER_STEP == 0:
       # steer torque
       new_steer = int(round(CC.actuators.steer * self.params.STEER_MAX))
-      apply_steer = apply_meas_steer_torque_limits(new_steer, self.apply_steer_last, CS.out.steeringTorqueEps, self.params) * 0.98
+      apply_steer = apply_meas_steer_torque_limits(new_steer, self.apply_steer_last, CS.out.steeringTorqueEps, self.params)
       self.apply_steer_last = apply_steer
 
       can_sends.append(fiatcan.create_lkas_command(self.packer, self.frame, apply_steer, CC.enabled))
