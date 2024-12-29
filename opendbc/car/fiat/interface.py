@@ -20,18 +20,13 @@ class CarInterface(CarInterfaceBase):
     ret.enableBsm = False
 
     ret.experimentalLongitudinalAvailable = True
-    # ret.networkLocation = NetworkLocation.fwdCamera
-    ret.pcmCruise = True
-    # ret.minEnableSpeed = 30 * CV.KPH_TO_MS
+    ret.pcmCruise = not experimental_long
+    ret.openpilotLongitudinalControl = experimental_long
 
     # Tuning for experimental long
     ret.longitudinalTuning.kiV = [2.0, 1.5]
     ret.stoppingDecelRate = 2.0  # reach brake quickly after enabling
     ret.vEgoStopping = 0.25
     ret.vEgoStarting = 0.25
-
-    if experimental_long:
-      ret.pcmCruise = False
-      ret.openpilotLongitudinalControl = True
 
     return ret
