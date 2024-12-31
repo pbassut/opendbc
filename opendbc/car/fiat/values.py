@@ -37,19 +37,19 @@ class CarControllerParams:
   def __init__(self, CP):
     self.STEER_STEP = 1  # 100 Hz
 
-    self.STEER_MAX = 360 # higher than this faults the EPS
+    self.STEER_MAX = 1440 # higher than this faults the EPS
     self.STEER_DELTA_UP = 3
     self.STEER_DELTA_DOWN = 3
     self.STEER_ERROR_MAX = 80
 
-    self.STEER_DRIVER_ALLOWANCE = 80
-    self.STEER_DRIVER_MULTIPLIER = 10  # weight driver torque heavily
+    self.STEER_DRIVER_ALLOWANCE = 20
+    self.STEER_DRIVER_MULTIPLIER = 2  # weight driver torque heavily
     self.STEER_DRIVER_FACTOR = 1  # from dbc
 
     self.NEAR_STOP_BRAKE_PHASE = 0.5  # m/s
 
 
-STEER_THRESHOLD = 80
+STEER_THRESHOLD = 20
 
 FW_QUERY_CONFIG = FwQueryConfig(
   requests=[

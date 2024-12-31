@@ -1,8 +1,11 @@
 from opendbc.can.packer import CANPacker
-from opendbc.car import Bus, apply_meas_steer_torque_limits
+from opendbc.car import Bus, apply_meas_steer_torque_limits, structs
 from opendbc.car.fiat import fiatcan
 from opendbc.car.fiat.values import CarControllerParams
 from opendbc.car.interfaces import CarControllerBase
+from opendbc.car.common.numpy_fast import interp
+
+LongCtrlState = structs.CarControl.Actuators.LongControlState
 
 DAS_BUS = 1
 
@@ -20,28 +23,21 @@ class CarController(CarControllerBase):
     self.params = CarControllerParams(CP)
 
   def update(self, CC, CS, now_nanos):
+    actuators = CC.actuators
     can_sends = []
 
     # longitudinal control
     if self.CP.openpilotLongitudinalControl:
       # Gas, brakes, and UI commands - all at 100Hz
       stopping = actuators.longControlState == LongCtrlState.stopping
-      # self.apply_gas = int(round(interp(actuators.accel, self.params.GAS_LOOKUP_BP, self.params.GAS_LOOKUP_V)))
-      # self.apply_brake = int(round(interp(actuators.accel, self.params.BRAKE_LOOKUP_BP, self.params.BRAKE_LOOKUP_V)))
       self.apply_gas = int(round(interp(actuators.accel)))
       self.apply_brake = int(round(interp(actuators.accel)))
 
-      at_full_stop = at_full_stop and stopping
       near_stop = CC.longActive and (abs(CS.out.vEgo) < self.params.NEAR_STOP_BRAKE_PHASE)
 
-      can_sends.append(fiatcan.create_gas_command(self.packer, DAS_BUS, self.apply_gas, self.frame, CC.enabled, at_full_stop))
+      can_sends.append(fiatcan.create_gas_command(self.packer, DAS_BUS, self.apply_gas, self.frame, CC.enabled, stopping))
       can_sends.append(fiatcan.create_friction_brake_command(self.packer, DAS_BUS, self.apply_brake,
-                                                            self.frame, CC.enabled, near_stop, at_full_stop, self.CP))
-
-      # Send dashboard UI commands (ACC status)
-      # send_fcw = hud_alert == VisualAlert.fcw
-      # can_sends.append(fiatcan.create_acc_dashboard_command(self.packer_pt, CanBus.POWERTRAIN, CC.enabled,
-      #                                                     hud_v_cruise * CV.MS_TO_KPH, hud_control, send_fcw))
+                                                            self.frame, CC.enabled, near_stop, stopping, self.CP))
 
     # cruise buttons
     # ACC cancellation
