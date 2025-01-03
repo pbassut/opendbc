@@ -243,3 +243,20 @@ unsigned int fca_giorgio_checksum(uint32_t address, const Signal &sig, const std
   }
 
 }
+
+unsigned int fiat_fastback_checksum(uint32_t address, const Signal &sig, const std::vector<uint8_t> &d) {
+  uint8_t crc = 0xFF;
+
+  int skip = 1;
+  if (address == 0x2FA) {
+    // DAS_1 has the checksum on the byte before the last
+    skip = 2;
+  }
+
+  for (int i = 0; i < d.size() - skip; i++) {
+    crc ^= d[i];
+    crc = crc8_lut_j1850[crc];
+  }
+
+  return crc ^ 0xFF;
+}

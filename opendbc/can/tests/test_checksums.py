@@ -28,6 +28,26 @@ class TestCanChecksums:
       with subtests.test(counter=expected[counter_field]):
         assert tested[checksum_field] == expected[checksum_field]
 
+  def verify_fiat_fastback_crc(self, subtests, msg_name: str, msg_addr: int, test_messages: list[bytes]):
+    """Test modified SAE J1850 CRCs, with special final XOR cases for EPS messages"""
+    assert len(test_messages) >= 3
+    self.verify_checksum(subtests, "fca_fastback_limited_edition_2024_generated", msg_name, msg_addr, test_messages)
+
+  def test_fiat_fastback_das_1(self, subtests):
+    self.verify_fiat_fastback_crc(subtests, "DAS_1", 0x2FA, [
+      b'\x02\x0E\x80\x00',
+      b'\x20\x09\x3E\x00',
+      b'\x00\x01\xA3\x00',
+      b'\x00\x04\x52\x00',
+    ])
+
+  def test_fiat_fastback_lka_command(self, subtests):
+    self.verify_fiat_fastback_crc(subtests, "LKAS_COMMAND", 0x1F6, [
+      b'\x80\x00\x03\x16',
+      b'\x80\x00\x00\x31',
+      b'\x80\x00\x08\xD9',
+    ])
+
   def verify_fca_giorgio_crc(self, subtests, msg_name: str, msg_addr: int, test_messages: list[bytes]):
     """Test modified SAE J1850 CRCs, with special final XOR cases for EPS messages"""
     assert len(test_messages) == 3
