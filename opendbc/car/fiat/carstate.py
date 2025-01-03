@@ -105,13 +105,13 @@ class CarState(CarStateBase):
       # sig_address, frequency
       ("BCM_2", 4),
       ("STEERING", 100),
-      ("ABS_1", 80),
+      ("ABS_1", 100),
       ("ABS_2", 100),
       ("ABS_3", 100),
       ("BCM_1", 1),
       ('ENGINE_1', 99),
       ('SEATBELTS', 10),
-      ('EPS_2', 50),
+      ('EPS_2', 100),
       ("ABS_6", 100),
     ]
 
