@@ -11,20 +11,25 @@ class CarState(CarStateBase):
     super().__init__(CP)
     self.CP = CP
 
-    self.auto_high_beam = 0
     self.button_counter = 0
-    self.lkas_watch_status = -1
+    self.accel_counter = 0
 
+    self.prev_distance_button = 0
     self.distance_button = 0
+
+    self.lkas_enabled = False
+    self.prev_lkas_enabled = False
+
+    self.prev_high_beam = False
+    self.high_beam = False
 
   def update(self, can_parsers, *_) -> structs.CarState:
     cp = can_parsers[Bus.pt]
     cp_adas = can_parsers[Bus.adas]
 
     ret = structs.CarState()
-
-    self.distance_button = cp_adas.vl["DAS_1"]["CRUISE_BUTTON_PRESSED"]
-
+    self.prev_lkas_enabled = self.lkas_enabled
+    self.prev_distance_button = self.distance_button
 
     # lock info
     ret.doorOpen = any([cp.vl["BCM_1"]["DOOR_OPEN_FL"],
@@ -70,7 +75,10 @@ class CarState(CarStateBase):
       cp.vl["BCM_2"]["LEFT_TURN_STALK"] == 1,
       cp.vl["BCM_2"]["RIGHT_TURN_STALK"] == 1
     )
-    # ret.genericToggle = cp.vl["STEERING_LEVERS"]["HIGH_BEAM_PRESSED"] == 1
+
+    self.prev_high_beam = self.high_beam
+    self.high_beam = cp_adas.vl["BCM_2"]["HIGH_BEAM"] == 1
+    ret.genericToggle = cp_adas.vl["BCM_2"]["HIGH_BEAM"] == 1
 
     # steering wheel
     ret.steeringAngleDeg = cp.vl["STEERING"]["STEERING_ANGLE"]
@@ -78,16 +86,20 @@ class CarState(CarStateBase):
     ret.steeringTorque = cp.vl["EPS_2"]["DRIVER_TORQUE"]
     ret.steeringTorqueEps = cp.vl["EPS_2"]["EPS_TORQUE"]
     ret.steeringPressed = abs(ret.steeringTorque) > STEER_THRESHOLD
-    # ret.steerFaultTemporary = cp.vl["EPS_3"]["DASM_FAULT"] == 1
+    # ret.steerFaultTemporary = cp_cam.vl["LKAS_COMMAND"]["EPS_FAULT"] == 7 # need to find this
+    ret.steerFaultPermanent = cp.vl["EPS_2"]["EPS_FAULT"] == 1
     ret.yawRate = cp.vl["ABS_2"]["YAW_RATE"]
 
     # cruise state
     ret.cruiseState.available = cp_adas.vl["DAS_2"]["ACC_STATE"] == 1
     ret.cruiseState.enabled = cp_adas.vl["DAS_2"]["ACC_ENGAGED"] == 1
-    # this is wrong
-    ret.cruiseState.speed = cp_adas.vl["DAS_2"]["ACC_SET_SPEED"] * CV.KPH_TO_MS
+    ret.cruiseState.speed = cp_adas.vl["DAS_2"]["ACC_SET_SPEED"]
+
+    self.lkas_enabled = cp.vl["BUTTONS_1"]["LKAS_BUTTON"] == 1
+    self.distance_button = cp_adas.vl["DAS_1"]["CRUISE_BUTTON_PRESSED"] == 32
 
     self.button_counter = cp_adas.vl["DAS_1"]["COUNTER"]
+    self.accel_counter = cp.vl["ENGINE_1"]["COUNTER"]
 
     return ret
 
@@ -103,22 +115,28 @@ class CarState(CarStateBase):
   def get_can_parsers(CP):
     pt_messages = [
       # sig_address, frequency
+      ("BCM_1", 1),
       ("BCM_2", 4),
       ("STEERING", 100),
-      ("ABS_1", 80),
+      ("ABS_1", 100),
       ("ABS_2", 100),
       ("ABS_3", 100),
-      ("BCM_1", 1),
       ('ENGINE_1', 99),
       ('SEATBELTS', 10),
-      ('EPS_2', 50),
+      ('EPS_2', 100),
       ("ABS_6", 100),
+      ("BUTTONS_1", 4),
     ]
 
     adas_messages = [
+      ("BCM_2", 4),
       ("GEAR", 1),
       ("ENGINE_2", 99),
       ("ABS_6", 100),
+
+      # das messages
+      ("DAS_1", 50),
+      ("DAS_2", 1),
     ]
 
     adas_messages += CarState.get_cruise_messages()

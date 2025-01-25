@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from opendbc.car import get_safety_config, structs
 from opendbc.car.interfaces import CarInterfaceBase
+from openpilot.common.conversions import Conversions as CV
 
 class CarInterface(CarInterfaceBase):
   @staticmethod
@@ -8,11 +9,11 @@ class CarInterface(CarInterfaceBase):
     ret.carName = "fiat"
 
     ret.radarUnavailable = True
-    ret.steerActuatorDelay = 0
+    ret.steerActuatorDelay = 0.3
     ret.steerLimitTimer = 0.4
 
     # safety config
-    ret.safetyConfigs = [get_safety_config(structs.CarParams.SafetyModel.fcaFastback)]
+    ret.safetyConfigs = [get_safety_config(structs.CarParams.SafetyModel.fiat)]
 
     CarInterfaceBase.configure_torque_tune(candidate, ret.lateralTuning)
 
@@ -22,6 +23,9 @@ class CarInterface(CarInterfaceBase):
     ret.experimentalLongitudinalAvailable = True
     ret.pcmCruise = not experimental_long
     ret.openpilotLongitudinalControl = experimental_long
+
+    ret.minSteerSpeed = 10 * CV.KPH_TO_MS
+    ret.minEnableSpeed = 10 * CV.KPH_TO_MS
 
     # Tuning for experimental long
     ret.longitudinalTuning.kiV = [2.0, 1.5]
