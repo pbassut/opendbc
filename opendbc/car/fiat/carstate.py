@@ -133,10 +133,6 @@ class CarState(CarStateBase):
       ("GEAR", 1),
       ("ENGINE_2", 99),
       ("ABS_6", 100),
-
-      # das messages
-      ("DAS_1", 50),
-      ("DAS_2", 1),
     ]
 
     adas_messages += CarState.get_cruise_messages()
