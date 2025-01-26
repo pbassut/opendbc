@@ -6,7 +6,7 @@ from openpilot.common.conversions import Conversions as CV
 class CarInterface(CarInterfaceBase):
   @staticmethod
   def _get_params(ret: structs.CarParams, candidate, fingerprint, car_fw, experimental_long, docs) -> structs.CarParams:
-    ret.carName = "fiat"
+    ret.brand = "fiat"
 
     ret.radarUnavailable = True
     ret.steerActuatorDelay = 0.3
