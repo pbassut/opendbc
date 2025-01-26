@@ -28,6 +28,7 @@ class CarInterface(CarInterfaceBase):
     ret.minEnableSpeed = 10 * CV.KPH_TO_MS
 
     # Tuning for experimental long
+    ret.longitudinalTuning.kiBP = [5., 35.]
     ret.longitudinalTuning.kiV = [2.0, 1.5]
     ret.stoppingDecelRate = 2.0  # reach brake quickly after enabling
     ret.vEgoStopping = 0.25
