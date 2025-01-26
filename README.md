@@ -39,11 +39,15 @@ Everything you need to know to use, contribute, and extend opendbc are in these 
 git clone https://github.com/commaai/opendbc.git
 cd opendbc
 
+# you probably just want to use this. it's an all-in-one for dependency
+# installation, compiling, linting, and tests. it's also what runs in CI
+./test.sh
+
+# here are the individual commands it runs
 pip3 install -e .[testing,docs]  # install dependencies
 scons -j8                        # build with 8 cores
 pytest .                         # run the tests
 pre-commit run --all-files       # run the linter
-./test.sh                        # all-in-one for setup, build, lint, and test
 ```
 
 [`examples/`](examples/) contains small example programs that can read state from the car and control the steering, gas, and brakes.
@@ -83,7 +87,7 @@ The entirery of a car port lives in `opendbc/car/<brand>/`:
 
 ### Reverse Engineer CAN messages
 
-Start off by recording a route with lots of interesting events: enable LKAS and ACC, turn the steering weel both extremes, etc. Then, load up that route in [cabana](https://github.com/commaai/openpilot/tree/master/tools/cabana).
+Start off by recording a route with lots of interesting events: enable LKAS and ACC, turn the steering wheel both extremes, etc. Then, load up that route in [cabana](https://github.com/commaai/openpilot/tree/master/tools/cabana).
 
 ### Tuning
 
@@ -132,6 +136,8 @@ In addition to the standard bounties, we also offer higher value bounties for mo
 ***Which cars can be supported?*** Any car with LKAS and ACC. More info [here](https://github.com/commaai/openpilot/blob/master/docs/CARS.md#dont-see-your-car-here).
 
 ***How does this work?*** In short, we designed hardware to replace your car's built-in lane keep and adaptive cruise features. See [this talk](https://www.youtube.com/watch?v=FL8CxUSfipM) for an in-depth explanation.
+
+***Is there a timeline or roadmap for adding car support?*** No, most car support comes from the community, with comma doing final safety and quality validation. The more complete the community car port is and the more popular the car is, the more likely we are to pick it up as the next one to validate. 
 
 ### Terms
 
