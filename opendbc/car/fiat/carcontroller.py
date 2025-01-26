@@ -13,6 +13,7 @@ class CarController(CarControllerBase):
     self.hud_count = 0
     self.last_lkas_falling_edge = 0
     self.last_button_frame = 0
+    self.test_counter = 0
 
     self.packer = CANPacker(dbc_names[Bus.pt])
     self.params = CarControllerParams(CP)
