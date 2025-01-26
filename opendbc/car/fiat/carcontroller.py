@@ -49,7 +49,7 @@ class CarController(CarControllerBase):
       can_sends.append(fiatcan.create_friction_brake_command(self.packer_adas, self.apply_brake, CS.accel_counter + 1))
 
     if self.test_counter % 4 == 0:
-      can_sends.append(fiatcan.create_gas_command(self.packer_adas, 12, CS.accel_counter + 1))
+      can_sends.append(fiatcan.create_friction_brake_command(self.packer_adas, 12, CS.accel_counter + 1))
 
     # steering
     # steer torque
