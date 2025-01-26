@@ -42,8 +42,8 @@ class CarController(CarControllerBase):
     # longitudinal control
     if self.CP.openpilotLongitudinalControl and CC.longActive:
       # Gas, brakes, and UI commands - all at 100Hz
-      self.apply_gas = int(round(np.interp(actuators.accel)))
-      self.apply_brake = int(round(np.interp(actuators.accel)))
+      self.apply_gas = int(round(np.interp(actuators.accel, self.params.GAS_LOOKUP_BP, self.params.GAS_LOOKUP_V)))
+      self.apply_brake = int(round(np.interp(actuators.accel, self.params.BRAKE_LOOKUP_BP, self.params.BRAKE_LOOKUP_V)))
 
       can_sends.append(fiatcan.create_gas_command(self.packer_adas, self.apply_gas, CS.accel_counter + 1))
       can_sends.append(fiatcan.create_friction_brake_command(self.packer_adas, self.apply_brake, CS.accel_counter + 1))
