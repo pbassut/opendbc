@@ -93,7 +93,7 @@ class CarState(CarStateBase):
     # cruise state
     ret.cruiseState.available = cp_adas.vl["DAS_2"]["ACC_STATE"] == 1
     ret.cruiseState.enabled = cp_adas.vl["DAS_2"]["ACC_ENGAGED"] == 1
-    ret.cruiseState.speed = cp_adas.vl["DAS_2"]["ACC_SET_SPEED"]
+    ret.cruiseState.speed = cp_adas.vl["DAS_2"]["ACC_SET_SPEED"] * CV.KPH_TO_MS
 
     self.lkas_enabled = cp.vl["BUTTONS_1"]["LKAS_BUTTON"] == 1
     self.distance_button = cp_adas.vl["DAS_1"]["CRUISE_BUTTON_PRESSED"] == 32
