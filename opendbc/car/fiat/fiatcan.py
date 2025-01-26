@@ -15,7 +15,6 @@ def create_lkas_hud_command(packer, lat_active, eps_faulted, test=None):
     "BEEP": 0,
     "LKAS_LED_STATUS": 1 if eps_faulted else 0,
     "HUD_WARNING_TYPE": 15 if eps_faulted else 0,
-    "UNKNOWN": 0,
     "LANE_HUD_INDICATOR": 6 if lat_active else 1,
   }
 
@@ -25,7 +24,6 @@ def create_lkas_hud_command(packer, lat_active, eps_faulted, test=None):
   if test is not None:
     values = {
       "SOMETHING_HANDS_ON_WHEEL_2": test % 4,
-      "SOMETHING_HANDS_ON_WHEEL": (test + 1) % 4,
       "LKAS_LED_STATUS": test % 2,
       "LKAS_HUD_STATE": (test + 4) % 16,
       "LKAS_FAULTED_2": (test + 3) % 4,
