@@ -34,6 +34,9 @@ class CAR(Platforms):
   )
 
 class CarControllerParams:
+  ACCEL_MAX = 2.  # m/s^2
+  ACCEL_MIN = -4.  # m/s^2
+
   def __init__(self, CP):
     self.STEER_STEP = 1  # 100 Hz
 
