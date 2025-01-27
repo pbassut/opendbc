@@ -32,12 +32,12 @@ class CarController(CarControllerBase):
 
     # cruise buttons
     # ACC cancellation
-    if CC.cruiseControl.cancel:
-      can_sends.append(fiatcan.create_cruise_buttons(self.packer_pt, CS.button_counter + 1, activate=False))
+    # if CC.cruiseControl.cancel:
+    #   can_sends.append(fiatcan.create_cruise_buttons(self.packer_pt, CS.button_counter + 1, activate=False))
 
-    # ACC resume from standstill
-    elif CC.cruiseControl.resume:
-      can_sends.append(fiatcan.create_cruise_buttons(self.packer_pt, CS.button_counter + 1, activate=True))
+    # # ACC resume from standstill
+    # elif CC.cruiseControl.resume:
+    #   can_sends.append(fiatcan.create_cruise_buttons(self.packer_pt, CS.button_counter + 1, activate=True))
 
     # longitudinal control
     if self.CP.openpilotLongitudinalControl and CC.longActive:
