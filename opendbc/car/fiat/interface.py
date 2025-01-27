@@ -9,7 +9,7 @@ class CarInterface(CarInterfaceBase):
     ret.brand = "fiat"
 
     ret.radarUnavailable = True
-    ret.steerActuatorDelay = 0.3
+    ret.steerActuatorDelay = 0.15
     ret.steerLimitTimer = 0.4
 
     # safety config
