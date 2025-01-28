@@ -18,7 +18,7 @@ class CarInterface(CarInterfaceBase):
     CarInterfaceBase.configure_torque_tune(candidate, ret.lateralTuning)
     ret.lateralTuning.torque.kp = 0
     ret.lateralTuning.torque.ki = 0
-    ret.lateralTuning.torque.kf = 0.00004
+    ret.lateralTuning.torque.kf = 0.001
 
     ret.centerToFront = ret.wheelbase * 0.44
     ret.enableBsm = False
