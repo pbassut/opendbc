@@ -9,7 +9,7 @@ class CarInterface(CarInterfaceBase):
     ret.brand = "fiat"
 
     ret.radarUnavailable = True
-    ret.steerActuatorDelay = 0.3
+    ret.steerActuatorDelay = 0.1
     ret.steerLimitTimer = 0.4
 
     # safety config
@@ -17,13 +17,13 @@ class CarInterface(CarInterfaceBase):
 
     CarInterfaceBase.configure_torque_tune(candidate, ret.lateralTuning)
     # tune.torque.kp = 1.0
-    ret.lateralTuning.torque.kp = 0.23
+    ret.lateralTuning.torque.kp = 0.14
 
     # tune.torque.ki = 0.1
     ret.lateralTuning.torque.ki = 0.4
 
-    # ret.lateralTuning.torque.kf = 0.18
-    ret.lateralTuning.torque.kf = 0
+    # ret.lateralTuning.torque.kf = 0
+    ret.lateralTuning.torque.kf = 0.082
 
     ret.centerToFront = ret.wheelbase * 0.44
     ret.enableBsm = False
