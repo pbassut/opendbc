@@ -59,7 +59,8 @@ class CarController(CarControllerBase):
       apply_steer = apply_driver_steer_torque_limits(new_steer, self.apply_steer_last, CS.out.steeringTorque, self.params) * 0.98
 
     self.apply_steer_last = apply_steer
-    can_sends.append(fiatcan.create_lkas_command(self.packer_pt, self.frame, apply_steer, CS.out.vEgo > self.CP.minSteerSpeed))
+    lkas_bit = CC.latActive and CS.out.vEgo > self.CP.minSteerSpeed
+    can_sends.append(fiatcan.create_lkas_command(self.packer_pt, self.frame, apply_steer, lkas_bit))
 
     if self.frame % 25 == 0:
       eps_faulted = CS.out.steerFaultPermanent or CS.out.steerFaultTemporary
