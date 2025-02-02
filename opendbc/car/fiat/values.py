@@ -47,7 +47,7 @@ class CarControllerParams:
 
     self.STEER_DRIVER_MULTIPLIER = 2  # weight driver torque heavily
     self.STEER_DRIVER_FACTOR = 1  # from dbc
-    self.STEER_DRIVER_ALLOWANCE = 20
+    self.STEER_DRIVER_ALLOWANCE = 15
 
     self.NEAR_STOP_BRAKE_PHASE = 0.5  # m/s
 
@@ -67,7 +67,7 @@ class CarControllerParams:
     self.BRAKE_LOOKUP_V = [self.MAX_BRAKE, 0.]
 
 
-STEER_THRESHOLD = 20
+STEER_THRESHOLD = 40
 
 FW_QUERY_CONFIG = FwQueryConfig(
   requests=[
