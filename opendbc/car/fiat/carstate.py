@@ -44,7 +44,7 @@ class CarState(CarStateBase):
     ret.brakePressed = ret.brake > 0
 
     # gas pedal
-    ret.gas = cp.vl["ENGINE_1"]["ACCEL_PEDAL_THRESHOLD"]
+    ret.gas = cp_adas.vl["ENGINE_1"]["ACCEL_PEDAL_THRESHOLD"]
     ret.gasPressed = ret.gas > 0
 
     # car speed
@@ -99,7 +99,7 @@ class CarState(CarStateBase):
     self.distance_button = cp_adas.vl["DAS_1"]["CRUISE_BUTTON_PRESSED"] == 32
 
     self.button_counter = cp_adas.vl["DAS_1"]["COUNTER"]
-    self.accel_counter = cp.vl["ENGINE_1"]["COUNTER"]
+    self.accel_counter = cp_adas.vl["ENGINE_1"]["COUNTER"]
 
     return ret
 
@@ -121,7 +121,6 @@ class CarState(CarStateBase):
       ("ABS_1", 100),
       ("ABS_2", 100),
       ("ABS_3", 100),
-      ('ENGINE_1', 99),
       ('SEATBELTS', 10),
       ('EPS_2', 100),
       ("ABS_6", 100),
@@ -131,6 +130,7 @@ class CarState(CarStateBase):
     adas_messages = [
       ("BCM_2", 4),
       ("GEAR", 1),
+      ('ENGINE_1', 100),
       ("ENGINE_2", 99),
       ("ABS_6", 100),
     ]
