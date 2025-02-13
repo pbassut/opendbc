@@ -54,12 +54,14 @@ class CarController(CarControllerBase):
     # steering
     # steer torque
     apply_steer = 0
+    lkas_bit = False
     if CC.latActive:
       new_steer = int(round(actuators.steer * self.params.STEER_MAX))
       apply_steer = apply_driver_steer_torque_limits(new_steer, self.apply_steer_last, CS.out.steeringTorque, self.params)
 
+      lkas_bit = CS.out.vEgo > self.CP.minSteerSpeed
+
     self.apply_steer_last = apply_steer
-    lkas_bit = CC.latActive and CS.out.vEgo > self.CP.minSteerSpeed
     can_sends.append(fiatcan.create_lkas_command(self.packer_pt, self.frame, apply_steer, lkas_bit))
 
     if self.frame % 25 == 0:
