@@ -6,8 +6,8 @@ from opendbc.car.fiat.values import CarControllerParams
 from opendbc.car.interfaces import CarControllerBase
 
 class CarController(CarControllerBase):
-  def __init__(self, dbc_names, CP):
-    super().__init__(dbc_names, CP)
+  def __init__(self, dbc_names, CP, CP_SP):
+    super().__init__(dbc_names, CP, CP_SP)
 
     self.params = CarControllerParams(CP)
     self.apply_steer_last = 0
@@ -21,9 +21,8 @@ class CarController(CarControllerBase):
 
     self.packer_pt = CANPacker(dbc_names[Bus.pt])
     self.packer_adas = CANPacker(dbc_names[Bus.adas])
-    self.params = CarControllerParams(CP)
 
-  def update(self, CC, CS, now_nanos):
+  def update(self, CC, CP_SP, CS, now_nanos):
     actuators = CC.actuators
     can_sends = []
 
