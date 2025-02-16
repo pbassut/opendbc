@@ -112,7 +112,7 @@ class CarState(CarStateBase):
     return cruise_messages
 
   @staticmethod
-  def get_can_parsers(CP):
+  def get_can_parsers(CP, CP_SP):
     pt_messages = [
       # sig_address, frequency
       ("BCM_1", 1),
