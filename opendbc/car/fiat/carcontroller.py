@@ -36,7 +36,7 @@ class CarController(CarControllerBase):
       self.apply_brake = int(round(np.interp(actuators.accel, self.params.BRAKE_LOOKUP_BP, self.params.BRAKE_LOOKUP_V)))
 
       can_sends.append(fiatcan.create_gas_command(self.packer_adas, self.apply_gas, CS.accel_counter + 1))
-      can_sends.append(fiatcan.create_friction_brake_command(self.packer_adas, self.apply_brake, CS.accel_counter + 1))
+      can_sends.append(fiatcan.create_friction_brake_command(self.packer_adas, self.apply_brake, CS.out.vEgoRaw, CS.accel_counter + 1))
 
     if self.test_counter % 4 == 0:
       can_sends.append(fiatcan.create_gas_command(self.packer_adas, 12, CS.accel_counter + 1))

@@ -1,3 +1,5 @@
+from opendbc.car.common.conversions import Conversions as CV
+
 PT_BUS = 0
 DAS_BUS = 1
 
@@ -43,6 +45,6 @@ def create_gas_command(packer, throttle, frame):
   values = { "ACCEL_PEDAL_THRESHOLD": throttle, "COUNTER": frame }
   return packer.make_can_msg("ENGINE_1", DAS_BUS, values)
 
-def create_friction_brake_command(packer, apply_brake, frame):
-  values = { "BRAKE_PRESSURE": apply_brake, "COUNTER": frame }
+def create_friction_brake_command(packer, apply_brake, speed, frame):
+  values = { "BRAKE_PRESSURE": apply_brake, "VEHICLE_SPEED": speed * CV.MS_TO_KPH, "COUNTER": frame }
   return packer.make_can_msg("ABS_6", DAS_BUS, values)
