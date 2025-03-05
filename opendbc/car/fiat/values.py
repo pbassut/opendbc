@@ -34,22 +34,38 @@ class CAR(Platforms):
   )
 
 class CarControllerParams:
+  ACCEL_MAX = 2.  # m/s^2
+  ACCEL_MIN = -4.  # m/s^2
+
   def __init__(self, CP):
-    self.STEER_STEP = 1  # 100 Hz
-
-    self.STEER_MAX = 360 # higher than this faults the EPS
-    self.STEER_DELTA_UP = 3
+    self.STEER_MAX = 1440
+    self.STEER_DELTA_UP = 4
     self.STEER_DELTA_DOWN = 3
-    self.STEER_ERROR_MAX = 80
+    self.STEER_ERROR_MAX = 250
 
-    self.STEER_DRIVER_ALLOWANCE = 20
-    self.STEER_DRIVER_MULTIPLIER = 2  # weight driver torque heavily
+    self.STEER_DRIVER_MULTIPLIER = 4  # weight driver torque heavily
     self.STEER_DRIVER_FACTOR = 1  # from dbc
+    self.STEER_DRIVER_ALLOWANCE = 15
 
     self.NEAR_STOP_BRAKE_PHASE = 0.5  # m/s
 
+    self.ZERO_GAS = 2048  # Coasting
+    self.MAX_BRAKE = 400  # ~ -4.0 m/s^2 with regen
+    self.MAX_GAS = 3400
+    self.MAX_ACC_REGEN = 1514
+    self.INACTIVE_REGEN = 1554
+    # Camera ACC vehicles have no regen while enabled.
+    # Camera transitions to MAX_ACC_REGEN from ZERO_GAS and uses friction brakes instantly
+    max_regen_acceleration = 0.
 
-STEER_THRESHOLD = 20
+    self.GAS_LOOKUP_BP = [max_regen_acceleration, 0., self.ACCEL_MAX]
+    self.GAS_LOOKUP_V = [self.MAX_ACC_REGEN, self.ZERO_GAS, self.MAX_GAS]
+
+    self.BRAKE_LOOKUP_BP = [self.ACCEL_MIN, max_regen_acceleration]
+    self.BRAKE_LOOKUP_V = [self.MAX_BRAKE, 0.]
+
+
+STEER_THRESHOLD = 250
 
 FW_QUERY_CONFIG = FwQueryConfig(
   requests=[
