@@ -133,6 +133,7 @@ class CarState(CarStateBase):
       ('ENGINE_1', 100),
       ("ENGINE_2", 99),
       ("ABS_6", 100),
+      ("ACCEL_1", 100),
     ]
 
     adas_messages += CarState.get_cruise_messages()
