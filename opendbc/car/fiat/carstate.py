@@ -99,7 +99,7 @@ class CarState(CarStateBase):
     self.distance_button = cp_adas.vl["DAS_1"]["CRUISE_BUTTON_PRESSED"] == 32
 
     self.button_counter = cp_adas.vl["DAS_1"]["COUNTER"]
-    self.accel_counter = cp_adas.vl["ENGINE_1"]["COUNTER"]
+    self.accel_counter = cp_adas.vl["ACCEL_1"]["COUNTER"]
 
     return ret
 
