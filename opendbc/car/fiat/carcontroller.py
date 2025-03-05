@@ -8,8 +8,6 @@ from opendbc.car.interfaces import CarControllerBase
 class CarController(CarControllerBase):
   def __init__(self, dbc_names, CP):
     super().__init__(dbc_names, CP)
-
-    self.params = CarControllerParams(CP)
     self.apply_steer_last = 0
     self.apply_brake = 0
     self.apply_gas = 0
@@ -29,15 +27,6 @@ class CarController(CarControllerBase):
 
     if CS.high_beam and not CS.prev_high_beam:
       self.test_counter += 1
-
-    # cruise buttons
-    # ACC cancellation
-    # if CC.cruiseControl.cancel:
-    #   can_sends.append(fiatcan.create_cruise_buttons(self.packer_pt, CS.button_counter + 1, activate=False))
-
-    # # ACC resume from standstill
-    # elif CC.cruiseControl.resume:
-    #   can_sends.append(fiatcan.create_cruise_buttons(self.packer_pt, CS.button_counter + 1, activate=True))
 
     # longitudinal control
     if self.CP.openpilotLongitudinalControl and CC.longActive:
