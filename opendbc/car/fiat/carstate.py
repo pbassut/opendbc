@@ -86,7 +86,7 @@ class CarState(CarStateBase):
     ret.steeringTorque = cp.vl["EPS_2"]["DRIVER_TORQUE"]
     ret.steeringTorqueEps = cp.vl["EPS_2"]["EPS_TORQUE"]
     ret.steeringPressed = abs(ret.steeringTorque) > STEER_THRESHOLD
-    # ret.steerFaultTemporary = cp.vl["EPS_2"]["STEERING_ALLOWED"] == 1
+    ret.steerFaultTemporary = ret.vEgoRaw > self.CP.minSteerSpeed and cp.vl["EPS_2"]["STEERING_ALLOWED"] == 1
     ret.steerFaultPermanent = cp.vl["EPS_2"]["EPS_FAULT"] == 1
     ret.yawRate = cp.vl["ABS_2"]["YAW_RATE"]
 
