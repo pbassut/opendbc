@@ -39,10 +39,16 @@ def create_cruise_buttons(packer, frame, activate=False):
   }
   return packer.make_can_msg("DAS_1", DAS_BUS, values)
 
-def create_gas_command(packer, throttle, frame):
-  values = { "ACCEL_THRESHOLD": throttle, "ACCEL_THRESHOLD_2": throttle, "ACCEL_THRESHOLD_3": throttle, "COUNTER": frame }
+def create_gas_break_command(packer, throttle, frame):
+  values = {
+    "ACCEL_THRESHOLD": throttle,
+    "ACCEL_THRESHOLD_2": throttle,
+    "ACCEL_THRESHOLD_3": throttle,
+    "MAYBE_BREAKING": 1,
+    "COUNTER": frame
+  }
   return packer.make_can_msg("ACCEL_1", DAS_BUS, values)
 
-def create_friction_brake_command(packer, apply_brake, frame):
-  values = { "BRAKE_PRESSURE": apply_brake, "COUNTER": frame }
-  return packer.make_can_msg("ABS_6", DAS_BUS, values)
+# def create_friction_brake_command(packer, apply_brake, frame):
+  # values = { "BRAKE_PRESSURE": apply_brake, "COUNTER": frame }
+  # return packer.make_can_msg("ABS_6", PT_BUS, values)
