@@ -44,7 +44,8 @@ def create_gas_break_command(packer, throttle, frame):
     "ACCEL_THRESHOLD": throttle,
     "ACCEL_THRESHOLD_2": throttle,
     "ACCEL_THRESHOLD_3": throttle,
-    "MAYBE_BREAKING": 1,
+    "MAYBE_BREAKING": 1 if throttle < 0 else 0,
+    "BREAK_PRESSED": 1,
     "COUNTER": frame
   }
   return packer.make_can_msg("ACCEL_1", DAS_BUS, values)

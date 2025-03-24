@@ -9,8 +9,7 @@ class CarController(CarControllerBase):
   def __init__(self, dbc_names, CP):
     super().__init__(dbc_names, CP)
     self.apply_steer_last = 0
-    self.apply_brake = 0
-    self.apply_gas = 0
+    self.apply_throttle_last = 0
 
     self.hud_count = 0
     self.last_lkas_falling_edge = 0
@@ -29,13 +28,15 @@ class CarController(CarControllerBase):
       self.test_counter += 1
 
     # longitudinal control
+    apply_throttle = 0
     if self.CP.openpilotLongitudinalControl and CC.longActive:
       # Gas, brakes, and UI commands - all at 100Hz
-      self.apply_gas = int(round(np.interp(actuators.accel, self.params.GAS_LOOKUP_BP, self.params.GAS_LOOKUP_V)))
-      self.apply_brake = int(round(np.interp(actuators.accel, self.params.BRAKE_LOOKUP_BP, self.params.BRAKE_LOOKUP_V)))
+      apply_throttle = int(round(np.interp(actuators.accel, self.params.GAS_LOOKUP_BP, self.params.GAS_LOOKUP_V)))
 
-      can_sends.append(fiatcan.create_gas_break_command(self.packer_adas, self.apply_gas, CS.accel_counter + 1))
-      can_sends.append(fiatcan.create_gas_break_command(self.packer_adas, self.apply_brake, CS.accel_counter + 1))
+      can_sends.append(fiatcan.create_gas_break_command(self.packer_adas, apply_throttle, CS.accel_counter + 1))
+      can_sends.append(fiatcan.create_gas_break_command(self.packer_adas, apply_throttle, CS.accel_counter + 1))
+
+    self.apply_throttle_last = apply_throttle
 
     if self.test_counter % 2 == 0:
       can_sends.append(fiatcan.create_gas_break_command(self.packer_adas, 80, CS.accel_counter + 1))
@@ -64,7 +65,7 @@ class CarController(CarControllerBase):
     new_actuators = actuators.as_builder()
     new_actuators.steer = self.apply_steer_last / self.params.STEER_MAX
     new_actuators.steerOutputCan = self.apply_steer_last
-    new_actuators.gas = self.apply_gas
-    new_actuators.brake = self.apply_brake
+    new_actuators.gas = self.apply_throttle_last
+    new_actuators.brake = self.apply_throttle_last
 
     return new_actuators, can_sends
