@@ -40,12 +40,19 @@ def create_cruise_buttons(packer, frame, activate=False):
   return packer.make_can_msg("DAS_1", DAS_BUS, values)
 
 def create_gas_break_command(packer, throttle, frame):
+  weird_range = throttle in range(-17, 0)
+  # weird_range_2 = throttle in range(-30, -17)
+  is_braking = throttle < 0
+  break_pressed = 0
+  if is_braking:
+    break_pressed = 1 if weird_range else 2
+
   values = {
-    "ACCEL_THRESHOLD": throttle,
-    "ACCEL_THRESHOLD_2": throttle,
-    "ACCEL_THRESHOLD_3": throttle,
-    "MAYBE_BREAKING": 1 if throttle < 0 else 0,
-    "BREAK_PRESSED": 1,
+    "ACCEL_THRESHOLD": -17 if is_braking else throttle,
+    "ACCEL_THRESHOLD_2": -24 if is_braking else throttle,
+    "ACCEL_THRESHOLD_3": 0 if is_braking else throttle,
+    "BREAK_PRESSED": break_pressed,
+    "MAYBE_BREAKING": break_pressed > 1,
     "COUNTER": frame
   }
   return packer.make_can_msg("ACCEL_1", DAS_BUS, values)
