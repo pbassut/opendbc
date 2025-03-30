@@ -15,6 +15,7 @@ class CarController(CarControllerBase):
     self.last_lkas_falling_edge = 0
     self.last_button_frame = 0
     self.test_counter = 0
+    self.debugging = False
 
     self.packer_pt = CANPacker(dbc_names[Bus.pt])
     self.packer_adas = CANPacker(dbc_names[Bus.adas])
@@ -38,10 +39,11 @@ class CarController(CarControllerBase):
 
     self.apply_throttle_last = apply_throttle
 
-    if self.test_counter % 2 == 0:
-      can_sends.append(fiatcan.create_gas_break_command(self.packer_adas, 80, CS.accel_counter + 1))
-    elif self.test_counter % 3 == 0:
-      can_sends.append(fiatcan.create_gas_break_command(self.packer_adas, -20, CS.accel_counter + 1))
+    if self.debugging:
+      if self.test_counter % 2 == 0:
+        can_sends.append(fiatcan.create_gas_break_command(self.packer_adas, 80, CS.accel_counter + 1))
+      elif self.test_counter % 3 == 0:
+        can_sends.append(fiatcan.create_gas_break_command(self.packer_adas, -20, CS.accel_counter + 1))
 
     # steering
     # steer torque
