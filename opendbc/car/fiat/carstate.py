@@ -11,11 +11,7 @@ class CarState(CarStateBase):
     super().__init__(CP)
     self.CP = CP
 
-    self.button_counter = 0
     self.accel_counter = 0
-
-    self.prev_distance_button = 0
-    self.distance_button = 0
 
     self.lkas_enabled = False
     self.prev_lkas_enabled = False
@@ -29,7 +25,6 @@ class CarState(CarStateBase):
 
     ret = structs.CarState()
     self.prev_lkas_enabled = self.lkas_enabled
-    self.prev_distance_button = self.distance_button
 
     # lock info
     ret.doorOpen = any([cp.vl["BCM_1"]["DOOR_OPEN_FL"],
@@ -41,7 +36,7 @@ class CarState(CarStateBase):
 
     # brake pedal
     ret.brake = cp.vl["ABS_6"]['BRAKE_PRESSURE']
-    ret.brakePressed = ret.brake > 1
+    ret.brakePressed = ret.brake > 4
 
     # gas pedal
     ret.gas = cp_adas.vl["ENGINE_1"]["ACCEL_PEDAL_THRESHOLD"]
@@ -86,7 +81,7 @@ class CarState(CarStateBase):
     ret.steeringTorque = cp.vl["EPS_2"]["DRIVER_TORQUE"]
     ret.steeringTorqueEps = cp.vl["EPS_2"]["EPS_TORQUE"]
     ret.steeringPressed = abs(ret.steeringTorque) > STEER_THRESHOLD
-    ret.steerFaultTemporary = ret.vEgoRaw > self.CP.minSteerSpeed and cp.vl["EPS_2"]["STEERING_ALLOWED"] == 1
+    # ret.steerFaultTemporary = ret.vEgoRaw > self.CP.minSteerSpeed and cp.vl["EPS_2"]["STEERING_ALLOWED"] == 1
     ret.steerFaultPermanent = cp.vl["EPS_2"]["EPS_FAULT"] == 1
     ret.yawRate = cp.vl["ABS_2"]["YAW_RATE"]
 
@@ -95,10 +90,8 @@ class CarState(CarStateBase):
     ret.cruiseState.enabled = cp_adas.vl["DAS_2"]["ACC_ENGAGED"] == 1
     ret.cruiseState.speed = cp_adas.vl["DAS_2"]["ACC_SET_SPEED"] * CV.KPH_TO_MS
 
-    self.lkas_enabled = cp.vl["BUTTONS_1"]["LKAS_BUTTON"] == 1
-    self.distance_button = cp_adas.vl["DAS_1"]["CRUISE_BUTTON_PRESSED"] == 32
+    self.lkas_enabled = not self.prev_lkas_enabled and cp.vl["BUTTONS_1"]["LKAS_BUTTON"] == 1
 
-    self.button_counter = cp_adas.vl["DAS_1"]["COUNTER"]
     self.accel_counter = cp_adas.vl["ACCEL_1"]["COUNTER"]
 
     return ret
