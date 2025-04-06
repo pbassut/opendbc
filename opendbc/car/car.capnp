@@ -235,6 +235,8 @@ struct CarState {
   # process meta
   cumLagMs @50 :Float32;
 
+  madsEnabled @58 :Bool;
+
   struct WheelSpeeds {
     # optional wheel speeds
     fl @0 :Float32;
@@ -424,6 +426,9 @@ struct CarControl {
       prompt @6;
       promptRepeat @7;
       promptDistracted @8;
+
+      engageMads @9;
+      disengageMads @10;
     }
   }
 

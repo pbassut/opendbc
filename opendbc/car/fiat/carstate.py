@@ -3,6 +3,7 @@ from opendbc.car import Bus, structs
 from opendbc.car.fiat.values import DBC, STEER_THRESHOLD
 from opendbc.car.common.conversions import Conversions as CV
 from opendbc.car.interfaces import CarStateBase
+from openpilot.common.params import Params
 
 ButtonType = structs.CarState.ButtonEvent.Type
 
@@ -10,6 +11,7 @@ class CarState(CarStateBase):
   def __init__(self, CP):
     super().__init__(CP)
     self.CP = CP
+    self.mem_params = Params("/dev/shm/params")
 
     self.accel_counter = 0
 
@@ -24,7 +26,6 @@ class CarState(CarStateBase):
     cp_adas = can_parsers[Bus.adas]
 
     ret = structs.CarState()
-    self.prev_lkas_enabled = self.lkas_enabled
 
     # lock info
     ret.doorOpen = any([cp.vl["BCM_1"]["DOOR_OPEN_FL"],
@@ -75,6 +76,18 @@ class CarState(CarStateBase):
     self.high_beam = cp_adas.vl["BCM_2"]["HIGH_BEAM"] == 1
     ret.genericToggle = cp_adas.vl["BCM_2"]["HIGH_BEAM"] == 1
 
+    self.lkas_enabled = cp.vl["BUTTONS_1"]["LKAS_BUTTON"] == 1
+
+    steer_always_on = self.mem_params.get_bool("SteerAlwaysOn")
+    if not self.prev_lkas_enabled and self.lkas_enabled and not steer_always_on: # falling edge
+      self.mem_params.put_bool('SteerAlwaysOn', True)
+      ret.madsEnabled = True
+    elif (self.prev_lkas_enabled and not self.lkas_enabled and steer_always_on): # rising edge
+      self.mem_params.put_bool('SteerAlwaysOn', False)
+      ret.madsEnabled = False
+
+    self.prev_lkas_enabled = self.lkas_enabled
+
     # steering wheel
     ret.steeringAngleDeg = cp.vl["STEERING"]["STEERING_ANGLE"]
     ret.steeringRateDeg = cp.vl["STEERING"]["STEERING_RATE"]
@@ -89,8 +102,6 @@ class CarState(CarStateBase):
     ret.cruiseState.available = cp_adas.vl["DAS_2"]["ACC_STATE"] == 1
     ret.cruiseState.enabled = cp_adas.vl["DAS_2"]["ACC_ENGAGED"] == 1
     ret.cruiseState.speed = cp_adas.vl["DAS_2"]["ACC_SET_SPEED"] * CV.KPH_TO_MS
-
-    self.lkas_enabled = not self.prev_lkas_enabled and cp.vl["BUTTONS_1"]["LKAS_BUTTON"] == 1
 
     self.accel_counter = cp_adas.vl["ACCEL_1"]["COUNTER"]
 
