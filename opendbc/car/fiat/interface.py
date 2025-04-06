@@ -24,7 +24,7 @@ class CarInterface(CarInterfaceBase):
     ret.enableBsm = False
 
     ret.experimentalLongitudinalAvailable = True
-    ret.pcmCruise = not experimental_long
+    ret.pcmCruise = False
     ret.openpilotLongitudinalControl = experimental_long
 
     ret.minSteerSpeed = 10 * CV.KPH_TO_MS
