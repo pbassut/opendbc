@@ -76,17 +76,13 @@ class CarState(CarStateBase):
     self.high_beam = cp_adas.vl["BCM_2"]["HIGH_BEAM"] == 1
     ret.genericToggle = cp_adas.vl["BCM_2"]["HIGH_BEAM"] == 1
 
+    self.prev_lkas_enabled = self.lkas_enabled
     self.lkas_enabled = cp.vl["BUTTONS_1"]["LKAS_BUTTON"] == 1
 
     steer_always_on = self.mem_params.get_bool("SteerAlwaysOn")
-    if not self.prev_lkas_enabled and self.lkas_enabled and not steer_always_on: # falling edge
-      self.mem_params.put_bool('SteerAlwaysOn', True)
-      ret.madsEnabled = True
-    elif (self.prev_lkas_enabled and not self.lkas_enabled and steer_always_on): # rising edge
-      self.mem_params.put_bool('SteerAlwaysOn', False)
-      ret.madsEnabled = False
-
-    self.prev_lkas_enabled = self.lkas_enabled
+    if not self.prev_lkas_enabled and self.lkas_enabled:
+      ret.madsEnabled = not steer_always_on
+      self.mem_params.put_bool('SteerAlwaysOn', not steer_always_on)
 
     # steering wheel
     ret.steeringAngleDeg = cp.vl["STEERING"]["STEERING_ANGLE"]
