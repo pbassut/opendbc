@@ -39,8 +39,8 @@ class CarControllerParams:
 
   def __init__(self, CP):
     self.STEER_MAX = 2047
-    self.STEER_DELTA_UP = 7
-    self.STEER_DELTA_DOWN = 10
+    self.STEER_DELTA_UP = 5
+    self.STEER_DELTA_DOWN = 5
     self.STEER_ERROR_MAX = 250
 
     self.STEER_DRIVER_MULTIPLIER = 4  # weight driver torque heavily
