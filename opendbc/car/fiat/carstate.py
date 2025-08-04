@@ -133,9 +133,9 @@ class CarState(CarStateBase):
     # Case 1: Cruise is enabled and we're accelerating above set speed
     if cruise_now_enabled and cruise_speed_kph > 0:
       speed_diff = current_speed_kph - cruise_speed_kph
-      
+
       # If current speed is 5+ km/h above cruise speed, update cruise speed
-      if speed_diff >= 5.0 and ret.gasPressed:
+      if speed_diff >= 2.0 and ret.gasPressed:
         self.speed_adaptation_active = True
         # Signal to update cruise speed to current speed
         ret.cruiseState.speed = ret.vEgo
@@ -149,19 +149,19 @@ class CarState(CarStateBase):
     # Case 3: Brake released after cruise was disabled - start timer
     if not cruise_now_enabled and not ret.brakePressed and self.brake_release_timer >= 0:
       self.brake_release_timer += 1
-      
+
       # After 0.5 seconds (50 frames at 100Hz), re-enable cruise at current speed
       if self.brake_release_timer >= 50:
         # Create a button event to simulate cruise set button press
         if not hasattr(ret, 'buttonEvents'):
           ret.buttonEvents = []
-        
+
         # Add setCruise button event to re-enable cruise control
         button_event = structs.CarState.ButtonEvent()
         button_event.type = ButtonType.setCruise
         button_event.pressed = False  # Button release triggers action
         ret.buttonEvents.append(button_event)
-        
+
         # Set cruise speed to current speed
         ret.cruiseState.speed = ret.vEgo
         ret.cruiseState.enabled = True
