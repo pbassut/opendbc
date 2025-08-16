@@ -153,11 +153,8 @@ class CarState(CarStateBase):
       # After 0.5 seconds (50 frames at 100Hz), re-enable cruise at current speed
       if self.brake_release_timer >= 50:
         # Create a button event to simulate cruise set button press
-        if not hasattr(ret, 'buttonEvents'):
-          ret.buttonEvents = []
-
         # Add setCruise button event to re-enable cruise control
-        button_event = structs.CarState.ButtonEvent()
+        button_event = structs.CarState.ButtonEvent.new_message()
         button_event.type = ButtonType.setCruise
         button_event.pressed = False  # Button release triggers action
         ret.buttonEvents.append(button_event)
