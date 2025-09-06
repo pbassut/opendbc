@@ -11,6 +11,7 @@ class CarController(CarControllerBase):
     self.apply_steer_last = 0
     self.apply_brake = 0
     self.apply_gas = 0
+    self.debug = False
 
     self.hud_count = 0
     self.last_lkas_falling_edge = 0
@@ -37,7 +38,7 @@ class CarController(CarControllerBase):
       can_sends.append(fiatcan.create_gas_command(self.packer_adas, self.apply_gas, CS.accel_counter + 1))
       can_sends.append(fiatcan.create_friction_brake_command(self.packer_adas, self.apply_brake, CS.accel_counter + 1))
 
-    if self.test_counter % 4 == 0:
+    if self.debug and self.test_counter % 4 == 0:
       can_sends.append(fiatcan.create_gas_command(self.packer_adas, 12, CS.accel_counter + 1))
 
     # steering
