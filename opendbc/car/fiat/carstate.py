@@ -23,6 +23,13 @@ class CarState(CarStateBase):
     self.prev_high_beam = False
     self.high_beam = False
 
+    # Adaptive cruise control state
+    self.adaptive_cruise_enabled = True
+    self.prev_cruise_enabled = False
+    self.brake_release_timer = 0
+    self.last_cruise_speed = 0
+    self.speed_adaptation_active = False
+
   def update(self, can_parsers, *_) -> structs.CarState:
     cp = can_parsers[Bus.pt]
     cp_adas = can_parsers[Bus.adas]
@@ -102,6 +109,57 @@ class CarState(CarStateBase):
     self.accel_counter = cp_adas.vl["ENGINE_1"]["COUNTER"]
 
     return ret
+
+  def _update_adaptive_cruise(self, ret):
+    """
+    Adaptive cruise control logic for Fiat Fastback:
+    1. If accelerating above cruise speed, update cruise speed to current speed
+    2. If braking disables cruise, re-enable at current speed after half second
+    """
+    if not self.adaptive_cruise_enabled:
+      return
+
+    current_speed_kph = ret.vEgo * CV.MS_TO_KPH
+    cruise_speed_kph = ret.cruiseState.speed * CV.MS_TO_KPH if ret.cruiseState.speed > 0 else 0
+
+    # Detect cruise state changes
+    cruise_was_enabled = self.prev_cruise_enabled
+    cruise_now_enabled = ret.cruiseState.enabled
+    self.prev_cruise_enabled = cruise_now_enabled
+
+    # Case 1: Cruise is enabled and we're accelerating above set speed
+    if cruise_now_enabled and cruise_speed_kph > 0:
+      speed_diff = current_speed_kph - cruise_speed_kph
+
+      # If current speed is 5+ km/h above cruise speed, update cruise speed
+      if speed_diff >= 2.0 and ret.gasPressed:
+        self.speed_adaptation_active = True
+        # Signal to update cruise speed to current speed
+        ret.cruiseState.speed = ret.vEgo
+        self.last_cruise_speed = current_speed_kph
+
+    # Case 2: Cruise was disabled (likely by braking), start timer
+    if cruise_was_enabled and not cruise_now_enabled and ret.brakePressed:
+      self.brake_release_timer = 0
+      self.last_cruise_speed = current_speed_kph
+
+    # Case 3: Brake released after cruise was disabled - start timer
+    if not cruise_now_enabled and not ret.brakePressed and self.brake_release_timer >= 0:
+      self.brake_release_timer += 1
+
+      # After 0.5 seconds (50 frames at 100Hz), re-enable cruise at current speed
+      if self.brake_release_timer >= 50:
+        # Create a button event to simulate cruise set button press
+        # Add setCruise button event to re-enable cruise control
+        button_event = structs.CarState.ButtonEvent.new_message()
+        button_event.type = ButtonType.setCruise
+        button_event.pressed = False  # Button release triggers action
+        ret.buttonEvents.append(button_event)
+
+        # Set cruise speed to current speed
+        ret.cruiseState.speed = ret.vEgo
+        ret.cruiseState.enabled = True
+        self.brake_release_timer = -1  # Disable timer
 
   @staticmethod
   def get_cruise_messages():
