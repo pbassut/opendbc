@@ -4,10 +4,11 @@ from opendbc.car import Bus, CarSpecs, DbcDict, PlatformConfig, Platforms
 from opendbc.car.structs import CarParams
 from opendbc.car.docs_definitions import CarHarness, CarDocs, CarParts
 from opendbc.car.fw_query_definitions import FwQueryConfig
+from opendbc.car.common.conversions import Conversions as CV
 
 Ecu = CarParams.Ecu
 
-@dataclass
+@dataclas
 class FastbackCarDocs(CarDocs):
   package: str = "Adaptive Cruise Control(ACC)"
   car_parts: CarParts = field(default_factory=CarParts.common([CarHarness.fca]))
@@ -24,7 +25,7 @@ class FastbackPlatformConfig(PlatformConfig):
 
 @dataclass(frozen=True)
 class FastbackCarSpecs(CarSpecs):
-  minSteerSpeed: float = 0  # m/s
+  minSteerSpeed: float = 10 * CV.KPH_TO_MS # m/s
   tireStiffnessFactor: float = .97  # not optimized yet
 
 class CAR(Platforms):
