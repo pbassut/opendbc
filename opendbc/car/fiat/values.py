@@ -8,7 +8,7 @@ from opendbc.car.common.conversions import Conversions as CV
 
 Ecu = CarParams.Ecu
 
-@dataclas
+@dataclass
 class FastbackCarDocs(CarDocs):
   package: str = "Adaptive Cruise Control(ACC)"
   car_parts: CarParts = field(default_factory=CarParts.common([CarHarness.fca]))
