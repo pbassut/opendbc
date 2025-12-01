@@ -1,6 +1,7 @@
 from typing import NamedTuple
 
 from opendbc.car.chrysler.values import CAR as CHRYSLER
+from opendbc.car.fiat.values import CAR as FIAT
 from opendbc.car.gm.values import CAR as GM
 from opendbc.car.ford.values import CAR as FORD
 from opendbc.car.honda.values import CAR as HONDA
@@ -60,6 +61,8 @@ routes = [
   CarTestRoute("221c253375af4ee9/2022-06-15--18-38-24", CHRYSLER.RAM_1500_5TH_GEN),
   CarTestRoute("8fb5eabf914632ae/2022-08-04--17-28-53", CHRYSLER.RAM_HD_5TH_GEN, segment=6),
   CarTestRoute("3379c85aeedc8285/2023-12-07--17-49-39", CHRYSLER.DODGE_DURANGO),
+
+  CarTestRoute("625ccd09daec723c/0000000d--44bca0df05", FIAT.FASTBACK_LIMITED_EDITION_2024),
 
   CarTestRoute("54827bf84c38b14f/2023-01-25--14-14-11", FORD.FORD_BRONCO_SPORT_MK1),
   CarTestRoute("f8eaaccd2a90aef8/2023-05-04--15-10-09", FORD.FORD_ESCAPE_MK4),
