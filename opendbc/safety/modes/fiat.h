@@ -1,6 +1,6 @@
 #pragma once
 
-#include "opendbc/safety/declarations.h"
+#include "opendbc/safety/safety_declarations.h"
 
 typedef struct {
   const int ABS_6;
@@ -175,7 +175,7 @@ static safety_config fiat_init(uint16_t param) {
   fiat_platform = FASTBACK_LIMITED_EDITION;
   fiat_addrs = &FASTBACK_ADDRS;
 
-  SAFETY_UNUSED(param);
+  UNUSED(param);
   return BUILD_SAFETY_CFG(fastback_rx_checks, FASTBACK_TX_MSGS);
 }
 
