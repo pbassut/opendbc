@@ -267,6 +267,7 @@ class TestFwFingerprintTiming:
         'body': 0.1,
         'chrysler': 0.3,
         'ford': 1.5,
+        'fiat': 0.3,
         'honda': 0.45,
         'hyundai': 0.65,
         'mazda': 0.1,

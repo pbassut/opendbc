@@ -11,6 +11,7 @@ from opendbc.car.nissan.values import CAR as NISSAN
 from opendbc.car.subaru.values import CAR as SUBARU
 from opendbc.car.toyota.values import CAR as TOYOTA
 from opendbc.car.volkswagen.values import CAR as VW
+from opendbc.car.fiat.values import CAR as FIAT
 
 FW_VERSIONS = get_interface_attr('FW_VERSIONS', combine_brands=True, ignore_none=True)
 _FINGERPRINTS = get_interface_attr('FINGERPRINTS', combine_brands=True, ignore_none=True)
@@ -131,6 +132,7 @@ MIGRATION = {
   "CHRYSLER PACIFICA 2020": CHRYSLER.CHRYSLER_PACIFICA_2020,
   "DODGE DURANGO 2021": CHRYSLER.DODGE_DURANGO,
   "JEEP GRAND CHEROKEE V6 2018": CHRYSLER.JEEP_GRAND_CHEROKEE,
+  "FIAT FASTBACK LIMITED EDITION 2024": FIAT.FASTBACK_LIMITED_EDITION_2024,
   "JEEP GRAND CHEROKEE 2019": CHRYSLER.JEEP_GRAND_CHEROKEE_2019,
   "RAM 1500 5TH GEN": CHRYSLER.RAM_1500_5TH_GEN,
   "RAM HD 5TH GEN": CHRYSLER.RAM_HD_5TH_GEN,

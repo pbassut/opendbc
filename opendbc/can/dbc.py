@@ -31,6 +31,7 @@ class SignalType:
   FCA_GIORGIO_CHECKSUM = 10
   TESLA_CHECKSUM = 11
   PSA_CHECKSUM = 12
+  FIAT_FASTBACK_CHECKSUM = 13
 
 
 @dataclass
@@ -194,6 +195,8 @@ def get_checksum_state(dbc_name: str) -> ChecksumState | None:
     return ChecksumState(8, -1, 7, -1, False, SignalType.CHRYSLER_CHECKSUM, chrysler_checksum)
   elif dbc_name.startswith("fca_giorgio"):
     return ChecksumState(8, -1, 7, -1, False, SignalType.FCA_GIORGIO_CHECKSUM, fca_giorgio_checksum)
+  elif dbc_name.startswith("fiat_"):
+    return ChecksumState(8, 4, -1, -1, False, SignalType.FIAT_FASTBACK_CHECKSUM, fiat_fastback_checksum)
   elif dbc_name.startswith("comma_body"):
     return ChecksumState(8, 4, 7, 3, False, SignalType.BODY_CHECKSUM, body_checksum)
   elif dbc_name.startswith("tesla_model3_party"):

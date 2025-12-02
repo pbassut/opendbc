@@ -432,6 +432,9 @@ struct CarControl {
       prompt @6;
       promptRepeat @7;
       promptDistracted @8;
+
+      engageMads @9;
+      disengageMads @10;
     }
   }
 
@@ -635,6 +638,7 @@ struct CarParams {
     fcaGiorgio @32;
     rivian @33;
     volkswagenMeb @34;
+    fiat @35;
   }
 
   enum SteerControlType {
