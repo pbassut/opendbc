@@ -29,7 +29,7 @@ class CarInterface(CarInterfaceBase):
     ret.centerToFront = ret.wheelbase * 0.44
     ret.enableBsm = False
 
-    ret.experimentalLongitudinalAvailable = True
+    # ret.experimentalLongitudinalAvailable = True
     ret.pcmCruise = not alpha_long
     ret.openpilotLongitudinalControl = alpha_long
 
