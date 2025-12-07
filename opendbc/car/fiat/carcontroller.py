@@ -1,8 +1,9 @@
 import numpy as np
 from opendbc.can.packer import CANPacker
-from opendbc.car import Bus, apply_driver_steer_torque_limits
+from opendbc.car import Bus
+from opendbc.car.lateral import apply_driver_steer_torque_limits
 from opendbc.car.fiat import fiatcan
-from opendbc.car.fiat.values import CarControllerParams
+from opendbc.car.fiat.values import DBC, CarControllerParams
 from opendbc.car.interfaces import CarControllerBase
 
 class CarController(CarControllerBase):
@@ -18,8 +19,8 @@ class CarController(CarControllerBase):
     self.last_button_frame = 0
     self.test_counter = 0
 
-    self.packer_pt = CANPacker(dbc_names[Bus.pt])
-    self.packer_adas = CANPacker(dbc_names[Bus.adas])
+    self.packer_pt = CANPacker(DBC[self.CP.carFingerprint][Bus.pt])
+    self.packer_adas = CANPacker(DBC[self.CP.carFingerprint][Bus.adas])
     self.params = CarControllerParams(CP)
 
   def update(self, CC, CS, now_nanos):
