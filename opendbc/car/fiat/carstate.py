@@ -44,7 +44,7 @@ class CarState(CarStateBase):
     ret.brakePressed = ret.brake > 1
 
     # gas pedal
-    ret.gas = cp_adas.vl["ENGINE_1"]["ACCEL_PEDAL_THRESHOLD"]
+    # ret.gas = cp_adas.vl["ENGINE_1"]["ACCEL_PEDAL_THRESHOLD"]
     ret.gasPressed = ret.gas > 0
 
     # car speed
