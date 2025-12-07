@@ -61,13 +61,13 @@ class CarState(CarStateBase):
 
     ret.vEgo, ret.aEgo = self.update_speed_kf(ret.vEgoRaw)
     ret.standstill = not ret.vEgoRaw > 0
-    ret.wheelSpeeds = self.get_wheel_speeds(
-      cp.vl["ABS_1"]["WHEEL_SPEED_FL"],
-      cp.vl["ABS_1"]["WHEEL_SPEED_FR"],
-      cp.vl["ABS_1"]["WHEEL_SPEED_RL"],
-      cp.vl["ABS_1"]["WHEEL_SPEED_RR"],
-      unit=1,
-    )
+    # ret.wheelSpeeds = self.get_wheel_speeds(
+    #   cp.vl["ABS_1"]["WHEEL_SPEED_FL"],
+    #   cp.vl["ABS_1"]["WHEEL_SPEED_FR"],
+    #   cp.vl["ABS_1"]["WHEEL_SPEED_RL"],
+    #   cp.vl["ABS_1"]["WHEEL_SPEED_RR"],
+    #   unit=1,
+    # )
 
     # button presses
     ret.leftBlinker, ret.rightBlinker = self.update_blinker_from_stalk(
