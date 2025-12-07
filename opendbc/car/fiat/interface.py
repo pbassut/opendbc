@@ -6,7 +6,7 @@ from opendbc.car.common.conversions import Conversions as CV
 
 class CarInterface(CarInterfaceBase):
   @staticmethod
-  def _get_params(ret: structs.CarParams, candidate, fingerprint, car_fw, experimental_long, docs) -> structs.CarParams:
+  def _get_params(ret: structs.CarParams, candidate, fingerprint, car_fw, alpha_long, is_release, docs) -> structs.CarParams:
     ret.brand = "fiat"
 
     ret.radarUnavailable = True
@@ -30,13 +30,13 @@ class CarInterface(CarInterfaceBase):
     ret.enableBsm = False
 
     ret.experimentalLongitudinalAvailable = True
-    ret.pcmCruise = not experimental_long
-    ret.openpilotLongitudinalControl = experimental_long
+    ret.pcmCruise = not alpha_long
+    ret.openpilotLongitudinalControl = alpha_long
 
     ret.minSteerSpeed = 10 * CV.KPH_TO_MS
     ret.minEnableSpeed = 10 * CV.KPH_TO_MS
 
-    # Tuning for experimental long
+    # Tuning for alpha long
     ret.longitudinalTuning.kiBP = [5., 35.]
     ret.longitudinalTuning.kiV = [2.0, 1.5]
     ret.stoppingDecelRate = 2.0  # reach brake quickly after enabling
