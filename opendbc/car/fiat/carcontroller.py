@@ -44,16 +44,16 @@ class CarController(CarControllerBase):
 
     # steering
     # steer torque
-    apply_steer = 0
+    apply_torque = 0
     lkas_bit = False
     if CC.latActive:
-      new_steer = int(round(actuators.steer * self.params.STEER_MAX))
-      apply_steer = apply_driver_steer_torque_limits(new_steer, self.apply_steer_last, CS.out.steeringTorque, self.params)
+      new_torque = int(round(actuators.torque * self.params.STEER_MAX))
+      apply_torque = apply_driver_steer_torque_limits(new_torque, self.apply_torque_last, CS.out.steeringTorque, self.params)
 
       lkas_bit = CS.out.vEgo > self.CP.minSteerSpeed
 
-    self.apply_steer_last = apply_steer
-    can_sends.append(fiatcan.create_lkas_command(self.packer_pt, self.frame, apply_steer, lkas_bit))
+    self.apply_torque_last = apply_torque
+    can_sends.append(fiatcan.create_lkas_command(self.packer_pt, self.frame, apply_torque, lkas_bit))
 
     if self.frame % 25 == 0:
       eps_faulted = CS.out.steerFaultPermanent or CS.out.steerFaultTemporary
@@ -62,8 +62,8 @@ class CarController(CarControllerBase):
     self.frame += 1
 
     new_actuators = actuators.as_builder()
-    new_actuators.steer = self.apply_steer_last / self.params.STEER_MAX
-    new_actuators.steerOutputCan = self.apply_steer_last
+    new_actuators.torque = self.apply_torque_last / self.params.STEER_MAX
+    new_actuators.torqueOutputCan = self.apply_torque_last
     new_actuators.gas = self.apply_gas
     new_actuators.brake = self.apply_brake
 
