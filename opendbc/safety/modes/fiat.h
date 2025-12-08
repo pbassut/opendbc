@@ -66,9 +66,9 @@ static void fiat_rx_hook(const CANPacket_t *msg) {
 
   // Measured driver torque
   if ((bus == 0) && (addr == fiat_addrs->EPS_2)) {
-    uint16_t torque_driver_new = (GET_BYTES(msg, 2, 2) >> 5) & 0x7FFU;
+    uint16_t torque_driver_new = GET_BYTES(msg, 2, 11);
 
-    update_sample(&torque_driver, (torque_driver_new * -1) + 1024U);
+    update_sample(&torque_driver, torque_driver_new - 1024U);
   }
 
   if (bus == 1 && addr == fiat_addrs->DAS_2) {
@@ -79,15 +79,15 @@ static void fiat_rx_hook(const CANPacket_t *msg) {
   }
 
   if (bus == 0 && addr == fiat_addrs->ABS_6) {
-    vehicle_moving = ((GET_BYTES(msg, 1, 2) >> 5) & 0x7FFU) > 0;
+    vehicle_moving = GET_BYTES(msg, 1, 11) > 0;
   }
 
   if (bus == 1 && addr == fiat_addrs->ENGINE_1) {
-    gas_pressed = (((GET_BYTES(msg, 2, 2) >> 5) & 0xFFU) * 0.3942) > 0;
+    gas_pressed = (GET_BYTES(msg, 7, 14) * 0.3942) > 0;
   }
 
   if (bus == 0 && addr == fiat_addrs->ABS_6) {
-    brake_pressed = ((GET_BYTES(msg, 2, 2) >> 2) & 0x7FFU) > 0;
+    brake_pressed = GET_BYTES(msg, 20, 11) > 0;
   }
 }
 
@@ -106,7 +106,7 @@ static bool fiat_tx_hook(const CANPacket_t *msg) {
       .type = TorqueDriverLimited,
     };
 
-    int desired_torque = ((GET_BYTES(msg, 0, 2) >> 5) & 0x7FFU) - 1024;
+    int desired_torque = GET_BYTES(msg, 7, 11) - 1024;
 
     bool steer_req = GET_BIT(msg, 12U);
     if (steer_torque_cmd_checks(desired_torque, steer_req, limits)) {
