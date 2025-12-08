@@ -50,6 +50,7 @@ def create_friction_brake_command(packer, apply_brake, frame):
   return packer.make_can_msg("ABS_6", DAS_BUS, values)
 
 def fiat_fastback_checksum(address: int, sig, d: bytearray) -> int:
+  crc = 0xFF
   skip = 1
   if address == 0x2FA:
     # DAS_1 has the checksum on the byte before the last
