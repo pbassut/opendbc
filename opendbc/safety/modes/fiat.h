@@ -166,7 +166,7 @@ static safety_config fiat_init(uint16_t param) {
 
   static const CanMsg FASTBACK_TX_MSGS[] = {
     {FASTBACK_ADDRS.LKAS_COMMAND, 0, 4, .check_relay = true},
-    {FASTBACK_ADDRS.LKA_HUD_2,    0, 8, .check_relay = false},
+    {FASTBACK_ADDRS.LKA_HUD_2,    0, 8, .check_relay = true},
     {FASTBACK_ADDRS.DAS_1,        1, 4, .check_relay = false},
     {FASTBACK_ADDRS.ENGINE_1,     1, 8, .check_relay = false},
   };
