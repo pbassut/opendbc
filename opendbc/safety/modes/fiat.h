@@ -162,6 +162,10 @@ static safety_config fiat_init(uint16_t param) {
     {.msg = {{FASTBACK_ADDRS.DAS_2,         1, 8, 1U,   .max_counter = 0U,  .ignore_checksum = true}, { 0 }, { 0 }}},
     {.msg = {{FASTBACK_ADDRS.EPS_2,         0, 7, 100U, .max_counter = 15U, .ignore_checksum = true}, { 0 }, { 0 }}},
     {.msg = {{FASTBACK_ADDRS.ENGINE_1,      1, 8, 100U, .max_counter = 15U, .ignore_checksum = true}, { 0 }, { 0 }}},
+
+    // {.msg = {{FASTBACK_ADDRS.BCM_2,         0, 4, 2U,   .max_counter = 0U, .ignore_checksum = true, .ignore_counter = true}, { 0 }, { 0 }}},
+    // {.msg = {{FASTBACK_ADDRS.SEATBELTS,     0, 8, 5U,   .max_counter = 0U, .ignore_checksum = true, .ignore_counter = true}, { 0 }, { 0 }}},
+    // {.msg = {{FASTBACK_ADDRS.GEAR,          2, 3, 1U,   .max_counter = 0U, .ignore_checksum = true, .ignore_counter = true}, { 0 }, { 0 }}},
   };
 
   static const CanMsg FASTBACK_TX_MSGS[] = {
