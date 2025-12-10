@@ -157,11 +157,11 @@ static safety_config fiat_init(uint16_t param) {
   gen_crc_lookup_table_8(0x1D, fca_fastback_crc8_lut_j1850);
 
   static RxCheck fastback_rx_checks[] = {
-    {.msg = {{FASTBACK_ADDRS.ABS_6,         0, 8, 100U, .max_counter = 15U, .ignore_checksum = true}, { 0 }, { 0 }}},
-    {.msg = {{FASTBACK_ADDRS.DAS_1,         1, 4, 50U,  .max_counter = 15U, .ignore_checksum = true}, { 0 }, { 0 }}},
-    {.msg = {{FASTBACK_ADDRS.DAS_2,         1, 8, 1U,   .max_counter = 0U,  .ignore_checksum = true}, { 0 }, { 0 }}},
-    {.msg = {{FASTBACK_ADDRS.EPS_2,         0, 7, 100U, .max_counter = 15U, .ignore_checksum = true}, { 0 }, { 0 }}},
-    {.msg = {{FASTBACK_ADDRS.ENGINE_1,      1, 8, 100U, .max_counter = 15U, .ignore_checksum = true}, { 0 }, { 0 }}},
+    {.msg = {{FASTBACK_ADDRS.ABS_6,         0, 8, 100U, .max_counter = 15U, .ignore_checksum = true, .ignore_quality_flag = true}, { 0 }, { 0 }}},
+    {.msg = {{FASTBACK_ADDRS.DAS_1,         1, 4, 50U,  .max_counter = 15U, .ignore_checksum = true, .ignore_quality_flag = true}, { 0 }, { 0 }}},
+    {.msg = {{FASTBACK_ADDRS.DAS_2,         1, 8, 1U,   .max_counter = 0U,  .ignore_checksum = true, .ignore_quality_flag = true}, { 0 }, { 0 }}},
+    {.msg = {{FASTBACK_ADDRS.EPS_2,         0, 7, 100U, .max_counter = 15U, .ignore_checksum = true, .ignore_quality_flag = true}, { 0 }, { 0 }}},
+    {.msg = {{FASTBACK_ADDRS.ENGINE_1,      1, 8, 100U, .max_counter = 15U, .ignore_checksum = true, .ignore_quality_flag = true}, { 0 }, { 0 }}},
 
     // {.msg = {{FASTBACK_ADDRS.BCM_2,         0, 4, 2U,   .max_counter = 0U, .ignore_checksum = true, .ignore_counter = true}, { 0 }, { 0 }}},
     // {.msg = {{FASTBACK_ADDRS.SEATBELTS,     0, 8, 5U,   .max_counter = 0U, .ignore_checksum = true, .ignore_counter = true}, { 0 }, { 0 }}},
