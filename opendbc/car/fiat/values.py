@@ -30,7 +30,7 @@ class FastbackCarSpecs(CarSpecs):
 class CAR(Platforms):
   FASTBACK_LIMITED_EDITION_2024 = FastbackPlatformConfig(
     [FastbackCarDocs("Fastback Limited Edition 2024")],
-    FastbackCarSpecs(mass=1253., wheelbase=2.695, steerRatio=16.89),
+    FastbackCarSpecs(mass=1253., wheelbase=2.695, steerRatio=15.05),
   )
 
 class CarControllerParams:
