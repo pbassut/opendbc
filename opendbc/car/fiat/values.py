@@ -4,6 +4,7 @@ from opendbc.car import Bus, CarSpecs, DbcDict, PlatformConfig, Platforms
 from opendbc.car.structs import CarParams
 from opendbc.car.docs_definitions import CarHarness, CarDocs, CarParts
 from opendbc.car.fw_query_definitions import FwQueryConfig
+from opendbc.car.common.conversions import Conversions as CV
 
 Ecu = CarParams.Ecu
 
