@@ -3,6 +3,7 @@ from opendbc.car import Bus, structs
 from opendbc.car.fiat.values import DBC, STEER_THRESHOLD
 from opendbc.car.common.conversions import Conversions as CV
 from opendbc.car.interfaces import CarStateBase
+from openpilot.common.params import Params
 
 ButtonType = structs.CarState.ButtonEvent.Type
 
@@ -22,6 +23,8 @@ class CarState(CarStateBase):
 
     self.prev_high_beam = False
     self.high_beam = False
+
+    self.mem_params = Params("/dev/shm/params")
 
   def update(self, can_parsers, *_) -> structs.CarState:
     cp = can_parsers[Bus.pt]
@@ -80,6 +83,17 @@ class CarState(CarStateBase):
     self.high_beam = cp_adas.vl["BCM_2"]["HIGH_BEAM"] == 1
     ret.genericToggle = cp_adas.vl["BCM_2"]["HIGH_BEAM"] == 1
 
+    self.lkas_enabled = cp.vl["BUTTONS_1"]["LKAS_BUTTON"] == 1
+
+    # Toggle SteerAlwaysOn on button press (rising edge)
+    if not self.prev_lkas_enabled and self.lkas_enabled:
+      steer_always_on = self.mem_params.get_bool("SteerAlwaysOn")
+      new_state = not steer_always_on
+      self.mem_params.put_bool('SteerAlwaysOn', new_state)
+      ret.madsEnabled = new_state
+
+    self.prev_lkas_enabled = self.lkas_enabled
+
     # steering wheel
     ret.steeringAngleDeg = cp.vl["STEERING"]["STEERING_ANGLE"]
     ret.steeringRateDeg = cp.vl["STEERING"]["STEERING_RATE"]
@@ -95,7 +109,6 @@ class CarState(CarStateBase):
     ret.cruiseState.enabled = cp_adas.vl["DAS_2"]["ACC_ENGAGED"] == 1
     ret.cruiseState.speed = cp_adas.vl["DAS_2"]["ACC_SET_SPEED"] * CV.KPH_TO_MS
 
-    self.lkas_enabled = cp.vl["BUTTONS_1"]["LKAS_BUTTON"] == 1
     self.distance_button = cp_adas.vl["DAS_1"]["CRUISE_BUTTON_PRESSED"] == 32
 
     self.button_counter = cp_adas.vl["DAS_1"]["COUNTER"]
