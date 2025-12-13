@@ -24,14 +24,8 @@ class CarInterface(CarInterfaceBase):
     ret.safetyConfigs = [get_safety_config(structs.CarParams.SafetyModel.fiat)]
 
     CarInterfaceBase.configure_torque_tune(candidate, ret.lateralTuning)
-    # tune.torque.kp = 1.0
-    ret.lateralTuning.torque.kpDEPRECATED = 0.11
 
-    # tune.torque.ki = 0.1
-    ret.lateralTuning.torque.kiDEPRECATED = 0.37
-
-    # ret.lateralTuning.torque.kf = 0
-    ret.lateralTuning.torque.kfDEPRECATED = 0.07
+    ret.steerActuatorDelay = 0.3
 
     ret.centerToFront = ret.wheelbase * 0.44
     ret.enableBsm = False
