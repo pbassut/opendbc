@@ -161,6 +161,8 @@ struct CarState {
   # process meta
   cumLagMs @50 :Float32;
 
+  madsEnabled @57 :Bool;
+
   # car speed
   vEgo @1 :Float32;            # best estimate of speed
   aEgo @16 :Float32;           # best estimate of aCAN cceleration
