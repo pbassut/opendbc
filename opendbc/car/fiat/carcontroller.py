@@ -48,7 +48,7 @@ class CarController(CarControllerBase):
     lkas_bit = False
     if CC.latActive:
       new_torque = int(round(actuators.torque * self.params.STEER_MAX))
-      apply_torque = apply_driver_steer_torque_limits(new_torque, self.apply_torque_last, CS.out.steeringTorque, self.params) * 0.98
+      apply_torque = apply_driver_steer_torque_limits(new_torque, self.apply_torque_last, CS.out.steeringTorque, self.params)
 
       lkas_bit = CS.out.vEgo > self.CP.minSteerSpeed
 
