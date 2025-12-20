@@ -10,6 +10,7 @@ typedef struct {
   const int ENGINE_1;
   const int LKAS_COMMAND;
   const int LKA_HUD_2;
+  const int BUTTONS_1;
 } FiatAddrs;
 
 typedef enum {
@@ -63,6 +64,15 @@ static uint32_t fca_fastback_compute_crc(const CANPacket_t *msg) {
 static void fiat_rx_hook(const CANPacket_t *msg) {
   const int bus = msg->bus;
   const int addr = msg->addr;
+
+  if (bus == 0 && addr == fiat_addrs->BUTTONS_1) {
+    bool lkas_button_pressed = (msg->data[3] & 0x40U) > 0;
+    if(lkas_button_pressed && !lateral_controls_allowed_prev) {
+      lateral_controls_allowed = true;
+    }
+
+    lateral_controls_allowed_prev = lateral_controls_allowed;
+  }
 
   // Measured driver torque - DRIVER_TORQUE: 23|11@0+ (Motorola)
   // MSB at bit 23 (byte 2), spans bytes 2-3
@@ -157,6 +167,7 @@ const FiatAddrs FASTBACK_ADDRS = {
   .ENGINE_1         = 0xFC,
   .LKAS_COMMAND     = 0x1F6,
   .LKA_HUD_2        = 0x547,
+  .BUTTONS_1        = 0x384,
 };
 
 static safety_config fiat_init(uint16_t param) {
@@ -168,6 +179,7 @@ static safety_config fiat_init(uint16_t param) {
     {.msg = {{FASTBACK_ADDRS.DAS_2,         1, 8, 1U,   .max_counter = 0U,  .ignore_checksum = true, .ignore_counter = true, .ignore_quality_flag = true}, { 0 }, { 0 }}},
     {.msg = {{FASTBACK_ADDRS.EPS_2,         0, 7, 100U, .max_counter = 15U, .ignore_checksum = true, .ignore_counter = true, .ignore_quality_flag = true}, { 0 }, { 0 }}},
     {.msg = {{FASTBACK_ADDRS.ENGINE_1,      1, 8, 100U, .max_counter = 15U, .ignore_checksum = true, .ignore_counter = true, .ignore_quality_flag = true}, { 0 }, { 0 }}},
+    {.msg = {{FASTBACK_ADDRS.BUTTONS_1,     0, 8, 4U,   .max_counter = 0U,  .ignore_checksum = true, .ignore_counter = true, .ignore_quality_flag = true}, { 0 }, { 0 }}},
 
     // {.msg = {{FASTBACK_ADDRS.BCM_2,         0, 4, 2U,   .max_counter = 0U, .ignore_checksum = true, .ignore_counter = true}, { 0 }, { 0 }}},
     // {.msg = {{FASTBACK_ADDRS.SEATBELTS,     0, 8, 5U,   .max_counter = 0U, .ignore_checksum = true, .ignore_counter = true}, { 0 }, { 0 }}},

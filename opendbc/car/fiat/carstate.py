@@ -15,9 +15,6 @@ class CarState(CarStateBase):
     self.button_counter = 0
     self.accel_counter = 0
 
-    self.prev_distance_button = 0
-    self.distance_button = 0
-
     self.lkas_enabled = False
     self.prev_lkas_enabled = False
 
@@ -32,7 +29,6 @@ class CarState(CarStateBase):
 
     ret = structs.CarState()
     self.prev_lkas_enabled = self.lkas_enabled
-    self.prev_distance_button = self.distance_button
 
     # lock info
     ret.doorOpen = any([cp.vl["BCM_1"]["DOOR_OPEN_FL"],
@@ -87,10 +83,8 @@ class CarState(CarStateBase):
 
     # Toggle SteerAlwaysOn on button press (rising edge)
     if not self.prev_lkas_enabled and self.lkas_enabled:
-      steer_always_on = self.mem_params.get_bool("SteerAlwaysOn")
-      new_state = not steer_always_on
-      self.mem_params.put_bool('SteerAlwaysOn', new_state)
-      ret.madsEnabled = new_state
+      ret.madsEnabled = not self.mem_params.get_bool("SteerAlwaysOn")
+      self.mem_params.put_bool('SteerAlwaysOn', ret.madsEnabled)
 
     self.prev_lkas_enabled = self.lkas_enabled
 
@@ -108,8 +102,6 @@ class CarState(CarStateBase):
     ret.cruiseState.available = cp_adas.vl["DAS_2"]["ACC_STATE"] == 1
     ret.cruiseState.enabled = cp_adas.vl["DAS_2"]["ACC_ENGAGED"] == 1
     ret.cruiseState.speed = cp_adas.vl["DAS_2"]["ACC_SET_SPEED"] * CV.KPH_TO_MS
-
-    self.distance_button = cp_adas.vl["DAS_1"]["CRUISE_BUTTON_PRESSED"] == 32
 
     self.button_counter = cp_adas.vl["DAS_1"]["COUNTER"]
     self.accel_counter = cp_adas.vl["ENGINE_1"]["COUNTER"]
