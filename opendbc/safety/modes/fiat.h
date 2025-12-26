@@ -117,7 +117,7 @@ static bool fiat_tx_hook(const CANPacket_t *msg) {
       .max_torque = 360,
       .max_rt_delta = 112,
       .max_rate_up = 4,
-      .max_rate_down = 4,
+      .max_rate_down = 3,
       .driver_torque_allowance = 80,
       .type = TorqueDriverLimited,
     };
