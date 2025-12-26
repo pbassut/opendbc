@@ -70,7 +70,7 @@ class CarControllerParams:
     self.BRAKE_LOOKUP_V = [self.MAX_BRAKE, 0.]
 
 
-STEER_THRESHOLD = 250
+STEER_THRESHOLD = 500
 
 FW_QUERY_CONFIG = FwQueryConfig(
   requests=[
