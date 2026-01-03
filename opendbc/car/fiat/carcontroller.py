@@ -14,6 +14,9 @@ class CarController(CarControllerBase):
     self.apply_gas = 0
     self.debug = False
 
+    self.hud_count = 0
+    self.last_lkas_falling_edge = 0
+    self.last_button_frame = 0
     self.test_counter = 0
 
     self.packer_pt = CANPacker(DBC[self.CP.carFingerprint][Bus.pt])
@@ -54,11 +57,7 @@ class CarController(CarControllerBase):
 
     if self.frame % 25 == 0:
       eps_faulted = CS.out.steerFaultPermanent or CS.out.steerFaultTemporary
-      can_sends.append(fiatcan.create_lkas_hud_command(self.packer_pt, CC.latActive, eps_faulted=eps_faulted, lkas_on=CS.out.madsEnabled))
-
-    # turn on lkas led lights on when lateral controls are disabled
-    # if CS.prev_lkas_enabled:
-    #   can_sends.append(fiatcan.create_lkas_hud_command())
+      can_sends.append(fiatcan.create_lkas_hud_command(self.packer_pt, CC.latActive, eps_faulted))
 
     self.frame += 1
 
