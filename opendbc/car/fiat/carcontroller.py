@@ -14,8 +14,9 @@ class CarController(CarControllerBase):
     self.apply_gas = 0
     self.debug = False
 
+    self.apply_torque_last = 0
     self.hud_count = 0
-    self.last_lkas_falling_edge = 0
+    self.last_lkas_falling_edge= 0
     self.last_button_frame = 0
     self.test_counter = 0
 
