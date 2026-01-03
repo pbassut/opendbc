@@ -54,7 +54,7 @@ class CarController(CarControllerBase):
 
     if self.frame % 25 == 0:
       eps_faulted = CS.out.steerFaultPermanent or CS.out.steerFaultTemporary
-      can_sends.append(fiatcan.create_lkas_hud_command(self.packer_pt, CC.latActive, eps_faulted))
+      can_sends.append(fiatcan.create_lkas_hud_command(self.packer_pt, CC.latActive, eps_faulted=eps_faulted, lkas_on=CS.out.madsEnabled))
 
     # turn on lkas led lights on when lateral controls are disabled
     # if CS.prev_lkas_enabled:
