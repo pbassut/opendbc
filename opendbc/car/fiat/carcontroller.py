@@ -16,7 +16,7 @@ class CarController(CarControllerBase):
 
     self.apply_torque_last = 0
     self.hud_count = 0
-    self.last_lkas_falling_edge= 0
+    self.last_lkas_falling_edge = 0
     self.last_button_frame = 0
     self.test_counter = 0
 
@@ -58,7 +58,7 @@ class CarController(CarControllerBase):
 
     if self.frame % 25 == 0:
       eps_faulted = CS.out.steerFaultPermanent or CS.out.steerFaultTemporary
-      can_sends.append(fiatcan.create_lkas_hud_command(self.packer_pt, CC.latActive, eps_faulted))
+      can_sends.append(fiatcan.create_lkas_hud_command(self.packer_pt, CC.latActive, CS.out.madsEnabled, eps_faulted))
 
     self.frame += 1
 
