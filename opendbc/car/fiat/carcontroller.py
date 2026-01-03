@@ -57,8 +57,8 @@ class CarController(CarControllerBase):
       can_sends.append(fiatcan.create_lkas_hud_command(self.packer_pt, CC.latActive, eps_faulted))
 
     # turn on lkas led lights on when lateral controls are disabled
-    if CS.prev_lkas_enabled:
-      can_sends.append(fiatcan.create_lkas_hud_command)
+    # if CS.prev_lkas_enabled:
+    #   can_sends.append(fiatcan.create_lkas_hud_command())
 
     self.frame += 1
 
