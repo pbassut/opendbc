@@ -17,16 +17,14 @@ class CarInterface(CarInterfaceBase):
     ret.brand = "fiat"
 
     ret.radarUnavailable = True
-    ret.steerActuatorDelay = 0.1
-    ret.steerLimitTimer = 0.4
 
     # safety config
     ret.safetyConfigs = [get_safety_config(structs.CarParams.SafetyModel.fiat)]
 
     CarInterfaceBase.configure_torque_tune(candidate, ret.lateralTuning)
 
-    ret.steerActuatorDelay = 0.1
-
+    ret.steerActuatorDelay = 0.2
+    ret.steerLimitTimer = 0.4
     ret.centerToFront = ret.wheelbase * 0.44
     ret.enableBsm = False
 
