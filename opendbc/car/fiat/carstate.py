@@ -75,6 +75,7 @@ class CarState(CarStateBase):
     self.lkas_enabled = cp.vl["BUTTONS_1"]["LKAS_BUTTON"] == 1
 
     # Toggle SteerAlwaysOn on button press (rising edge)
+    ret.madsEnabled = False
     if not self.prev_lkas_enabled and self.lkas_enabled:
       ret.madsEnabled = not self.mem_params.get_bool("SteerAlwaysOn")
       self.mem_params.put_bool('SteerAlwaysOn', ret.madsEnabled)

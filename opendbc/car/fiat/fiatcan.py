@@ -21,7 +21,7 @@ def create_lkas_hud_command(packer, lat_active, mads_enabled=False, eps_faulted=
     "SET_ME_1": 1,
   }
 
-  if eps_faulted:
+  if eps_faulted or not mads_enabled:
     values["LANE_HUD_INDICATOR"] = 0
 
   if test is not None:
