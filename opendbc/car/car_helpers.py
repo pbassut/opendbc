@@ -36,6 +36,7 @@ def _get_interface_names() -> dict[str, list[str]]:
 
 # imports from directory opendbc/car/<name>/
 interface_names = _get_interface_names()
+
 interfaces = load_interfaces(interface_names)
 
 
