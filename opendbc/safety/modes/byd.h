@@ -4,13 +4,19 @@
 
 static bool byd_longitudinal = false;
 
+const int BYD_STEERING_ANGLE_ADDR = 0x11F;
+const int BYD_GAS_BRAKE_ADDR = 0x342;
+const int BYD_VEHICLE_SPEED_ADDR = 0x1F0;
+const int BYD_PCM_BUTTONS_ADDR = 0x3B0;
+const int BYD_ACC_CMD_ADDR = 0x32E;
+
 static void byd_rx_hook(const CANPacket_t *to_push) {
   int bus = GET_BUS(to_push);
   int addr = GET_ADDR(to_push);
 
   if (bus == 0) {
     // current steering angle, factor -0.1 and little endian
-    if (addr == 287) {
+    if (addr == BYD_STEERING_ANGLE_ADDR) {
       int angle_meas_new = (GET_BYTES(to_push, 0, 2) & 0xFFFFU);
       // let it be CAN unit degree
       angle_meas_new = to_signed(angle_meas_new, 16);
@@ -19,26 +25,26 @@ static void byd_rx_hook(const CANPacket_t *to_push) {
     }
 
     // gas and brakes
-    if (addr == 834) {
-      gas_pressed = (GET_BYTE(to_push, 0) > 0U);
-      brake_pressed = (GET_BYTE(to_push, 1) > 0U);
+    if (addr == BYD_GAS_BRAKE_ADDR) {
+      gas_pressed = (GET_BYTES(to_push, 0, 1) > 0U);
+      brake_pressed = (GET_BYTES(to_push, 1, 1) > 0U);
     }
 
     // vehicle speed
-    if (addr == 496) {
+    if (addr == BYD_VEHICLE_SPEED_ADDR) {
       // average of FL and BR
-      uint16_t fl_ms = ((GET_BYTE(to_push, 1) & 0x000FU) << 8) | (GET_BYTE(to_push, 0));
-      uint16_t br_ms = ((GET_BYTE(to_push, 6) & 0x000FU) << 8) | (GET_BYTE(to_push, 5));
+      uint16_t fl_ms = GET_BYTES(to_push, 0, 2) & 0x0FFFU;
+      uint16_t br_ms = GET_BYTES(to_push, 5, 2) & 0x0FFFU;
       vehicle_moving = (fl_ms | br_ms) != 0U;
       UPDATE_VEHICLE_SPEED((fl_ms + br_ms) / 2.0 * 0.1 * KPH_TO_MS);
     }
 
     // engage logic with buttons
-    if (addr == 944) {
+    if (addr == BYD_PCM_BUTTONS_ADDR) {
       // TODO: does it have to be on the rising edge
-      bool set_pressed = ((GET_BYTE(to_push, 0) >> 3U) & 1U) == 1U;
-      bool res_pressed = ((GET_BYTE(to_push, 0) >> 4U) & 1U) == 1U;
-      bool cancel = ((GET_BYTE(to_push, 2) >> 3U) & 1U) == 1U;
+      bool set_pressed = GET_BIT(to_push, 3U);
+      bool res_pressed = GET_BIT(to_push, 4U);
+      bool cancel = GET_BIT(to_push, 19U);
 
       if (set_pressed || res_pressed) {
         controls_allowed = true;
@@ -52,8 +58,8 @@ static void byd_rx_hook(const CANPacket_t *to_push) {
 
   if (bus == 2) {
     // cruise enabled
-    if (addr == 814) {
-      bool engaged_active_low = (GET_BYTE(to_push, 5) >> 4) & 1U;
+    if (addr == BYD_ACC_CMD_ADDR) {
+      bool engaged_active_low = GET_BIT(to_push, 44U);
       pcm_cruise_check(engaged_active_low);
     }
   }
@@ -87,7 +93,7 @@ static bool byd_tx_hook(const CANPacket_t *to_send) {
   if (addr == 482) {
 
     int desired_angle = (GET_BYTES(to_send, 3, 2) & 0xFFFFU);
-    bool lka_active = GET_BYTE(to_send, 1) & 1U;
+    bool lka_active = GET_BIT(to_send, 8U);
 
     desired_angle = to_signed(desired_angle, 16);
 
