@@ -104,7 +104,7 @@ static bool byd_tx_hook(const CANPacket_t *msg) {
 
   // acc violation checks
   if ((addr == 814) && byd_longitudinal) {
-    int desired_accel = GET_BYTE(msg, 0);
+    int desired_accel = GET_BYTES(msg, 0, 1);
     violation |= longitudinal_accel_checks(desired_accel, BYD_LONG_LIMITS);
   }
 
