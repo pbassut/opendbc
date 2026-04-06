@@ -1,5 +1,6 @@
 from opendbc.can.packer import CANPacker
-from opendbc.car import Bus, apply_std_steer_angle_limits, AngleSteeringLimits
+from opendbc.car.lateral import apply_std_steer_angle_limits, AngleSteeringLimits
+from opendbc.car import Bus
 from opendbc.car.interfaces import CarControllerBase
 from opendbc.car.byd.bydcan import create_can_steer_command, create_lkas_hud, create_accel_command
 
