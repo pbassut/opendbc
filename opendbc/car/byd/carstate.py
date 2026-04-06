@@ -33,14 +33,9 @@ class CarState(CarStateBase):
 
     self.steer_state = cp_cam.vl["STEERING_MODULE_ADAS"]['STEER_STATE']
     ret.steerFaultTemporary = self.steer_state == BydSteerStates.FAULTED
-
-    ret.wheelSpeeds = self.get_wheel_speeds(
-      cp.vl["WHEEL_SPEED"]['WHEELSPEED_FL'],
-      cp.vl["WHEEL_SPEED"]['WHEELSPEED_FR'],
-      cp.vl["WHEEL_SPEED"]['WHEELSPEED_BL'],
-      cp.vl["WHEEL_SPEED"]['WHEELSPEED_BR'],
-    )
-    ret.vEgoRaw = (ret.wheelSpeeds.rl + ret.wheelSpeeds.fl) / 2.0
+    wheel_fl = cp.vl["WHEEL_SPEED"]['WHEELSPEED_FL']
+    wheel_br = cp.vl["WHEEL_SPEED"]['WHEELSPEED_BR']
+    ret.vEgoRaw = (wheel_fl + wheel_br) / 2.0
 
     # unfiltered speed from CAN sensors
     ret.vEgo, ret.aEgo = self.update_speed_kf(ret.vEgoRaw)
