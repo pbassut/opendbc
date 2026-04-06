@@ -1,6 +1,5 @@
-from opendbc.car import Bus, structs
+from opendbc.car import Bus, structs, CANDefine
 from opendbc.can.parser import CANParser
-from opendbc.can.can_define import CANDefine
 from opendbc.car.common.conversions import Conversions as CV
 from opendbc.car.interfaces import CarStateBase
 from opendbc.car.byd.values import DBC, CANBUS, BydSteerStates
