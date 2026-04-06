@@ -10,14 +10,14 @@ const int BYD_VEHICLE_SPEED_ADDR = 0x1F0;
 const int BYD_PCM_BUTTONS_ADDR = 0x3B0;
 const int BYD_ACC_CMD_ADDR = 0x32E;
 
-static void byd_rx_hook(const CANPacket_t *to_push) {
-  int bus = GET_BUS(to_push);
-  int addr = GET_ADDR(to_push);
+static void byd_rx_hook(const CANPacket_t *msg) {
+  int bus = msg->bus;
+  int addr = msg->addr;
 
   if (bus == 0) {
     // current steering angle, factor -0.1 and little endian
     if (addr == BYD_STEERING_ANGLE_ADDR) {
-      int angle_meas_new = (GET_BYTES(to_push, 0, 2) & 0xFFFFU);
+      int angle_meas_new = (GET_BYTES(msg, 0, 2) & 0xFFFFU);
       // let it be CAN unit degree
       angle_meas_new = to_signed(angle_meas_new, 16);
 
@@ -26,15 +26,15 @@ static void byd_rx_hook(const CANPacket_t *to_push) {
 
     // gas and brakes
     if (addr == BYD_GAS_BRAKE_ADDR) {
-      gas_pressed = (GET_BYTES(to_push, 0, 1) > 0U);
-      brake_pressed = (GET_BYTES(to_push, 1, 1) > 0U);
+      gas_pressed = (GET_BYTES(msg, 0, 1) > 0U);
+      brake_pressed = (GET_BYTES(msg, 1, 1) > 0U);
     }
 
     // vehicle speed
     if (addr == BYD_VEHICLE_SPEED_ADDR) {
       // average of FL and BR
-      uint16_t fl_ms = GET_BYTES(to_push, 0, 2) & 0x0FFFU;
-      uint16_t br_ms = GET_BYTES(to_push, 5, 2) & 0x0FFFU;
+      uint16_t fl_ms = GET_BYTES(msg, 0, 2) & 0x0FFFU;
+      uint16_t br_ms = GET_BYTES(msg, 5, 2) & 0x0FFFU;
       vehicle_moving = (fl_ms | br_ms) != 0U;
       UPDATE_VEHICLE_SPEED((fl_ms + br_ms) / 2.0 * 0.1 * KPH_TO_MS);
     }
@@ -42,9 +42,9 @@ static void byd_rx_hook(const CANPacket_t *to_push) {
     // engage logic with buttons
     if (addr == BYD_PCM_BUTTONS_ADDR) {
       // TODO: does it have to be on the rising edge
-      bool set_pressed = GET_BIT(to_push, 3U);
-      bool res_pressed = GET_BIT(to_push, 4U);
-      bool cancel = GET_BIT(to_push, 19U);
+      bool set_pressed = GET_BIT(msg, 3U);
+      bool res_pressed = GET_BIT(msg, 4U);
+      bool cancel = GET_BIT(msg, 19U);
 
       if (set_pressed || res_pressed) {
         controls_allowed = true;
@@ -59,13 +59,13 @@ static void byd_rx_hook(const CANPacket_t *to_push) {
   if (bus == 2) {
     // cruise enabled
     if (addr == BYD_ACC_CMD_ADDR) {
-      bool engaged_active_low = GET_BIT(to_push, 44U);
+      bool engaged_active_low = GET_BIT(msg, 44U);
       pcm_cruise_check(engaged_active_low);
     }
   }
 }
 
-static bool byd_tx_hook(const CANPacket_t *to_send) {
+static bool byd_tx_hook(const CANPacket_t *msg) {
   const AngleSteeringLimits BYD_STEERING_LIMITS = {
     .max_angle = 2200,
     .angle_deg_to_can = 10,
@@ -87,13 +87,13 @@ static bool byd_tx_hook(const CANPacket_t *to_send) {
 
   bool tx = true;
   bool violation = false;
-  int addr = GET_ADDR(to_send);
+  int addr = msg->addr;
 
   // steer violation checks
   if (addr == 482) {
 
-    int desired_angle = (GET_BYTES(to_send, 3, 2) & 0xFFFFU);
-    bool lka_active = GET_BIT(to_send, 8U);
+    int desired_angle = (GET_BYTES(msg, 3, 2) & 0xFFFFU);
+    bool lka_active = GET_BIT(msg, 8U);
 
     desired_angle = to_signed(desired_angle, 16);
 
@@ -104,7 +104,7 @@ static bool byd_tx_hook(const CANPacket_t *to_send) {
 
   // acc violation checks
   if ((addr == 814) && byd_longitudinal) {
-    int desired_accel = GET_BYTE(to_send, 0);
+    int desired_accel = GET_BYTE(msg, 0);
     violation |= longitudinal_accel_checks(desired_accel, BYD_LONG_LIMITS);
   }
 
