@@ -1,6 +1,6 @@
 #pragma once
 
-#include "opendbc/safety/declarations.h"
+#include "opendbc/safety/safety_declarations.h"
 
 static bool byd_longitudinal = false;
 
